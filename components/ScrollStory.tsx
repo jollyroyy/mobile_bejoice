@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
+
+const BejoiceGlobeInner = dynamic(() => import('@/components/BejoiceGlobe'), { ssr: false, loading: () => null });
 
 // ── Config (mirrors Bejoice_backup VideoHero architecture) ────────────────
 const SCROLL_HEIGHT = 1600;  // vh — total scroll room
@@ -109,6 +112,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
   const pfRefs      = useRef<(HTMLDivElement | null)[]>([]);
   const segRefs     = useRef<(HTMLDivElement | null)[]>([]);
   const shRef       = useRef<HTMLDivElement>(null);
+  const globeRef    = useRef<HTMLDivElement>(null);
 
   const framesRef     = useRef<(HTMLImageElement | null)[]>([]);
   const lastIdxRef    = useRef(-1);
@@ -190,6 +194,22 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
         ));
         pf.style.width = `${progress * 100}%`;
       }
+    }
+
+    // Globe overlay — visible during globe-bridge segment (frames 145–210)
+    const gEl = globeRef.current;
+    if (gEl) {
+      const GLOBE_FADE_F = 12;
+      let gOp = 0;
+      if (frameIdx >= BIC_COUNT && frameIdx <= BEJOICE_START) {
+        const enterDist = frameIdx - BIC_COUNT;
+        const exitDist  = BEJOICE_START - frameIdx;
+        gOp = Math.min(enterDist / GLOBE_FADE_F, exitDist / GLOBE_FADE_F, 1);
+      }
+      gOp = Math.max(0, Math.min(1, gOp));
+      gEl.style.opacity       = String(gOp);
+      gEl.style.pointerEvents = gOp > 0.1 ? 'auto' : 'none';
+      gEl.style.visibility    = gOp === 0 ? 'hidden' : 'visible';
     }
 
     // Dip-to-black at footage cut points
@@ -418,6 +438,27 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             background: 'linear-gradient(to bottom, rgba(8,8,8,0.78) 0%, rgba(8,8,8,0.35) 45%, rgba(8,8,8,0) 100%)',
           }}
         />
+
+        {/* Globe overlay — shown during globe-bridge segment (frames 145–210) */}
+        <div
+          ref={globeRef}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 6,
+            opacity: 0,
+            visibility: 'hidden',
+            pointerEvents: 'none',
+            background: '#030b15',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            touchAction: 'pan-y',
+          }}
+        >
+          <BejoiceGlobeInner embedded={true} />
+        </div>
 
         {/* Dip-to-black overlays at footage cut points */}
         {SEG_CUTS.map((_, i) => (

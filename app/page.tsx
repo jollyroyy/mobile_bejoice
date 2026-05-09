@@ -16,6 +16,7 @@ const ScrollReveal     = dynamic(() => import('@/components/ScrollReveal'),     
 
 // ── Below-fold sections ──
 const WhyBejoice    = dynamic(() => import('@/components/WhyBejoice'),    { ssr: false });
+const BejoiceGlobe  = dynamic(() => import('@/components/BejoiceGlobe'),  { ssr: false });
 const Services      = dynamic(() => import('@/components/Services'),      { ssr: false });
 const LogisticsTools = dynamic(() => import('@/components/LogisticsTools'), { ssr: false });
 const Contact       = dynamic(() => import('@/components/Contact'),       { ssr: false });
@@ -161,6 +162,7 @@ export default function Page() {
           />
 
           <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
+          <Suspense fallback={null}><BejoiceGlobe /></Suspense>
           <Suspense fallback={<ServicesSkeleton />}><Services /></Suspense>
           <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools /></Suspense>
           <Suspense fallback={<ContactSkeleton />}><Contact /></Suspense>

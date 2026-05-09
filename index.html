@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="theme-color" content="#080808">
+  <title>Bejoice</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark: #080808;
+      --white: #ffffff;
+      --gold: #c8a86b;
+      --gold-a: rgba(200,168,107,0.1);
+      --dim: rgba(255,255,255,0.5);
+      --border: rgba(255,255,255,0.07);
+    }
+
+    html {
+      background: var(--dark);
+      color: var(--white);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+    body { overflow-x: hidden; }
+
+    /* ── LOADER ─────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--dark);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.5rem;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+    #loader.out { opacity: 0; visibility: hidden; pointer-events: none; }
+    .ld-brand {
+      font-size: clamp(2.8rem, 10vw, 5.5rem);
+      font-weight: 900; letter-spacing: -0.03em;
+      background: linear-gradient(120deg, #fff 30%, var(--gold) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .ld-track { width: min(300px, 70vw); height: 1px; background: var(--border); }
+    .ld-fill  { height: 100%; background: var(--gold); width: 0; transition: width 0.25s ease; }
+    .ld-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim); }
+
+    /* ── PROGRESS LINE ──────────────────────── */
+    #pline { position: fixed; top: 0; left: 0; height: 1px; background: var(--gold); z-index: 500; width: 0; }
+
+    /* ── NAV ────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 1.4rem clamp(1.25rem, 5vw, 3rem);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { font-size: 0.95rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--white); text-decoration: none; }
+    .nav-dots { display: flex; gap: 8px; align-items: center; }
+    .ndot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(255,255,255,0.22); cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      border: none; outline: none; padding: 0;
+    }
+    .ndot.on { background: var(--white); transform: scale(1.9); }
+
+    /* ── CHAPTERS ───────────────────────────── */
+    .ch { position: relative; }
+    .sticky { position: sticky; top: 0; height: 100vh; width: 100%; overflow: hidden; background: #000; }
+    canvas {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 100%; display: block;
+      -webkit-user-select: none; user-select: none; touch-action: pan-y;
+    }
+
+    /* Ghost chapter number */
+    .ch-n {
+      position: absolute; top: clamp(3.5rem, 8vh, 5.5rem); right: clamp(1.25rem, 5vw, 3rem);
+      font-size: clamp(4rem, 14vw, 9rem); font-weight: 900; line-height: 1; letter-spacing: -0.05em;
+      color: rgba(255,255,255,0.04); pointer-events: none; user-select: none;
+    }
+
+    /* HUD overlay */
+    .hud {
+      position: absolute; inset: 0; pointer-events: none;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: clamp(1.5rem, 5vw, 4rem);
+    }
+    .hud::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 38%, transparent 65%);
+    }
+    .hud > * { position: relative; z-index: 1; }
+
+    .hud-tag {
+      font-size: 0.63rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.6rem;
+      opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .hud-title {
+      font-size: clamp(2.6rem, 8vw, 6rem); font-weight: 900; line-height: 0.93; letter-spacing: -0.035em;
+      margin-bottom: 0.85rem;
+      opacity: 0; transform: translateY(26px); transition: opacity 0.7s ease 0.09s, transform 0.7s ease 0.09s;
+    }
+    .hud-body {
+      font-size: clamp(0.85rem, 2.5vw, 1rem); color: rgba(255,255,255,0.62); max-width: 48ch; line-height: 1.68;
+      opacity: 0; transform: translateY(16px); transition: opacity 0.7s ease 0.18s, transform 0.7s ease 0.18s;
+    }
+    .hud-prog {
+      margin-top: 1.4rem; width: min(180px, 38vw); height: 1px; background: rgba(255,255,255,0.1);
+      opacity: 0; transition: opacity 0.5s ease 0.28s;
+    }
+    .hud-prog-fill { height: 100%; background: var(--gold); width: 0; will-change: width; }
+
+    .hud.show .hud-tag,
+    .hud.show .hud-title,
+    .hud.show .hud-body,
+    .hud.show .hud-prog { opacity: 1; transform: none; }
+
+    /* Scroll hint */
+    .sh {
+      position: absolute; bottom: clamp(1.5rem, 4vh, 2.5rem); left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 7px;
+      opacity: 1; transition: opacity 0.5s ease; pointer-events: none;
+    }
+    .sh span { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.28); }
+    .sh-pill { width: 17px; height: 27px; border: 1px solid rgba(255,255,255,0.18); border-radius: 9px; position: relative; }
+    .sh-pill::after {
+      content: ''; position: absolute; left: 50%; top: 4px;
+      transform: translateX(-50%); width: 2px; height: 5px;
+      background: rgba(255,255,255,0.35); border-radius: 1px;
+      animation: pill 1.6s ease infinite;
+    }
+    @keyframes pill { 0%,100%{ transform:translateX(-50%) translateY(0); opacity:1; } 80%{ transform:translateX(-50%) translateY(10px); opacity:0; } }
+
+    /* ── INTERSTITIALS ───────────────────────── */
+    .inter {
+      background: var(--dark); min-height: 55vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 8vw, 6rem);
+      text-align: center;
+    }
+    .inter-w { max-width: 620px; }
+    .inter-n {
+      display: block; font-size: clamp(5.5rem, 20vw, 12rem); font-weight: 900;
+      line-height: 1; letter-spacing: -0.06em; color: rgba(255,255,255,0.03);
+      margin-bottom: -0.15em;
+    }
+    .inter-h { font-size: clamp(1.75rem, 5.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.025em; line-height: 1.08; margin-bottom: 1.1rem; }
+    .inter-p { font-size: clamp(0.9rem, 2.5vw, 1.05rem); color: var(--dim); line-height: 1.72; }
+
+    /* ── FINALE ──────────────────────────────── */
+    #finale {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem);
+      background: radial-gradient(ellipse at 50% 110%, rgba(200,168,107,0.07) 0%, transparent 60%);
+    }
+    .fin-eye { font-size: 0.63rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+    .fin-h {
+      font-size: clamp(3.5rem, 13vw, 8.5rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.045em; margin-bottom: 1.5rem;
+      background: linear-gradient(160deg, #fff 25%, rgba(255,255,255,0.3) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .fin-p { font-size: clamp(0.95rem, 2.5vw, 1.15rem); color: var(--dim); max-width: 44ch; line-height: 1.68; margin-bottom: 3rem; }
+    .fin-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gold); color: #000; text-decoration: none;
+      font-size: 0.78rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 1rem 2.5rem; border-radius: 100px;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .fin-btn:hover { transform: translateY(-3px); box-shadow: 0 14px 38px rgba(200,168,107,0.22); }
+
+    /* ── FADE-UP UTIL ────────────────────────── */
+    .fu { opacity: 0; transform: translateY(28px); transition: opacity 0.85s ease, transform 0.85s ease; }
+    .fu.in { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ──────────────────────────── */
+    @media (max-width: 480px) { .ch-n { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Progress line -->
+<div id="pline"></div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="ld-brand">Bejoice</div>
+  <div class="ld-track"><div class="ld-fill" id="ld-fill"></div></div>
+  <div class="ld-label" id="ld-label">Preparing experience…</div>
+</div>
+
+<!-- Nav -->
+<nav>
+  <a class="nav-logo" href="#">Bejoice</a>
+  <div class="nav-dots" id="ndots">
+    <button class="ndot on" data-ch="0" aria-label="Chapter 1"></button>
+    <button class="ndot" data-ch="1" aria-label="Chapter 2"></button>
+    <button class="ndot" data-ch="2" aria-label="Chapter 3"></button>
+  </div>
+</nav>
+
+<!-- ═══ CHAPTER 1 — BIC (hero) ════════════════════════════════ -->
+<section class="ch" id="ch1">
+  <div class="sticky">
+    <canvas id="cv1"></canvas>
+    <div class="ch-n">01</div>
+    <div class="hud" id="hud1">
+      <div class="hud-tag">Chapter 01 — Origins</div>
+      <h2 class="hud-title">Where it<br>begins.</h2>
+      <p class="hud-body">Every great story starts with a single frame. Watch as the world takes shape — motion by motion, moment by moment.</p>
+      <div class="hud-prog"><div class="hud-prog-fill" id="pf1"></div></div>
+    </div>
+    <div class="sh" id="sh1">
+      <span>Scroll</span>
+      <div class="sh-pill"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Interstitial 1 → 2 -->
+<div class="inter">
+  <div class="inter-w">
+    <span class="inter-n fu">02</span>
+    <h3 class="inter-h fu">The journey<br>continues.</h3>
+    <p class="inter-p fu">A transformation is underway. Step into the second movement — where form finds its purpose and motion becomes meaning.</p>
+  </div>
+</div>
+
+<!-- ═══ CHAPTER 2 — BEJOICE ═══════════════════════════════════ -->
+<section class="ch" id="ch2">
+  <div class="sticky">
+    <canvas id="cv2"></canvas>
+    <div class="ch-n">02</div>
+    <div class="hud" id="hud2">
+      <div class="hud-tag">Chapter 02 — Motion</div>
+      <h2 class="hud-title">Shape in<br>motion.</h2>
+      <p class="hud-body">Flow. Transform. Evolve. Each frame carries the story forward in ways that words alone cannot capture.</p>
+      <div class="hud-prog"><div class="hud-prog-fill" id="pf2"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Interstitial 2 → 3 -->
+<div class="inter">
+  <div class="inter-w">
+    <span class="inter-n fu">03</span>
+    <h3 class="inter-h fu">The final<br>chapter.</h3>
+    <p class="inter-p fu">Culmination. Everything has been building to this — a destination that makes the entire journey worthwhile.</p>
+  </div>
+</div>
+
+<!-- ═══ CHAPTER 3 — PORT ═══════════════════════════════════════ -->
+<section class="ch" id="ch3">
+  <div class="sticky">
+    <canvas id="cv3"></canvas>
+    <div class="ch-n">03</div>
+    <div class="hud" id="hud3">
+      <div class="hud-tag">Chapter 03 — Arrival</div>
+      <h2 class="hud-title">The complete<br>picture.</h2>
+      <p class="hud-body">A story told through motion, light, and time — arriving at its inevitable, beautiful conclusion. The journey is complete.</p>
+      <div class="hud-prog"><div class="hud-prog-fill" id="pf3"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINALE ══════════════════════════════════════════════════ -->
+<section id="finale">
+  <div class="fin-eye fu">The Experience is Complete</div>
+  <h2 class="fin-h fu">Bejoice<br>in it.</h2>
+  <p class="fin-p fu">Three chapters. One story. An experience crafted to move you — in every sense of the word.</p>
+  <a href="#" class="fin-btn fu" id="restart">&#x2191;&nbsp; Begin Again</a>
+</section>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// CONFIG
+// ══════════════════════════════════════════════════════════════
+const DPR = Math.min(window.devicePixelRatio || 1, 2);
+const PX_PER_FRAME = 12; // scroll pixels per frame
+
+const DEFS = [
+  {
+    id: 'ch1', cvId: 'cv1', hudId: 'hud1', pfId: 'pf1',
+    count: 145,
+    src: i => `../Bejoice_backup/public/bic/${pad(i)}.webp`,
+  },
+  {
+    id: 'ch2', cvId: 'cv2', hudId: 'hud2', pfId: 'pf2',
+    count: 73,
+    src: i => `../Bejoice_backup/public/bejoice/frame_${pad(i)}.webp`,
+  },
+  {
+    id: 'ch3', cvId: 'cv3', hudId: 'hud3', pfId: 'pf3',
+    count: 169,
+    src: i => `../Bejoice_backup/public/port/${pad(i)}.webp`,
+  },
+];
+
+function pad(n) { return String(n).padStart(4, '0'); }
+
+// ══════════════════════════════════════════════════════════════
+// INIT CHAPTERS
+// ══════════════════════════════════════════════════════════════
+const CHS = DEFS.map(d => ({
+  ...d,
+  imgs: new Array(d.count).fill(null),
+  loaded: 0,
+  canvas: null,
+  ctx: null,
+  section: null,
+  hud: null,
+  pf: null,
+  frame: 0,
+  raf: false,
+}));
+
+CHS.forEach(c => {
+  c.canvas  = document.getElementById(c.cvId);
+  c.ctx     = c.canvas.getContext('2d');
+  c.section = document.getElementById(c.id);
+  c.hud     = document.getElementById(c.hudId);
+  c.pf      = document.getElementById(c.pfId);
+  resizeCanvas(c);
+});
+
+function resizeCanvas(c) {
+  c.canvas.width  = c.canvas.offsetWidth  * DPR;
+  c.canvas.height = c.canvas.offsetHeight * DPR;
+}
+
+function setSectionHeights() {
+  CHS.forEach(c => {
+    c.section.style.height = (c.count * PX_PER_FRAME + window.innerHeight) + 'px';
+  });
+}
+setSectionHeights();
+
+// ══════════════════════════════════════════════════════════════
+// DRAW
+// ══════════════════════════════════════════════════════════════
+function draw(c, fi) {
+  const img = c.imgs[fi];
+  if (!img || !img.complete || !img.naturalWidth) return;
+  const { canvas, ctx } = c;
+  const cw = canvas.width, ch = canvas.height;
+  const iw = img.naturalWidth, ih = img.naturalHeight;
+  const scale = Math.max(cw / iw, ch / ih);
+  const w = iw * scale, h = ih * scale;
+  ctx.clearRect(0, 0, cw, ch);
+  ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+}
+
+// ══════════════════════════════════════════════════════════════
+// LOADING
+// ══════════════════════════════════════════════════════════════
+const ldFill  = document.getElementById('ld-fill');
+const ldLabel = document.getElementById('ld-label');
+const loader  = document.getElementById('loader');
+let revealed  = false;
+
+function loadChapter(c, onDone) {
+  let done = 0;
+  const finish = () => { done++; if (onDone && done >= c.count) onDone(); };
+
+  for (let i = 1; i <= c.count; i++) {
+    const idx = i - 1;
+    const img = new Image();
+    img.onload = () => {
+      c.imgs[idx] = img;
+      c.loaded++;
+      if (c === CHS[0]) {
+        const pct = Math.round(c.loaded / c.count * 100);
+        ldFill.style.width = pct + '%';
+        ldLabel.textContent = `Loading… ${pct}%`;
+      }
+      if (idx === 0) draw(c, 0); // draw first frame ASAP
+      finish();
+    };
+    img.onerror = () => { c.loaded++; finish(); };
+    img.src = c.src(i);
+    c.imgs[idx] = img;
+  }
+}
+
+// Load ch1 first → on complete reveal site, then load ch2+ch3
+loadChapter(CHS[0], () => {
+  if (revealed) return;
+  revealed = true;
+  ldFill.style.width = '100%';
+  ldLabel.textContent = 'Ready!';
+  setTimeout(() => {
+    loader.classList.add('out');
+    CHS[0].hud.classList.add('show');
+  }, 350);
+});
+
+// Load ch2 and ch3 with a small delay to give ch1 priority
+setTimeout(() => {
+  loadChapter(CHS[1]);
+  loadChapter(CHS[2]);
+}, 200);
+
+// ══════════════════════════════════════════════════════════════
+// SCROLL HANDLER
+// ══════════════════════════════════════════════════════════════
+const pline  = document.getElementById('pline');
+const ndots  = document.querySelectorAll('.ndot');
+const sh1    = document.getElementById('sh1');
+let activeIdx = 0;
+
+function onScroll() {
+  const sy = window.scrollY;
+  const dh = document.documentElement.scrollHeight - window.innerHeight;
+  pline.style.width = (sy / dh * 100) + '%';
+
+  // Hide scroll hint
+  if (sy > 60 && sh1) sh1.style.opacity = '0';
+
+  CHS.forEach((c, idx) => {
+    const secTop    = c.section.offsetTop;
+    const secH      = c.section.offsetHeight;
+    const scrollable = secH - window.innerHeight;
+    const scrolled   = sy - secTop;
+    const progress   = Math.max(0, Math.min(1, scrolled / scrollable));
+    const fi         = Math.min(Math.floor(progress * c.count), c.count - 1);
+
+    // Progress fill bar in HUD
+    if (c.pf) c.pf.style.width = (progress * 100) + '%';
+
+    // Draw frame via RAF
+    if (fi !== c.frame) {
+      c.frame = fi;
+      if (!c.raf) {
+        c.raf = true;
+        requestAnimationFrame(() => {
+          draw(c, c.frame);
+          c.raf = false;
+        });
+      }
+    }
+
+    // Show HUD at start; hide near end
+    if (progress < 0.18) {
+      c.hud.classList.add('show');
+    } else if (progress > 0.78) {
+      c.hud.classList.remove('show');
+    }
+
+    // Active chapter for nav dots
+    if (scrolled >= 0 && scrolled <= scrollable) {
+      if (activeIdx !== idx) {
+        activeIdx = idx;
+        ndots.forEach((d, i) => d.classList.toggle('on', i === idx));
+      }
+    }
+  });
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+
+// ══════════════════════════════════════════════════════════════
+// RESIZE
+// ══════════════════════════════════════════════════════════════
+let rsTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(rsTimer);
+  rsTimer = setTimeout(() => {
+    CHS.forEach(c => { resizeCanvas(c); draw(c, c.frame); });
+    setSectionHeights();
+  }, 150);
+});
+
+// ══════════════════════════════════════════════════════════════
+// NAV DOTS
+// ══════════════════════════════════════════════════════════════
+ndots.forEach(d => {
+  d.addEventListener('click', () => {
+    const idx = +d.dataset.ch;
+    window.scrollTo({ top: CHS[idx].section.offsetTop, behavior: 'smooth' });
+  });
+});
+
+// ══════════════════════════════════════════════════════════════
+// RESTART BUTTON
+// ══════════════════════════════════════════════════════════════
+document.getElementById('restart').addEventListener('click', e => {
+  e.preventDefault();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ══════════════════════════════════════════════════════════════
+// INTERSECTION OBSERVER — fade-up elements
+// ══════════════════════════════════════════════════════════════
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fu').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

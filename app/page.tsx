@@ -17,51 +17,35 @@ const CHAPTERS = [
     count: 145,
     src: (i: number) => `/bic/${pad(i)}.webp`,
     tag: 'Chapter 01 — Origins',
-    title: (
-      <>
-        Where it
-        <br />
-        begins.
-      </>
-    ),
+    headline: ['WHERE IT', 'BEGINS.'],
     body: 'Every great story starts with a single frame. Watch as the world takes shape — motion by motion, moment by moment.',
+    align: 'left' as const,
   },
   {
     chapterNum: 2,
     count: 73,
     src: (i: number) => `/bejoice/frame_${pad(i)}.webp`,
     tag: 'Chapter 02 — Motion',
-    title: (
-      <>
-        Shape in
-        <br />
-        motion.
-      </>
-    ),
+    headline: ['SHAPE IN', 'MOTION.'],
     body: 'Flow. Transform. Evolve. Each frame carries the story forward in ways that words alone cannot capture.',
+    align: 'right' as const,
   },
   {
     chapterNum: 3,
     count: 169,
     src: (i: number) => `/port/${pad(i)}.webp`,
     tag: 'Chapter 03 — Arrival',
-    title: (
-      <>
-        The complete
-        <br />
-        picture.
-      </>
-    ),
+    headline: ['THE COMPLETE', 'PICTURE.'],
     body: 'A story told through motion, light, and time — arriving at its inevitable, beautiful conclusion. The journey is complete.',
+    align: 'left' as const,
   },
 ];
 
 export default function Page() {
   const [loaderProgress, setLoaderProgress] = useState(0);
-  const [loaderVisible, setLoaderVisible] = useState(true);
+  const [loaderVisible, setLoaderVisible]   = useState(true);
 
-  // Shared mutable refs for Nav to read without re-renders
-  const chapterOffsets    = useRef<number[]>([0, 0, 0]);
+  const chapterOffsets     = useRef<number[]>([0, 0, 0]);
   const chapterScrollables = useRef<number[]>([0, 0, 0]);
 
   const handleProgress = useCallback((pct: number) => {
@@ -73,17 +57,18 @@ export default function Page() {
     setTimeout(() => setLoaderVisible(false), 350);
   }, []);
 
-  const makeMeasureHandler = (idx: number) => (offsetTop: number, scrollable: number) => {
-    chapterOffsets.current[idx]    = offsetTop;
-    chapterScrollables.current[idx] = scrollable;
-  };
+  const makeMeasureHandler = (idx: number) =>
+    (offsetTop: number, scrollable: number) => {
+      chapterOffsets.current[idx]     = offsetTop;
+      chapterScrollables.current[idx] = scrollable;
+    };
 
   return (
     <>
       <Loader progress={loaderProgress} visible={loaderVisible} />
       <Nav chapterOffsets={chapterOffsets} chapterScrollables={chapterScrollables} />
 
-      {/* Chapter 1 */}
+      {/* Chapter 1 — hero */}
       <ChapterCanvas
         {...CHAPTERS[0]}
         onProgress={handleProgress}
@@ -98,7 +83,7 @@ export default function Page() {
         body="A transformation is underway. Step into the second movement — where form finds its purpose and motion becomes meaning."
       />
 
-      {/* Chapter 2 — starts loading 150ms after Ch1 (priority loading) */}
+      {/* Chapter 2 — 150ms delayed load to give Ch1 priority */}
       <ChapterCanvas
         {...CHAPTERS[1]}
         loadDelay={150}
@@ -112,7 +97,7 @@ export default function Page() {
         body="Culmination. Everything has been building to this — a destination that makes the entire journey worthwhile."
       />
 
-      {/* Chapter 3 — starts loading 150ms after Ch1 (priority loading) */}
+      {/* Chapter 3 — 150ms delayed load to give Ch1 priority */}
       <ChapterCanvas
         {...CHAPTERS[2]}
         loadDelay={150}

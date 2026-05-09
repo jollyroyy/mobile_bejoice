@@ -14,16 +14,10 @@ export default function Interstitial({ number, heading, body }: InterstitialProp
   useEffect(() => {
     const els = rootRef.current?.querySelectorAll('.fu');
     if (!els) return;
-
     const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add('in');
-        });
-      },
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add('in'); }),
       { threshold: 0.15 }
     );
-
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
@@ -42,36 +36,45 @@ export default function Interstitial({ number, heading, body }: InterstitialProp
       }}
     >
       <div style={{ maxWidth: 620 }}>
+        {/* Ghost big number */}
         <span
           className="fu"
           style={{
             display: 'block',
-            fontSize: 'clamp(5.5rem, 20vw, 12rem)',
-            fontWeight: 900,
+            fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
+            fontSize: 'clamp(6rem, 22vw, 14rem)',
+            fontWeight: 400,
             lineHeight: 1,
-            letterSpacing: '-0.06em',
+            letterSpacing: '0.05em',
             color: 'rgba(255,255,255,0.03)',
-            marginBottom: '-0.15em',
+            marginBottom: '-0.1em',
+            userSelect: 'none',
           }}
         >
           {number}
         </span>
+
+        {/* Heading */}
         <h3
           className="fu"
           style={{
-            fontSize: 'clamp(1.75rem, 5.5vw, 2.8rem)',
-            fontWeight: 800,
-            letterSpacing: '-0.025em',
-            lineHeight: 1.08,
-            marginBottom: '1.1rem',
+            fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
+            fontSize: 'clamp(2rem, 6vw, 3.4rem)',
+            fontWeight: 400,
+            letterSpacing: '0.06em',
+            lineHeight: 0.92,
+            marginBottom: '1.2rem',
           }}
         >
           {heading}
         </h3>
+
+        {/* Body */}
         <p
           className="fu"
           style={{
-            fontSize: 'clamp(0.9rem, 2.5vw, 1.05rem)',
+            fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
+            fontSize: 'clamp(0.88rem, 2.2vw, 1rem)',
             color: 'var(--dim)',
             lineHeight: 1.72,
           }}

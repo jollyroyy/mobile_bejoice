@@ -17,23 +17,13 @@
 html {
   background: var(--dark);
   color: var(--white);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-dm-sans, system-ui), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 body { overflow-x: hidden; }
-
-/* ── HUD animation classes (toggled via direct DOM in scroll handler) ── */
-.hud-tag, .hud-title, .hud-body, .hud-bar {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.hud-visible .hud-tag   { opacity: 1; transform: none; }
-.hud-visible .hud-title { opacity: 1; transform: none; transition-delay: 0.09s; }
-.hud-visible .hud-body  { opacity: 1; transform: none; transition-delay: 0.18s; }
-.hud-visible .hud-bar   { opacity: 1; transform: none; transition-delay: 0.25s; }
 
 /* ── Nav dot active ──────────────────────────────────────────── */
 .ndot-active {
@@ -57,6 +47,9 @@ body { overflow-x: hidden; }
   0%, 100% { transform: translateX(-50%) translateY(0);    opacity: 1; }
   80%       { transform: translateX(-50%) translateY(10px); opacity: 0; }
 }
+
+/* ── Ghost chapter number — hide on small phones ──────────────── */
+@media (max-width: 480px) { .ch-n { display: none; } }
 
 /* ── Reduced motion ──────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {

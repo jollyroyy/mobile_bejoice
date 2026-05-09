@@ -40,9 +40,10 @@ export default function Loader({ progress, visible }: LoaderProps) {
       {/* Brand */}
       <div
         style={{
-          fontSize: 'clamp(2.8rem, 10vw, 5.5rem)',
-          fontWeight: 900,
-          letterSpacing: '-0.03em',
+          fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
+          fontSize: 'clamp(3.5rem, 12vw, 7rem)',
+          fontWeight: 400,
+          letterSpacing: '0.06em',
           background: 'linear-gradient(120deg, #fff 30%, var(--gold) 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',

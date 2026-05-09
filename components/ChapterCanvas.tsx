@@ -2,27 +2,25 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 
+// Only safe to read on client — this module only runs client-side ('use client')
 const DPR = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio || 1, 2) : 1;
-const PX_PER_FRAME = 16;
+
+const PX_PER_FRAME = 16;  // scroll pixels per frame
+const LERP         = 0.14; // lower = smoother, more cinematic lag
 
 export interface ChapterCanvasProps {
-  /** 1-based chapter number shown as ghost overlay */
   chapterNum: number;
-  /** Total frame count */
   count: number;
-  /** Returns URL for frame index i (1-based) */
   src: (i: number) => string;
-  /** HUD content */
+  /** Short eyebrow label shown as pill badge */
   tag: string;
-  title: React.ReactNode;
+  /** Headline lines — odd indices render in gold, even in white */
+  headline: string[];
   body: string;
-  /** Callback for each loaded image — only needed for Ch1 loader */
+  align?: 'left' | 'right';
   onProgress?: (pct: number) => void;
-  /** Called when all frames are loaded */
   onLoaded?: () => void;
-  /** Exposes section offsetTop and scrollable height to parent */
   onMeasure?: (offsetTop: number, scrollable: number) => void;
-  /** Delay image loading by this many ms (for Ch2/Ch3 to give Ch1 priority) */
   loadDelay?: number;
 }
 
@@ -31,8 +29,9 @@ export default function ChapterCanvas({
   count,
   src,
   tag,
-  title,
+  headline,
   body,
+  align = 'left',
   onProgress,
   onLoaded,
   onMeasure,
@@ -40,46 +39,94 @@ export default function ChapterCanvas({
 }: ChapterCanvasProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const canvasRef  = useRef<HTMLCanvasElement>(null);
-  const hudRef     = useRef<HTMLDivElement>(null);
+  const textRef    = useRef<HTMLDivElement>(null);
   const pfRef      = useRef<HTMLDivElement>(null);
   const shRef      = useRef<HTMLDivElement>(null);
 
-  // Mutable state shared with scroll handler — avoids re-renders
-  const imgsRef   = useRef<(HTMLImageElement | null)[]>([]);
-  const frameRef  = useRef(0);
-  const rafRef    = useRef(false);
-  const loadedRef = useRef(0);
+  const imgsRef    = useRef<(HTMLImageElement | null)[]>([]);
+  const loadedRef  = useRef(0);
 
+  // Lerp scroll state (mutated in RAF, never triggers React re-render)
+  const targetScrolledRef = useRef(0);
+  const smoothScrolledRef = useRef(0);
+  const rafIdRef          = useRef<number | null>(null);
+  const kickRef           = useRef<(() => void) | null>(null);
+
+  // ── Draw ─────────────────────────────────────────────────────────
   const draw = useCallback((fi: number) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-    const img = imgsRef.current[fi];
-    if (!img || !img.complete || !img.naturalWidth) return;
+
+    // Nearest-loaded-frame fallback: walk backwards so we never show black
+    let img: HTMLImageElement | null = null;
+    for (let i = Math.min(fi, imgsRef.current.length - 1); i >= 0; i--) {
+      const f = imgsRef.current[i];
+      if (f && f.complete && f.naturalWidth > 0) { img = f; break; }
+    }
+    if (!img) return;
 
     const cw = canvas.width;
     const ch = canvas.height;
     const iw = img.naturalWidth;
     const ih = img.naturalHeight;
+
+    // object-fit: cover
     const scale = Math.max(cw / iw, ch / ih);
-    const w = iw * scale;
-    const h = ih * scale;
-    ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
+    const w = Math.ceil(iw * scale);
+    const h = Math.ceil(ih * scale);
+    const x = Math.floor((cw - w) / 2);
+    const y = Math.floor((ch - h) / 2);
+
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, cw, ch);
+
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+    // Expensive quality settings only on desktop
+    if (typeof window !== 'undefined' && window.innerWidth > 768) {
+      ctx.imageSmoothingQuality = 'high';
+      // Subtle color grade — contrast(1.08) saturate(1.12) brightness(1.02)
+      // iOS Safari ≤15 doesn't support canvas filter — guard with 'filter' in ctx
+      if ('filter' in ctx) {
+        (ctx as CanvasRenderingContext2D & { filter: string }).filter =
+          'contrast(1.08) saturate(1.12) brightness(1.02)';
+      }
+    }
+    ctx.drawImage(img, x, y, w, h);
+    ctx.restore();
   }, []);
 
-  const resizeCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    canvas.width  = canvas.offsetWidth  * DPR;
-    canvas.height = canvas.offsetHeight * DPR;
-    draw(frameRef.current);
-  }, [draw]);
+  // ── Chapter text opacity (lerp-driven, frame-based) ───────────────
+  const updateTextOpacity = useCallback((fi: number) => {
+    const el = textRef.current;
+    if (!el) return;
 
-  // ── Image loading ──────────────────────────────────────────
+    const FADE_IN  = 22;
+    const FADE_OUT_START = count - 26;
+
+    let op: number;
+    if (chapterNum === 1) {
+      // Hero chapter: always full opacity, only fades at the very end
+      op = fi >= FADE_OUT_START ? Math.max(0, 1 - (fi - FADE_OUT_START) / 26) : 1;
+    } else {
+      if (fi < FADE_IN) {
+        op = fi / FADE_IN;
+      } else if (fi >= FADE_OUT_START) {
+        op = Math.max(0, 1 - (fi - FADE_OUT_START) / 26);
+      } else {
+        op = 1;
+      }
+    }
+    op = Math.max(0, Math.min(1, op));
+    el.style.opacity  = String(op);
+    el.style.transform = `translateY(${Math.round(20 * (1 - op))}px)`;
+  }, [chapterNum, count]);
+
+  // ── Image loading ─────────────────────────────────────────────────
   useEffect(() => {
-    imgsRef.current = new Array(count).fill(null);
+    imgsRef.current  = new Array(count).fill(null);
     loadedRef.current = 0;
 
     function startLoading() {
@@ -91,12 +138,13 @@ export default function ChapterCanvas({
           imgsRef.current[idx] = img;
           loadedRef.current++;
 
-          if (onProgress) {
-            const pct = Math.round(loadedRef.current / count * 100);
-            onProgress(pct);
-          }
-          // Draw frame 0 as soon as it loads — never shows a black canvas
+          if (onProgress) onProgress(Math.round(loadedRef.current / count * 100));
+
+          // Draw frame 0 the instant it loads — canvas never stays black
           if (idx === 0) draw(0);
+
+          // Kick RAF so late-loading frames repaint immediately
+          if (kickRef.current) kickRef.current();
 
           if (loadedRef.current >= count && onLoaded) onLoaded();
         };
@@ -113,100 +161,119 @@ export default function ChapterCanvas({
     if (loadDelay > 0) {
       const t = setTimeout(startLoading, loadDelay);
       return () => clearTimeout(t);
-    } else {
-      startLoading();
     }
+    startLoading();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Canvas sizing + scroll handler ────────────────────────
+  // ── Canvas sizing + lerp scroll loop ─────────────────────────────
   useEffect(() => {
     const section = sectionRef.current;
     const canvas  = canvasRef.current;
     if (!section || !canvas) return;
 
-    // Set section height so it provides enough scroll room
     function setSectionHeight() {
-      section!.style.height = (count * PX_PER_FRAME + window.innerHeight) + 'px';
+      section!.style.height = `${count * PX_PER_FRAME + window.innerHeight}px`;
     }
-    setSectionHeight();
-    resizeCanvas();
 
-    // Expose measurements to parent (for Nav dot tracking)
+    function resizeCanvas() {
+      const parent = canvas!.parentElement;
+      const w = parent ? parent.offsetWidth  : window.innerWidth;
+      const h = parent ? parent.offsetHeight : window.innerHeight;
+      canvas!.width  = Math.round(w * DPR);
+      canvas!.height = Math.round(h * DPR);
+    }
+
     function measure() {
-      const offsetTop   = section!.offsetTop;
-      const scrollable  = section!.offsetHeight - window.innerHeight;
-      onMeasure?.(offsetTop, scrollable);
+      onMeasure?.(section!.offsetTop, section!.offsetHeight - window.innerHeight);
     }
-    measure();
 
-    function onScroll() {
-      const sy       = window.scrollY;
-      const secTop   = section!.offsetTop;
-      const secH     = section!.offsetHeight;
-      const scrollable = secH - window.innerHeight;
-      const scrolled   = sy - secTop;
-
-      const progress = Math.max(0, Math.min(1, scrolled / scrollable));
-
-      // No-gap fix: use px-based formula, not progress * count
-      const fi = Math.min(Math.floor(scrolled / PX_PER_FRAME), count - 1);
-      const fi2 = Math.max(0, fi);
-
-      // Progress fill bar
-      if (pfRef.current) {
-        pfRef.current.style.width = (progress * 100) + '%';
+    // ── Continuous lerp render loop ──────────────────────────────
+    function render() {
+      const diff = targetScrolledRef.current - smoothScrolledRef.current;
+      if (Math.abs(diff) > 0.5) {
+        smoothScrolledRef.current += diff * LERP;
+      } else {
+        smoothScrolledRef.current = targetScrolledRef.current;
       }
 
-      // Draw via RAF — throttle to one draw per frame
-      if (fi2 !== frameRef.current) {
-        frameRef.current = fi2;
-        if (!rafRef.current) {
-          rafRef.current = true;
-          requestAnimationFrame(() => {
-            draw(frameRef.current);
-            rafRef.current = false;
-          });
-        }
-      }
+      const scrollable = section!.offsetHeight - window.innerHeight;
+      const progress   = Math.max(0, Math.min(1, smoothScrolledRef.current / scrollable));
+      const fi         = Math.max(0, Math.min(
+        Math.floor(smoothScrolledRef.current / PX_PER_FRAME),
+        count - 1
+      ));
 
-      // Show HUD at chapter start; hide near end
-      if (hudRef.current) {
-        if (progress < 0.18) {
-          hudRef.current.classList.add('hud-visible');
-        } else if (progress > 0.78) {
-          hudRef.current.classList.remove('hud-visible');
-        }
-      }
+      draw(fi);
+      updateTextOpacity(fi);
 
-      // Hide scroll hint
-      if (shRef.current && sy > 60) {
+      if (pfRef.current) pfRef.current.style.width = `${progress * 100}%`;
+
+      // Hide scroll hint once user starts scrolling
+      if (shRef.current && smoothScrolledRef.current > 60) {
         shRef.current.style.opacity = '0';
       }
+
+      // Stop RAF when settled; will be re-kicked by scroll or late frame load
+      if (Math.abs(smoothScrolledRef.current - targetScrolledRef.current) > 0.1) {
+        rafIdRef.current = requestAnimationFrame(render);
+      } else {
+        rafIdRef.current = null;
+      }
+    }
+
+    // Expose kick fn to image loader so late-loading frames repaint
+    kickRef.current = () => {
+      if (!rafIdRef.current) {
+        rafIdRef.current = requestAnimationFrame(render);
+      }
+    };
+
+    function onScroll() {
+      const sy        = window.scrollY;
+      const newTarget = Math.max(0, sy - section!.offsetTop);
+      const scrollable = section!.offsetHeight - window.innerHeight;
+
+      // Snap smooth value on large jumps (e.g. nav-dot click) — no ghosting
+      if (scrollable > 0 && Math.abs(newTarget - targetScrolledRef.current) / scrollable > 0.04) {
+        smoothScrolledRef.current = newTarget;
+      }
+
+      targetScrolledRef.current = newTarget;
+      if (!rafIdRef.current) rafIdRef.current = requestAnimationFrame(render);
     }
 
     function onResize() {
       setSectionHeight();
       resizeCanvas();
       measure();
+      // Force redraw at current position
+      const fi = Math.max(0, Math.min(
+        Math.floor(smoothScrolledRef.current / PX_PER_FRAME),
+        count - 1
+      ));
+      draw(fi);
     }
+
+    // Init
+    setSectionHeight();
+    resizeCanvas();
+    measure();
+    updateTextOpacity(0); // ch1 → op=1 immediately; ch2/ch3 → op=0
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize);
 
-    // Show HUD immediately for the first chapter
-    if (chapterNum === 1 && hudRef.current) {
-      hudRef.current.classList.add('hud-visible');
-    }
-
     return () => {
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onResize);
+      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const numLabel = String(chapterNum).padStart(2, '0');
+  const isRight  = align === 'right';
 
   return (
     <section
@@ -214,7 +281,7 @@ export default function ChapterCanvas({
       id={`ch${chapterNum}`}
       style={{ position: 'relative' }}
     >
-      {/* Sticky viewport */}
+      {/* ── Sticky viewport ───────────────────────────────────────── */}
       <div
         style={{
           position: 'sticky',
@@ -222,7 +289,7 @@ export default function ChapterCanvas({
           height: '100vh',
           width: '100%',
           overflow: 'hidden',
-          background: '#000',
+          background: '#080808',
         }}
       >
         {/* Canvas */}
@@ -230,20 +297,51 @@ export default function ChapterCanvas({
           ref={canvasRef}
           style={{
             position: 'absolute',
-            top: 0,
-            left: 0,
+            inset: 0,
             width: '100%',
             height: '100%',
             display: 'block',
+            background: '#080808',
+            willChange: 'transform',
+            transform: 'translateZ(0)',
+            WebkitTransform: 'translateZ(0)',
+            backfaceVisibility: 'hidden',
+            WebkitBackfaceVisibility: 'hidden',
             WebkitUserSelect: 'none',
             userSelect: 'none',
             touchAction: 'pan-y',
-            background: '#000',
+          }}
+        />
+
+        {/* Cinematic vignette — two-layer gradient */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: 'none',
+            background: [
+              'radial-gradient(ellipse 75% 55% at 50% 80%, rgba(8,8,8,0) 0%, rgba(8,8,8,0.52) 100%)',
+              'linear-gradient(to bottom, rgba(8,8,8,0) 0%, rgba(8,8,8,0.01) 20%, rgba(8,8,8,0.01) 74%, rgba(8,8,8,0.75) 100%)',
+            ].join(', '),
+          }}
+        />
+
+        {/* Nav legibility shield — fades out below nav bar height */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0,
+            height: '18%',
+            zIndex: 3,
+            pointerEvents: 'none',
+            background: 'linear-gradient(to bottom, rgba(8,8,8,0.78) 0%, rgba(8,8,8,0.35) 45%, rgba(8,8,8,0) 100%)',
           }}
         />
 
         {/* Ghost chapter number */}
         <div
+          className="ch-n"
           style={{
             position: 'absolute',
             top: 'clamp(3.5rem, 8vh, 5.5rem)',
@@ -255,86 +353,129 @@ export default function ChapterCanvas({
             color: 'rgba(255,255,255,0.04)',
             pointerEvents: 'none',
             userSelect: 'none',
+            zIndex: 4,
           }}
-          className="ch-n"
         >
           {numLabel}
         </div>
 
-        {/* HUD overlay */}
+        {/* ── Chapter text overlay ─────────────────────────────────── */}
         <div
-          ref={hudRef}
           style={{
             position: 'absolute',
             inset: 0,
-            pointerEvents: 'none',
+            zIndex: 10,
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-end',
-            padding: 'clamp(1.5rem, 5vw, 4rem)',
+            justifyContent: 'center',
+            alignItems: isRight ? 'flex-end' : 'flex-start',
+            padding: 'clamp(1.2rem, 5vw, 6rem)',
+            paddingTop: 'clamp(10rem, 20vh, 13rem)',
+            paddingBottom: 'clamp(7rem, 14vh, 12rem)',
+            pointerEvents: 'none',
           }}
         >
-          {/* Gradient vignette */}
+          {/* Glass card — opacity driven by lerp RAF */}
           <div
+            ref={textRef}
             style={{
-              position: 'absolute',
-              inset: 0,
-              background:
-                'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 38%, transparent 65%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: isRight ? 'flex-end' : 'flex-start',
+              background: 'rgba(0,0,0,0.42)',
+              backdropFilter: 'blur(6px)',
+              WebkitBackdropFilter: 'blur(6px)',
+              borderRadius: 10,
+              padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
+              border: '1px solid rgba(255,255,255,0.07)',
+              maxWidth: 'min(calc(100% - 2rem), 580px)',
+              // opacity + transform managed via DOM in render()
             }}
-          />
-
-          <div style={{ position: 'relative', zIndex: 1 }}>
-            {/* Tag */}
+          >
+            {/* Eyebrow pill badge */}
             <div
-              className="hud-tag"
               style={{
-                fontSize: '0.63rem',
-                fontWeight: 700,
-                letterSpacing: '0.28em',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
+                fontSize: 'clamp(10px, 1.1vw, 13px)',
+                letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: 'var(--gold)',
-                marginBottom: '0.6rem',
+                fontWeight: 700,
+                color: 'rgba(255,255,255,0.92)',
+                background: 'rgba(255,255,255,0.1)',
+                border: '1.5px solid rgba(255,255,255,0.44)',
+                borderRadius: 3,
+                padding: '5px 13px',
+                marginBottom: 14,
+                backdropFilter: 'blur(8px)',
+                userSelect: 'none',
+                boxShadow: '0 0 12px rgba(255,255,255,0.07)',
               }}
             >
               {tag}
             </div>
 
-            {/* Title */}
-            <h2
-              className="hud-title"
-              style={{
-                fontSize: 'clamp(2.6rem, 8vw, 6rem)',
-                fontWeight: 900,
-                lineHeight: 0.93,
-                letterSpacing: '-0.035em',
-                marginBottom: '0.85rem',
-              }}
-            >
-              {title}
-            </h2>
+            {/* Headline — Bebas Neue, alternating white + gold */}
+            <div style={{ userSelect: 'none' }}>
+              {headline.map((line, li) => (
+                <div
+                  key={li}
+                  style={{
+                    fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
+                    fontSize: 'clamp(2.4rem, 5.8vw, 5.8rem)',
+                    fontWeight: 400,
+                    lineHeight: 0.88,
+                    letterSpacing: '0.05em',
+                    color: li % 2 === 0 ? '#ffffff' : 'var(--gold)',
+                    textShadow: li % 2 === 0
+                      ? '0 1px 16px rgba(0,0,0,0.9)'
+                      : '0 1px 16px rgba(0,0,0,0.9), 0 0 24px rgba(200,168,107,0.28)',
+                  }}
+                >
+                  {line}
+                </div>
+              ))}
+            </div>
 
-            {/* Body */}
-            <p
-              className="hud-body"
+            {/* Accent rule */}
+            <div
               style={{
-                fontSize: 'clamp(0.85rem, 2.5vw, 1rem)',
-                color: 'rgba(255,255,255,0.62)',
-                maxWidth: '48ch',
-                lineHeight: 1.68,
+                width: 56,
+                height: 2,
+                marginTop: 20,
+                marginBottom: 14,
+                background: isRight
+                  ? 'linear-gradient(270deg, rgba(200,168,107,0.85), rgba(200,168,107,0.06))'
+                  : 'linear-gradient(90deg, rgba(200,168,107,0.85), rgba(200,168,107,0.06))',
+                alignSelf: isRight ? 'flex-end' : 'flex-start',
+              }}
+            />
+
+            {/* Body copy */}
+            <p
+              style={{
+                fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
+                fontSize: 'clamp(0.8rem, 1.6vw, 0.94rem)',
+                color: 'rgba(255,255,255,0.6)',
+                maxWidth: '40ch',
+                lineHeight: 1.66,
+                margin: 0,
+                textAlign: isRight ? 'right' : 'left',
               }}
             >
               {body}
             </p>
 
-            {/* Progress bar */}
+            {/* Per-chapter progress bar */}
             <div
-              className="hud-bar"
               style={{
-                marginTop: '1.4rem',
-                width: 'min(180px, 38vw)',
+                marginTop: 16,
+                width: 'min(150px, 34vw)',
                 height: 1,
-                background: 'rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.09)',
+                alignSelf: isRight ? 'flex-end' : 'flex-start',
               }}
             >
               <div
@@ -350,7 +491,7 @@ export default function ChapterCanvas({
           </div>
         </div>
 
-        {/* Scroll hint (chapter 1 only) */}
+        {/* Scroll hint — chapter 1 only */}
         {chapterNum === 1 && (
           <div
             ref={shRef}
@@ -363,6 +504,7 @@ export default function ChapterCanvas({
               flexDirection: 'column',
               alignItems: 'center',
               gap: 7,
+              zIndex: 10,
               opacity: 1,
               transition: 'opacity 0.5s ease',
               pointerEvents: 'none',
@@ -370,6 +512,7 @@ export default function ChapterCanvas({
           >
             <span
               style={{
+                fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
                 fontSize: '0.58rem',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',

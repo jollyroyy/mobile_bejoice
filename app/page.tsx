@@ -161,8 +161,8 @@ export default function Page() {
             onQuoteClick={() => setQuoteOpen(true)}
           />
 
-          <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
           <Suspense fallback={null}><BejoiceGlobe /></Suspense>
+          <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
           <Suspense fallback={<ServicesSkeleton />}><Services /></Suspense>
           <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools /></Suspense>
           <Suspense fallback={<ContactSkeleton />}><Contact /></Suspense>

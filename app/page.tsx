@@ -11,7 +11,7 @@ export default function Page() {
   const [loaderVisible, setLoaderVisible]   = useState(true);
 
   // Absolute scroll positions for each chapter start — shared with Nav
-  const chapterOffsets = useRef<number[]>([0, 0, 0]);
+  const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0]);
 
   const handleProgress = useCallback((pct: number) => {
     setLoaderProgress(pct);

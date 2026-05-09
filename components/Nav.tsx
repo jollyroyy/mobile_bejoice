@@ -10,11 +10,13 @@ export default function Nav({ chapterOffsets }: NavProps) {
   const dot0Ref  = useRef<HTMLButtonElement>(null);
   const dot1Ref  = useRef<HTMLButtonElement>(null);
   const dot2Ref  = useRef<HTMLButtonElement>(null);
+  const dot3Ref  = useRef<HTMLButtonElement>(null);
+  const dot4Ref  = useRef<HTMLButtonElement>(null);
   const plineRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(0);
 
   useEffect(() => {
-    const dots = [dot0Ref.current!, dot1Ref.current!, dot2Ref.current!];
+    const dots = [dot0Ref.current!, dot1Ref.current!, dot2Ref.current!, dot3Ref.current!, dot4Ref.current!];
 
     function onScroll() {
       const sy = window.scrollY;
@@ -121,6 +123,18 @@ export default function Nav({ chapterOffsets }: NavProps) {
             style={dotBase}
             aria-label="Chapter 3"
             onClick={() => scrollToChapter(2)}
+          />
+          <button
+            ref={dot3Ref}
+            style={dotBase}
+            aria-label="Chapter 4"
+            onClick={() => scrollToChapter(3)}
+          />
+          <button
+            ref={dot4Ref}
+            style={dotBase}
+            aria-label="Chapter 5"
+            onClick={() => scrollToChapter(4)}
           />
         </div>
       </nav>

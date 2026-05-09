@@ -3,49 +3,91 @@
 import { useEffect, useRef } from 'react';
 
 // ── Config (mirrors Bejoice_backup VideoHero architecture) ────────────────
-const SCROLL_HEIGHT = 900;   // vh — total scroll room for the sticky section
-const FRAME_END_P   = 0.94;  // last 6 % of scroll dwells on the final frame
+const SCROLL_HEIGHT = 1600;  // vh — total scroll room
+const FRAME_END_P   = 0.94;  // last 6 % dwells on final frame
 const FRAME_FADE    = 18;    // frames to cross-fade chapter text in / out
 const SEG_RAMP      = 15;    // frames to dip-to-black at footage cut points
 
 function pad(n: number) { return String(n).padStart(4, '0'); }
 
-// ── Frame sequence: bic (0-144) + bejoice (145-217) + port (218-386) ──────
+// ── Frame sequence (mirrors backup exactly) ───────────────────────────────
+// bic:          0–144   (145) BIC zoomout
+// globe-bridge: 145–210 ( 66) last bic frame repeated — transition pause
+// bejoice:      211–439 (229) 73 images stretched over 229 slots
+// port:         440–533 ( 94) port/sea footage
+// frames8:      534–654 (121) additional footage (air freight)
+// tech_enng:    655–799 (145) tech/engineering footage
+// TOTAL: 800
 const BIC_COUNT     = 145;
-const BEJOICE_COUNT = 73;
-const PORT_COUNT    = 169;
-const TOTAL_FRAMES  = BIC_COUNT + BEJOICE_COUNT + PORT_COUNT; // 387
+const GLOBE_COUNT   = 66;
+const BEJOICE_COUNT = 229; // 73 unique images stretched over 229 slots
+const PORT_COUNT    = 94;
+const FRAMES8_COUNT = 121;
+const TECH_COUNT    = 145;
+const TOTAL_FRAMES  = BIC_COUNT + GLOBE_COUNT + BEJOICE_COUNT + PORT_COUNT + FRAMES8_COUNT + TECH_COUNT; // 800
+
+// Segment start indices (computed once)
+const BEJOICE_START = BIC_COUNT + GLOBE_COUNT;              // 211
+const PORT_START    = BEJOICE_START + BEJOICE_COUNT;        // 440
+const FRAMES8_START = PORT_START    + PORT_COUNT;           // 534
+const TECH_START    = FRAMES8_START + FRAMES8_COUNT;        // 655
 
 const FRAME_URLS: string[] = [
-  ...Array.from({ length: BIC_COUNT     }, (_, i) => `/bic/${pad(i + 1)}.webp`),
-  ...Array.from({ length: BEJOICE_COUNT }, (_, i) => `/bejoice/frame_${pad(i + 1)}.webp`),
-  ...Array.from({ length: PORT_COUNT    }, (_, i) => `/port/${pad(i + 1)}.webp`),
+  // bic zoomout (0–144)
+  ...Array.from({ length: BIC_COUNT }, (_, i) => `/bic/${pad(i + 1)}.webp`),
+  // globe bridge (145–210) — repeats last bic frame; serves as transition pause
+  ...Array.from({ length: GLOBE_COUNT }, () => `/bic/0145.webp`),
+  // bejoice (211–439) — 73 images spread over 229 slots
+  ...Array.from({ length: BEJOICE_COUNT }, (_, i) => {
+    const imgIdx = Math.min(Math.floor((i / BEJOICE_COUNT) * 73) + 1, 73);
+    return `/bejoice/frame_${pad(imgIdx)}.webp`;
+  }),
+  // port (440–533)
+  ...Array.from({ length: PORT_COUNT }, (_, i) => `/port/${pad(i + 1)}.webp`),
+  // frames8 / air freight (534–654)
+  ...Array.from({ length: FRAMES8_COUNT }, (_, i) => `/frames8/${pad(i + 1)}.webp`),
+  // tech engineering (655–799)
+  ...Array.from({ length: TECH_COUNT }, (_, i) => `/tech_enng/${pad(i + 1)}.webp`),
 ];
 
-// Frame indices where footage source changes → triggers dip-to-black
-const SEG_CUTS = [BIC_COUNT, BIC_COUNT + BEJOICE_COUNT]; // [145, 218]
+// Footage cut points → trigger dip-to-black overlay
+const SEG_CUTS = [BEJOICE_START, PORT_START, FRAMES8_START, TECH_START]; // [211, 440, 534, 655]
 
-// ── Chapter overlay configs ───────────────────────────────────────────────
+// ── Chapter overlay configs (5 chapters = 5 nav dots) ────────────────────
 const CHAPTERS = [
   {
-    frameRange: [0, BIC_COUNT - 1] as [number, number],
+    frameRange: [0, BIC_COUNT - 1] as [number, number],          // 0–144
     tag: 'Chapter 01 — Origins',
-    headline: ['WHERE IT', 'BEGINS.'],
-    body: 'Every great story starts with a single frame. Watch as the world takes shape — motion by motion, moment by moment.',
+    headline: ['SMART FREIGHT', 'POWERED BY AI'],
+    body: 'Award-winning freight forwarder delivering seamless end-to-end logistics with reliability and global reach.',
     align: 'left' as const,
   },
   {
-    frameRange: [BIC_COUNT, BIC_COUNT + BEJOICE_COUNT - 1] as [number, number],
-    tag: 'Chapter 02 — Motion',
-    headline: ['SHAPE IN', 'MOTION.'],
-    body: 'Flow. Transform. Evolve. Each frame carries the story forward in ways that words alone cannot capture.',
+    frameRange: [BEJOICE_START, PORT_START - 1] as [number, number],  // 211–439
+    tag: 'Chapter 02 — Heavy Lift',
+    headline: ['FROM BLUEPRINT TO DELIVERY,', 'WE MOVE IT ALL'],
+    body: 'Seamless cross-border land transport across the GCC — powered by a modern fleet connecting Saudi Arabia to every regional hub.',
     align: 'right' as const,
   },
   {
-    frameRange: [BIC_COUNT + BEJOICE_COUNT, TOTAL_FRAMES - 1] as [number, number],
-    tag: 'Chapter 03 — Arrival',
-    headline: ['THE COMPLETE', 'PICTURE.'],
-    body: 'A story told through motion, light, and time — arriving at its inevitable, beautiful conclusion. The journey is complete.',
+    frameRange: [PORT_START, FRAMES8_START - 1] as [number, number],  // 440–533
+    tag: 'Chapter 03 — Port & Ocean',
+    headline: ['NAVIGATING OCEANS.', 'DELIVERING CONFIDENCE'],
+    body: 'Full-spectrum sea freight — containerized, breakbulk, consolidated, reefer, dangerous goods, and out-of-gauge cargo handled end to end.',
+    align: 'left' as const,
+  },
+  {
+    frameRange: [FRAMES8_START, TECH_START - 1] as [number, number],  // 534–654
+    tag: 'Chapter 04 — Air Freight',
+    headline: ['SPEED ABOVE ALL.', 'DELIVERED ON TIME'],
+    body: 'Express air cargo solutions connecting Saudi Arabia to global hubs — critical shipments, time-sensitive freight, temperature-controlled cargo.',
+    align: 'right' as const,
+  },
+  {
+    frameRange: [TECH_START, TOTAL_FRAMES - 1] as [number, number],   // 655–799
+    tag: 'Chapter 05 — Engineering',
+    headline: ['PRECISION IN HANDLING.', 'EXCELLENCE IN DELIVERY'],
+    body: 'End-to-end technical cargo solutions engineered for complexity — heavy machinery, industrial equipment, and high-value freight.',
     align: 'left' as const,
   },
 ] as const;
@@ -70,10 +112,9 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
   const lastIdxRef    = useRef(-1);
   const kickRenderRef = useRef<(() => void) | null>(null);
 
-  // Read DPR once on mount (client only)
   const dprRef = useRef(1);
 
-  // ── paintFrame — exact copy of backup's approach ──────────────────────
+  // ── paintFrame ────────────────────────────────────────────────────────
   const paintFrame = (idx: number) => {
     const canvas = canvasRef.current;
     if (!canvas || canvas.width === 0) return;
@@ -85,7 +126,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       if (f && f.complete && f.naturalWidth > 0) { img = f; break; }
     }
     if (!img) return;
-    if (lastIdxRef.current === idx) return; // no-op if same frame
+    if (lastIdxRef.current === idx) return;
     lastIdxRef.current = idx;
 
     const ctx = canvas.getContext('2d');
@@ -93,7 +134,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
 
     const cw    = canvas.width;
     const ch    = canvas.height;
-    // object-fit: cover
     const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
     const w     = Math.ceil(img.naturalWidth  * scale);
     const h     = Math.ceil(img.naturalHeight * scale);
@@ -105,7 +145,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
 
     ctx.save();
     ctx.imageSmoothingEnabled = true;
-    // Expensive quality + filter: desktop only (mirrors backup's guard)
     if (typeof window !== 'undefined' && window.innerWidth > 768) {
       ctx.imageSmoothingQuality = 'high';
       if ('filter' in ctx) {
@@ -117,7 +156,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
     ctx.restore();
   };
 
-  // ── applyProgress — exact copy of backup's chapter opacity formula ─────
+  // ── applyProgress ────────────────────────────────────────────────────
   const applyProgress = (frameIdx: number) => {
     for (let i = 0; i < CHAPTERS.length; i++) {
       const el = chapRefs.current[i];
@@ -131,7 +170,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
 
       let opacity: number;
       if (i === 0) {
-        // First chapter: visible from the start, only fades out at the end
         const exitDist = Math.max(0, end - frameIdx);
         opacity = Math.min(exitDist / FRAME_FADE, 1);
       } else {
@@ -143,7 +181,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       el.style.transform = `translateY(${Math.round(22 * (1 - opacity))}px)`;
       el.style.zIndex    = opacity > 0.05 ? '10' : '1';
 
-      // Per-chapter progress bar inside the glass card
       const pf = pfRefs.current[i];
       if (pf) {
         const progress = Math.max(0, Math.min(1,
@@ -153,7 +190,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       }
     }
 
-    // Dip-to-black at footage cut points (mirrors backup's segDimRef logic)
+    // Dip-to-black at footage cut points
     for (let i = 0; i < SEG_CUTS.length; i++) {
       const dimEl = segRefs.current[i];
       if (!dimEl) continue;
@@ -168,11 +205,10 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
     }
   };
 
-  // ── Image loading ─────────────────────────────────────────────────────
+  // ── Image loading — phased for mobile performance ─────────────────────
   useEffect(() => {
     framesRef.current = new Array(TOTAL_FRAMES);
 
-    // Phase 1: load frame 0 urgently, then all bic frames
     const loadRange = (from: number, to: number) => {
       for (let i = from; i <= to; i++) {
         if (framesRef.current[i]) continue;
@@ -193,17 +229,14 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
           if (idx === 0) {
             lastIdxRef.current = -1;
             paintFrame(0);
-            applyProgress(FRAME_FADE); // show ch1 text immediately
+            applyProgress(FRAME_FADE);
           }
 
-          // Kick the render loop if a late-loading frame arrived
           if (kickRenderRef.current) kickRenderRef.current();
 
-          // Signal loader done after ALL bic frames are loaded
           if (idx === BIC_COUNT - 1) onLoaded();
         };
         img.onerror = () => {
-          // On error still check for done
           if (idx === BIC_COUNT - 1) onLoaded();
         };
         img.src = FRAME_URLS[idx];
@@ -211,12 +244,20 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       }
     };
 
-    // Eager: all bic frames immediately
+    // Phase 1 (immediate): bic — drives loader bar
     loadRange(0, BIC_COUNT - 1);
+    // Phase 2 (200ms): globe bridge + bejoice
+    const t1 = setTimeout(() => loadRange(BIC_COUNT, BEJOICE_START + BEJOICE_COUNT - 1), 200);
+    // Phase 3 (600ms): port
+    const t2 = setTimeout(() => loadRange(PORT_START, FRAMES8_START - 1), 600);
+    // Phase 4 (1000ms): frames8 / air freight
+    const t3 = setTimeout(() => loadRange(FRAMES8_START, TECH_START - 1), 1000);
+    // Phase 5 (1400ms): tech engineering
+    const t4 = setTimeout(() => loadRange(TECH_START, TOTAL_FRAMES - 1), 1400);
 
-    // Background: bejoice + port after short delay (give bic priority)
-    const t = setTimeout(() => loadRange(BIC_COUNT, TOTAL_FRAMES - 1), 200);
-    return () => clearTimeout(t);
+    return () => {
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -231,7 +272,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       const p = canvas.parentElement;
       canvas.width  = Math.round((p ? p.offsetWidth  : window.innerWidth)  * dprRef.current);
       canvas.height = Math.round((p ? p.offsetHeight : window.innerHeight) * dprRef.current);
-      // Repaint at current position after resize
       const prev = lastIdxRef.current;
       lastIdxRef.current = -1;
       if (prev >= 0) paintFrame(prev);
@@ -243,7 +283,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // ── Lerp scroll loop — exact copy of backup's render loop ────────────
+  // ── Lerp scroll loop ──────────────────────────────────────────────────
   useEffect(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
@@ -255,10 +295,8 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
     const render = () => {
-      // Lerp smoothP toward targetP (same factor as backup: 0.15)
       smoothP = lerp(smoothP, targetP, 0.15);
 
-      // Progress → frame index (same formula as backup)
       const frameIdx = Math.min(
         Math.round(Math.min(smoothP / FRAME_END_P, 1) * (TOTAL_FRAMES - 1)),
         TOTAL_FRAMES - 1
@@ -267,12 +305,10 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       paintFrame(frameIdx);
       applyProgress(frameIdx);
 
-      // Scroll hint: hide once user scrolls
       if (shRef.current && window.scrollY > 60) {
         shRef.current.style.opacity = '0';
       }
 
-      // Self-terminate when settled; re-kicked by scroll or late frame load
       if (Math.abs(smoothP - targetP) > 0.0001) {
         rafId = requestAnimationFrame(render);
       } else {
@@ -280,10 +316,9 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       }
     };
 
-    // Expose kick fn so late-loading images can restart the loop
     kickRenderRef.current = () => {
       if (!rafId) {
-        lastIdxRef.current = -1; // force repaint on next tick
+        lastIdxRef.current = -1;
         rafId = requestAnimationFrame(render);
       }
     };
@@ -293,14 +328,12 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
       const total = wrapper.offsetHeight - window.innerHeight;
       const newP  = Math.max(0, Math.min(1, -rect.top / total));
 
-      // Snap smoothP on large jumps (nav-dot clicks) — prevents ghosting
       if (Math.abs(newP - targetP) > 0.04) smoothP = newP;
 
       targetP = newP;
       if (!rafId) rafId = requestAnimationFrame(render);
     };
 
-    // Compute absolute scroll positions for each chapter start → Nav uses them
     const measureChapters = () => {
       const total = wrapper.offsetHeight - window.innerHeight;
       CHAPTERS.forEach((ch, i) => {
@@ -358,7 +391,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
           }}
         />
 
-        {/* Cinematic two-layer vignette */}
+        {/* Cinematic vignette */}
         <div
           style={{
             position: 'absolute',
@@ -400,7 +433,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
           />
         ))}
 
-        {/* Chapter text overlays — opacity driven by applyProgress() */}
+        {/* Chapter text overlays */}
         {CHAPTERS.map((ch, i) => {
           const right = ch.align === 'right';
           return (
@@ -419,7 +452,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
                 paddingBottom: 'clamp(7rem, 14vh, 12rem)',
                 pointerEvents: 'none',
                 zIndex: i === 0 ? 10 : 1,
-                // Initial state — applyProgress() owns opacity from here
                 opacity: i === 0 ? 1 : 0,
                 transform: i === 0 ? 'none' : 'translateY(22px)',
               }}
@@ -461,7 +493,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: Sc
                   {ch.tag}
                 </div>
 
-                {/* Headline — Bebas Neue, white / gold alternating lines */}
+                {/* Headline */}
                 <div style={{ userSelect: 'none' }}>
                   {ch.headline.map((line, li) => (
                     <div

@@ -94,13 +94,15 @@ const CHAPTERS = [
 
 // ── Props ─────────────────────────────────────────────────────────────────
 interface ScrollStoryProps {
-  onProgress: (pct: number) => void;
-  onLoaded:   () => void;
+  onProgress:    (pct: number) => void;
+  onLoaded:      () => void;
   /** Filled so Nav knows where to scrollTo for each chapter dot */
   chapterOffsets: React.MutableRefObject<number[]>;
+  /** Optional — forwarded from page to open the quick quote modal */
+  onQuoteClick?: () => void;
 }
 
-export default function ScrollStory({ onProgress, onLoaded, chapterOffsets }: ScrollStoryProps) {
+export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQuoteClick }: ScrollStoryProps) {
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const canvasRef   = useRef<HTMLCanvasElement>(null);
   const chapRefs    = useRef<(HTMLDivElement | null)[]>([]);

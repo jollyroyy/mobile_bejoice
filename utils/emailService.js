@@ -1,0 +1,398 @@
+'use client';
+import emailjs from '@emailjs/browser'
+
+// ─── EmailJS config — loaded from environment variables only ─────────────────
+// Set these in Vercel / Netlify dashboard (Environment Variables section).
+// For local dev, create a .env file (gitignored) — see .env.example for the keys needed.
+export const EMAILJS_SERVICE_ID  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+export const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+export const EMAILJS_PUBLIC_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+// ─── Sanitisation ─────────────────────────────────────────────────────────────
+// Strips all HTML tags and trims whitespace.
+// Prevents XSS, HTML injection, and email-header injection.
+export function sanitize(value) {
+  if (typeof value !== 'string') return String(value ?? '')
+  return value
+    .replace(/<[^>]*>/g, '')          // strip HTML tags
+    .replace(/[\r\n]+/g, ' ')         // collapse newlines (email-header injection)
+    .replace(/[^\x20-\x7E\u00A0-\uFFFF]/g, '') // remove non-printable chars
+    .trim()
+    .slice(0, 2000)                   // hard cap per field
+}
+
+export function sanitizeAll(obj) {
+  const out = {}
+  for (const [k, v] of Object.entries(obj)) {
+    if (typeof v === 'boolean') {
+      out[k] = v
+    } else if (Array.isArray(v)) {
+      out[k] = v  // preserve arrays — body builders (e.g. containers in Sea) need them intact
+    } else {
+      out[k] = sanitize(String(v))
+    }
+  }
+  return out
+}
+
+// ─── Email validation ─────────────────────────────────────────────────────────
+export function isValidEmail(email) {
+  // RFC-5321 compliant basic check
+  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(email)
+}
+
+export function isValidPhone(phone) {
+  if (!phone || typeof phone !== 'string') return false
+  const s = phone.trim()
+  // Only allowed chars: +, digits, spaces, hyphens, dots, parentheses
+  if (!/^[+\d\s\-().]+$/.test(s)) return false
+  // + is only valid at the very start (not mid-number)
+  if (s.indexOf('+') > 0) return false
+  // Must begin with + (international) or a digit
+  if (!/^[+\d]/.test(s)) return false
+  const digits = s.replace(/\D/g, '')
+  // Min 9 digits (Saudi local 05XXXXXXXX = 10), max 15 (E.164 international)
+  return digits.length >= 9 && digits.length <= 15
+}
+
+// ─── Format helpers ───────────────────────────────────────────────────────────
+function flag(val) { return val ? '✅ Yes' : '❌ No' }
+function row(label, val) { return val ? `• ${label}: ${val}` : '' }
+
+// ─── Per-mode email body builders ────────────────────────────────────────────
+function buildSeaBody(d) {
+  const containers = d.containers?.map(c => `${c.qty}× ${c.type}`).join(', ') || '—'
+  return `
+╔══════════════════════════════════════════╗
+  SEA FREIGHT QUOTE REQUEST
+  Bejoice Group — Private Quote Portal
+╚══════════════════════════════════════════╝
+
+👤 CONTACT DETAILS
+${row('Name', d.name)}
+${row('Company', d.company)}
+${row('Email', d.email)}
+${row('Phone', d.phone)}
+
+🚢 SHIPMENT ROUTE
+${row('Service', d.service)}
+${row('Port of Loading', d.origin)}
+${row('Port of Discharge', d.destination)}
+${row('Cargo Ready Date', d.readyDate)}
+
+📦 CARGO DETAILS
+${d.service === 'FCL'
+      ? `${row('Containers', containers)}
+${row('Commodity', d.commodity)}
+${row('Total Weight', d.weight ? d.weight + ' tons' : '')}
+${row('Est. Value', d.estValue ? 'USD ' + d.estValue : '')}`
+      : `${row('Packages', d.packages)}
+${row('Volume (CBM)', d.cbm)}
+${row('Gross Weight', d.weight ? d.weight + ' kg' : '')}
+${row('Commodity', d.commodity)}
+${row('Est. Value', d.estValue ? 'USD ' + d.estValue : '')}`}
+• Hazardous / DG: ${flag(d.hazardous)}
+• Reefer Required: ${flag(d.reefer)}${d.reefer && d.reeferTemp ? `\n• Required Temp: ${d.reeferTemp}°C` : ''}
+
+🛠 VALUE-ADDED SERVICES
+• Customs Clearance: ${flag(d.customs)}
+• Cargo Insurance:   ${flag(d.insurance)}
+• Origin Pickup:     ${flag(d.pickup)}
+• Dest. Delivery:    ${flag(d.delivery)}
+${row('Incoterms', d.incoterms)}
+
+${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+`.trim()
+}
+
+function buildAirBody(d) {
+  const dims = (d.length && d.width && d.height)
+    ? `${d.length} × ${d.width} × ${d.height} ${d.dimUnit}`
+    : ''
+  return `
+╔══════════════════════════════════════════╗
+  AIR FREIGHT QUOTE REQUEST
+  Bejoice Group — Private Quote Portal
+╚══════════════════════════════════════════╝
+
+👤 CONTACT DETAILS
+${row('Name', d.name)}
+${row('Company', d.company)}
+${row('Email', d.email)}
+${row('Phone', d.phone)}
+
+✈️ SHIPMENT ROUTE
+${row('Origin Airport', d.origin)}
+${row('Destination Airport', d.destination)}
+${row('Cargo Ready Date', d.readyDate)}
+
+📦 CARGO DETAILS
+${row('Cargo Type', d.cargoType)}
+${row('Pieces', d.pieces)}
+${row('Weight', d.weight ? d.weight + ' kg' : '')}
+${row('Dimensions', dims)}
+${row('Commodity', d.commodity)}
+• Hazardous / DG:    ${flag(d.hazardous)}
+• Lithium Battery:   ${flag(d.lithiumBattery)}
+• Perishable:        ${flag(d.perishable)}
+
+🛠 SERVICES
+${row('Service Level', d.service)}
+• Customs Clearance: ${flag(d.customs)}
+• Cargo Insurance:   ${flag(d.insurance)}
+• Origin Pickup:     ${flag(d.pickup)}
+• Dest. Delivery:    ${flag(d.delivery)}
+
+${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+`.trim()
+}
+
+function buildLandBody(d) {
+  return `
+╔══════════════════════════════════════════╗
+  ROAD / LAND FREIGHT QUOTE REQUEST
+  Bejoice Group — Private Quote Portal
+╚══════════════════════════════════════════╝
+
+👤 CONTACT DETAILS
+${row('Name', d.name)}
+${row('Company', d.company)}
+${row('Email', d.email)}
+${row('Phone', d.phone)}
+
+🚛 SHIPMENT ROUTE
+${row('Service Type', d.service)}
+${row('Origin City', d.origin)}
+${row('Destination City', d.destination)}
+${row('Cargo Ready Date', d.readyDate)}
+
+📦 CARGO DETAILS
+${row('Truck Type', d.truckType)}
+${row('Weight', d.weight ? d.weight + ' kg' : '')}
+${row('Volume (CBM)', d.cbm)}
+${row('Pallets', d.pallets)}
+${row('Commodity', d.commodity)}
+• Hazardous / DG: ${flag(d.hazardous)}
+• Reefer Required: ${flag(d.reefer)}${d.reefer && d.reeferTemp ? `\n• Required Temp: ${d.reeferTemp}°C` : ''}
+
+🛠 SERVICES
+• Customs Clearance: ${flag(d.customs)}
+• Cargo Insurance:   ${flag(d.insurance)}
+
+${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+`.trim()
+}
+
+function buildCustomsBody(d) {
+  return `
+╔══════════════════════════════════════════╗
+  CUSTOMS CLEARANCE QUOTE REQUEST
+  Bejoice Group — Private Quote Portal
+╚══════════════════════════════════════════╝
+
+👤 CONTACT DETAILS
+${row('Name', d.name)}
+${row('Company', d.company)}
+${row('Email', d.email)}
+${row('Phone', d.phone)}
+
+🛃 CLEARANCE DETAILS
+${row('Direction', d.direction)}
+${row('Freight Mode', d.freightMode)}
+${row('Port/Airport', d.port)}
+
+📦 CARGO DETAILS
+${row('Commodity', d.commodity)}
+${row('HS Code', d.hsCode)}
+${row('Shipment Value', d.shipmentValue ? `${d.currency} ${d.shipmentValue}` : '')}
+${row('No. of Packages', d.packages)}
+${row('Documents', d.documents)}
+
+🛠 SERVICES REQUIRED
+• Duty Payment:      ${flag(d.dutyPayment)}
+• Inspection:        ${flag(d.inspection)}
+• Storage & Release: ${flag(d.storageRelease)}
+• Survey:            ${flag(d.survey)}
+
+${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+`.trim()
+}
+
+function buildProjectBody(d) {
+  const dims = (d.length && d.width && d.height)
+    ? `${d.length} × ${d.width} × ${d.height} m`
+    : ''
+  return `
+╔══════════════════════════════════════════╗
+  PROJECT CARGO QUOTE REQUEST
+  Bejoice Group — Private Quote Portal
+╚══════════════════════════════════════════╝
+
+👤 CONTACT DETAILS
+${row('Name', d.name)}
+${row('Company', d.company)}
+${row('Email', d.email)}
+${row('Phone', d.phone)}
+
+🏗 PROJECT DETAILS
+${row('Project/Cargo Type', d.projectType)}
+${row('Origin', d.origin)}
+${row('Destination', d.destination)}
+${row('Cargo Ready Date', d.readyDate)}
+${row('Commodity/Description', d.commodity)}
+
+📐 DIMENSIONS & WEIGHT
+${row('Weight', d.weight ? d.weight + ' MT' : '')}
+${row('Dimensions', dims)}
+${row('No. of Pieces', d.pieces)}
+
+🛠 SPECIAL REQUIREMENTS
+• Crane Required:    ${flag(d.craneRequired)}
+• Escort Required:   ${flag(d.escort)}
+• Permits Assistance:${flag(d.permits)}
+
+${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+`.trim()
+}
+
+const BODY_BUILDERS = {
+  sea: buildSeaBody,
+  air: buildAirBody,
+  land: buildLandBody,
+  customs: buildCustomsBody,
+  project: buildProjectBody,
+}
+
+const MODE_LABELS = {
+  sea: 'Sea Freight', air: 'Air Freight', land: 'Road/Land Freight',
+  customs: 'Customs Clearance', project: 'Project Cargo',
+}
+
+// ─── Booking notification (Cal.com → info@bejoiceshipping-ksa.com) ────────────
+
+/** Format an ISO datetime to "Wednesday, May 13, 2026" in KSA time */
+function fmtDate(iso) {
+  if (!iso) return '—'
+  try {
+    return new Date(iso).toLocaleDateString('en-US', {
+      timeZone: 'Asia/Riyadh',
+      weekday: 'long',
+      year:    'numeric',
+      month:   'long',
+      day:     'numeric',
+    })
+  } catch (_) { return String(iso) }
+}
+
+/** Format an ISO datetime to "11:30am" in KSA time */
+function fmtClock(iso) {
+  if (!iso) return '—'
+  try {
+    return new Date(iso)
+      .toLocaleTimeString('en-US', {
+        timeZone: 'Asia/Riyadh',
+        hour:     'numeric',
+        minute:   '2-digit',
+        hour12:   true,
+      })
+      .replace(' AM', 'am')
+      .replace(' PM', 'pm')
+  } catch (_) { return String(iso) }
+}
+
+export async function sendBookingNotification(rawBookingData) {
+  // Cal.com postMessage shape varies — data may be nested under .data
+  const data = rawBookingData?.data ?? rawBookingData ?? {}
+
+  const attendee = Array.isArray(data?.attendees) ? data.attendees[0] : (data?.attendee ?? {})
+  const name  = sanitize(attendee?.name  || data?.name  || 'Unknown')
+  const email = sanitize(attendee?.email || data?.email || '')
+  const uid   = sanitize(data?.uid || data?.bookingId || '')
+
+  const startIso = data?.startTime || data?.start || ''
+  const endIso   = data?.endTime   || data?.end   || ''
+
+  const dateStr  = fmtDate(startIso)
+  const startStr = fmtClock(startIso)
+  const endStr   = fmtClock(endIso)
+  const whenStr  = (dateStr !== '—' && startStr !== '—')
+    ? `${dateStr} | ${startStr} - ${endStr} (Asia/Riyadh)`
+    : '—'
+
+  const message = [
+    'A new event has been scheduled.',
+    '',
+    '─────────────────────────────────────────',
+    '',
+    'What',
+    `Freight expert consultation between Freight Expert and ${name}`,
+    '',
+    'When',
+    whenStr,
+    '',
+    'Who',
+    'Freight Expert  ·  Organizer',
+    'info@bejoiceshipping-ksa.com',
+    '',
+    `${name}  ·  Guest`,
+    email || '—',
+    uid ? `\nBooking ID: ${uid}` : '',
+    '',
+    '─────────────────────────────────────────',
+    '',
+    'Need to make a change?',
+    'Reschedule or Cancel: https://app.cal.com/bookings/upcoming',
+  ].filter(line => line !== undefined).join('\n')
+
+  const templateParams = {
+    to_email:     'info@bejoiceshipping-ksa.com',
+    reply_to:     email || 'info@bejoiceshipping-ksa.com',
+    from_name:    'Bejoice Booking',
+    subject:      `A new event has been scheduled — ${name} — ${dateStr}`,
+    mode:         'Book a Call',
+    client_name:  name,
+    company:      '—',
+    client_email: email || '—',
+    phone:        '—',
+    message,
+  }
+
+  return emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    templateParams,
+    EMAILJS_PUBLIC_KEY,
+  )
+}
+
+// ─── Main send function ───────────────────────────────────────────────────────
+export async function sendQuoteEmail(mode, rawData, extraServices = []) {
+  const d = sanitizeAll(rawData)
+  let body = BODY_BUILDERS[mode]?.(d) ?? JSON.stringify(d, null, 2)
+
+  if (extraServices.length > 0) {
+    const labels = { sea:'Sea Freight', air:'Air Freight', land:'Road/Land Freight', customs:'Customs Clearance', project:'Project Cargo' }
+    const extras = extraServices.map(s => labels[s] || s).join(', ')
+    body += `\n\n➕ ALSO INTERESTED IN\n${extras}`
+  }
+
+  const templateParams = {
+    to_email: 'info@bejoiceshipping-ksa.com',
+    reply_to: d.email || 'info@bejoiceshipping-ksa.com',
+    from_name: d.name || 'Bejoice Quote System',
+    subject: `[Bejoice Quote] ${MODE_LABELS[mode] || mode} — ${d.name || 'Anonymous'}`,
+    mode: MODE_LABELS[mode] || mode,
+    client_name: d.name || '—',
+    company: d.company || '—',
+    client_email: d.email || '—',
+    phone: d.phone || '—',
+    message: body,
+  }
+
+  return emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    templateParams,
+    EMAILJS_PUBLIC_KEY,
+  )
+}

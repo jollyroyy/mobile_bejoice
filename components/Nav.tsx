@@ -4,13 +4,12 @@ import { useEffect, useRef } from 'react';
 
 interface NavProps {
   chapterOffsets: React.MutableRefObject<number[]>;
-  chapterScrollables: React.MutableRefObject<number[]>;
 }
 
-export default function Nav({ chapterOffsets, chapterScrollables }: NavProps) {
-  const dot0Ref = useRef<HTMLButtonElement>(null);
-  const dot1Ref = useRef<HTMLButtonElement>(null);
-  const dot2Ref = useRef<HTMLButtonElement>(null);
+export default function Nav({ chapterOffsets }: NavProps) {
+  const dot0Ref  = useRef<HTMLButtonElement>(null);
+  const dot1Ref  = useRef<HTMLButtonElement>(null);
+  const dot2Ref  = useRef<HTMLButtonElement>(null);
   const plineRef = useRef<HTMLDivElement>(null);
   const activeRef = useRef(0);
 
@@ -22,31 +21,27 @@ export default function Nav({ chapterOffsets, chapterScrollables }: NavProps) {
       const dh = document.documentElement.scrollHeight - window.innerHeight;
 
       // Overall progress line
-      if (plineRef.current) {
-        plineRef.current.style.width = (sy / dh * 100) + '%';
+      if (plineRef.current) plineRef.current.style.width = `${sy / dh * 100}%`;
+
+      // Active dot: highest chapter offset we've passed (with 50px tolerance)
+      const offsets = chapterOffsets.current;
+      let active = 0;
+      for (let i = offsets.length - 1; i >= 0; i--) {
+        if (sy >= offsets[i] - 50) { active = i; break; }
       }
 
-      // Active chapter dot
-      const offsets = chapterOffsets.current;
-      const scrollables = chapterScrollables.current;
-      for (let i = 0; i < 3; i++) {
-        const scrolled = sy - offsets[i];
-        if (scrolled >= 0 && scrolled <= scrollables[i]) {
-          if (activeRef.current !== i) {
-            activeRef.current = i;
-            dots.forEach((d, j) => {
-              if (j === i) d.classList.add('ndot-active');
-              else d.classList.remove('ndot-active');
-            });
-          }
-          break;
-        }
+      if (activeRef.current !== active) {
+        activeRef.current = active;
+        dots.forEach((d, i) => {
+          if (i === active) d?.classList.add('ndot-active');
+          else d?.classList.remove('ndot-active');
+        });
       }
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
-  }, [chapterOffsets, chapterScrollables]);
+  }, [chapterOffsets]);
 
   function scrollToChapter(idx: number) {
     window.scrollTo({ top: chapterOffsets.current[idx], behavior: 'smooth' });
@@ -66,44 +61,40 @@ export default function Nav({ chapterOffsets, chapterScrollables }: NavProps) {
 
   return (
     <>
-      {/* 1px gold progress line at very top */}
+      {/* 1px gold overall progress line */}
       <div
         ref={plineRef}
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
+          top: 0, left: 0,
           height: 1,
           background: 'var(--gold)',
           zIndex: 500,
           width: 0,
+          pointerEvents: 'none',
         }}
       />
 
       <nav
         style={{
           position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
+          top: 0, left: 0, right: 0,
           zIndex: 200,
           padding: 'clamp(1.4rem, 4vw, 1.4rem) clamp(1.25rem, 5vw, 3rem)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          background: 'rgba(0,0,0,0.1)',
-          backdropFilter: 'blur(4px)',
-          WebkitBackdropFilter: 'blur(4px)',
           mixBlendMode: 'difference',
         }}
       >
         <a
           href="#"
+          onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           style={{
-            fontSize: '0.95rem',
-            fontWeight: 800,
-            letterSpacing: '0.06em',
-            textTransform: 'uppercase',
+            fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
+            fontSize: 'clamp(1.1rem, 2.5vw, 1.4rem)',
+            fontWeight: 400,
+            letterSpacing: '0.1em',
             color: 'var(--white)',
             textDecoration: 'none',
           }}

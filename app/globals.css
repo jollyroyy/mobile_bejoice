@@ -646,6 +646,32 @@ body {
   .mb-16 { margin-bottom: 2rem !important; }
 }
 
+/* ── Footer Contact Us: center-align on mobile ── */
+@media (max-width: 767px) {
+  .footer-contact-col {
+    text-align: center !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+  }
+  .footer-contact-col ul {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+  .footer-contact-col li {
+    justify-content: center !important;
+    text-align: center !important;
+    flex-wrap: wrap !important;
+  }
+  /* Span full width in the 2-col mobile grid and kill any col-shift */
+  .footer-contact-col {
+    grid-column: 1 / -1 !important;
+    transform: none !important;
+  }
+}
+
 /* ── NAV: hide language toggle on mobile (saves space) ── */
 @media (max-width: 767px) {
   .lang-toggle-wrap { display: none !important; }
@@ -719,10 +745,10 @@ body {
 
   /* Chapter overlays: center text, reduce top padding so content clears the nav */
   .hero-chapter-overlay {
-    justify-content: flex-start !important;
+    justify-content: flex-end !important;
     align-items: center !important;
-    padding-top: 5rem !important;
-    padding-bottom: 9rem !important;
+    padding-top: 0 !important;
+    padding-bottom: clamp(3rem, 10vh, 6rem) !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
   }

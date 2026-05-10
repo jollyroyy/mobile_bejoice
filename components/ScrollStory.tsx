@@ -219,16 +219,32 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const cw    = canvas.width;
-    const ch    = canvas.height;
+    const cw = canvas.width;
+    const ch = canvas.height;
 
-    // Cover: always fill the full canvas — no black bars on any screen size or orientation.
-    const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+    // Portrait (mobile): fit-to-width — scale so the full image width fills the
+    // canvas width. This shows the entire frame (no cropping) with cinematic
+    // dark bars above and below.  Pure "contain" would use Math.min which gives
+    // the same result for landscape source → portrait canvas.
+    // Landscape (desktop/tablet): cover — fill edge-to-edge, no bars.
+    const isPortrait = ch > cw;
+    const widthScale  = cw / img.naturalWidth;
+    const heightScale = ch / img.naturalHeight;
+    const scale = isPortrait
+      ? widthScale                                   // fit full width; bars top/bottom
+      : Math.max(widthScale, heightScale);           // cover
 
-    const w     = Math.ceil(img.naturalWidth  * scale);
-    const h     = Math.ceil(img.naturalHeight * scale);
-    const x     = Math.floor((cw - w) / 2);
-    const y     = Math.floor((ch - h) / 2);
+    const w = Math.ceil(img.naturalWidth  * scale);
+    const h = Math.ceil(img.naturalHeight * scale);
+    const x = Math.floor((cw - w) / 2);
+    // Portrait: place image in the upper-third area so it feels immersive, not lost
+    const y = isPortrait
+      ? Math.floor((ch - h) * 0.33)                 // upper-third positioning
+      : Math.floor((ch - h) / 2);
+
+    // Fill background (covers letterbox bars in portrait, harmless in landscape)
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, cw, ch);
 
     ctx.save();
     ctx.imageSmoothingEnabled = true;
@@ -619,7 +635,8 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
-                  marginTop: i === 0 ? 20 : 0,
+                  marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : 0,
+                  transform: i === 0 ? 'translateY(-60px)' : 'none',
                   direction: isAr ? 'rtl' : 'ltr',
                   textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,
                 }}
@@ -655,7 +672,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       key={li}
                       style={{
                         fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: isAr ? 'clamp(1.5rem, 4vw, 4rem)' : 'clamp(1.4rem, 3.8vw, 4.3rem)',
+                        fontSize: isAr ? 'clamp(1.95rem, 4vw, 4rem)' : 'clamp(1.85rem, 3.8vw, 4.3rem)',
                         fontWeight: isAr ? 700 : 400,
                         lineHeight: isAr ? 1.2 : 0.87,
                         letterSpacing: isAr ? '0' : '0.06em',
@@ -698,10 +715,10 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       alignItems: 'center',
                       gap: 10,
                       fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                      fontSize: isAr ? '1.1rem' : '1rem',
+                      fontSize: isAr ? 'clamp(0.625rem, 2.4vw, 1.1rem)' : 'clamp(0.575rem, 2.2vw, 1rem)',
                       fontWeight: 700,
                       letterSpacing: isAr ? '0' : '0.18em',
-                      padding: '12px 32px',
+                      padding: 'clamp(4px, 1vw, 12px) clamp(8px, 1.5vw, 32px)',
                       borderRadius: 10,
                       cursor: 'pointer',
                       pointerEvents: 'all',

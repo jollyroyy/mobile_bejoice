@@ -21,7 +21,6 @@ const Contact       = dynamic(() => import('@/components/Contact'),       { ssr:
 const Certifications = dynamic(() => import('@/components/Certifications'), { ssr: false });
 const Footer        = dynamic(() => import('@/components/Footer'),        { ssr: false });
 const FloatingBookCTA = dynamic(() => import('@/components/FloatingBookCTA'), { ssr: false });
-const QuickQuoteModal = dynamic(() => import('@/components/QuickQuoteModal'), { ssr: false });
 
 // Skeleton fallbacks (these are simple, no browser deps — keep as regular imports)
 import {
@@ -39,6 +38,7 @@ export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
 
   const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const quoteModalRef    = useRef<HTMLDivElement>(null);
   const whyModalRef      = useRef<HTMLDivElement>(null);
   const servicesModalRef = useRef<HTMLDivElement>(null);
   const toolsModalRef    = useRef<HTMLDivElement>(null);
@@ -95,7 +95,7 @@ export default function Page() {
   useEffect(() => {
     type LenisInstance = { stop: () => void; start: () => void };
     const lenis = (window as Window & { __lenis?: LenisInstance }).__lenis;
-    if (whyOpen || servicesOpen || toolsOpen) {
+    if (quoteOpen || whyOpen || servicesOpen || toolsOpen) {
       document.body.style.overflow = 'hidden';
       lenis?.stop();
     } else {
@@ -104,6 +104,7 @@ export default function Page() {
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
+      if (quoteOpen) startTransition(() => setQuoteOpen(false));
       if (whyOpen) startTransition(() => setWhyOpen(false));
       if (servicesOpen) startTransition(() => setServicesOpen(false));
       if (toolsOpen) startTransition(() => setToolsOpen(false));
@@ -114,7 +115,7 @@ export default function Page() {
       lenis?.start();
       window.removeEventListener('keydown', onKey);
     };
-  }, [whyOpen, servicesOpen, toolsOpen]);
+  }, [quoteOpen, whyOpen, servicesOpen, toolsOpen]);
 
   // Cal.com booking notification
   useEffect(() => {
@@ -180,17 +181,46 @@ export default function Page() {
             onToolsClick={() => setToolsOpen(true)}
           />
 
-          <Suspense fallback={<ContactSkeleton />}><Contact /></Suspense>
           <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
         </main>
 
         <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} /></Suspense>
         <Suspense fallback={null}><FloatingBookCTA onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
 
+        {/* Request a Private Quote modal overlay */}
         {quoteOpen && (
-          <QuickQuoteModal onClose={() => {
-            startTransition(() => setQuoteOpen(false));
-          }} />
+          <div
+            ref={quoteModalRef}
+            data-lenis-prevent
+            onClick={e => { if (e.target === quoteModalRef.current) startTransition(() => setQuoteOpen(false)); }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 99990,
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+              display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+              padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            } as React.CSSProperties}
+          >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+              <button
+                onClick={() => startTransition(() => setQuoteOpen(false))}
+                style={{
+                  position: 'absolute', top: 12, right: 12, zIndex: 30,
+                  width: 44, height: 44,
+                  background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                  borderRadius: '50%', color: '#fff', fontSize: 22,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
+                }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <Suspense fallback={<ContactSkeleton />}><Contact /></Suspense>
+            </div>
+          </div>
         )}
 
         {/* Why Bejoice modal overlay */}

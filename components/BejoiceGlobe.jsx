@@ -543,8 +543,8 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
             textAlign: 'center',
           }}>
             {isAr ? ar.globe.headline : <>
-              <span style={{ color: '#ffffff', textShadow: '0 1px 12px rgba(0,0,0,0.9)' }}>BEJOICE CONNECTS </span><br/>
-              <span style={{ color: 'var(--gold)', textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)' }}>SAUDI TO THE WORLD</span>
+              <div style={{ color: '#ffffff', textShadow: '0 1px 12px rgba(0,0,0,0.9)' }}>BEJOICE CONNECTS</div>
+              <div style={{ color: 'var(--gold)', textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)' }}>SAUDI TO THE WORLD</div>
             </>}
           </h2>
 

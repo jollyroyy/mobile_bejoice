@@ -73,7 +73,7 @@ const inp = {
   borderRadius: '4px',
   padding:      '0.75rem 1rem',
   color:        'var(--cream)',
-  fontFamily:   "'DM Sans', sans-serif",
+  fontFamily:   "var(--font-dm-sans), sans-serif",
   fontSize:     '0.95rem',
   outline:      'none',
   width:        '100%',
@@ -82,7 +82,7 @@ const inp = {
 }
 
 const lbl = {
-  fontFamily:    "'DM Sans', sans-serif",
+  fontFamily:    "var(--font-dm-sans), sans-serif",
   fontSize:      '0.72rem',
   fontWeight:    700,
   letterSpacing: '0.14em',
@@ -157,7 +157,7 @@ function UnitSelect({ value, onChange }) {
                 padding: '0.5rem 0.7rem',
                 color: u === value ? '#5BC2E7' : 'rgba(255,255,255,0.7)',
                 background: u === value ? 'rgba(91,194,231,0.12)' : 'transparent',
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "var(--font-dm-sans), sans-serif",
                 fontSize: '0.88rem', fontWeight: u === value ? 700 : 400,
                 letterSpacing: '0.08em', cursor: 'pointer',
                 borderBottom: '1px solid rgba(255,255,255,0.04)',
@@ -241,7 +241,7 @@ function TruckSelect({ value, onChange }) {
                 padding: '0.6rem 0.9rem',
                 color: o.value === value ? '#5BC2E7' : 'rgba(255,255,255,0.7)',
                 background: o.value === value ? 'rgba(91,194,231,0.12)' : 'transparent',
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "var(--font-dm-sans), sans-serif",
                 fontSize: '0.95rem', cursor: 'pointer',
                 borderBottom: '1px solid rgba(255,255,255,0.04)',
               }}
@@ -371,7 +371,7 @@ function LoadCalculator() {
 
   const addRowBtn = (onClick) => (
     <button onClick={onClick}
-      style={{ background:'rgba(91,194,231,0.1)', border:'1px solid rgba(91,194,231,0.3)', borderRadius:'0.5rem', color:'#5BC2E7', cursor:'pointer', padding:'0.45rem 1rem', fontFamily:"'DM Sans',sans-serif", fontSize:'0.8rem', fontWeight:700, whiteSpace:'nowrap', transition:'all 0.2s' }}
+      style={{ background:'rgba(91,194,231,0.1)', border:'1px solid rgba(91,194,231,0.3)', borderRadius:'0.5rem', color:'#5BC2E7', cursor:'pointer', padding:'0.45rem 1rem', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.8rem', fontWeight:700, whiteSpace:'nowrap', transition:'all 0.2s' }}
       onMouseEnter={e=>e.currentTarget.style.background='rgba(91,194,231,0.18)'}
       onMouseLeave={e=>e.currentTarget.style.background='rgba(91,194,231,0.1)'}
     >{isAr ? ar.logisticsTools.addRow : '+ Add Row'}</button>
@@ -399,7 +399,7 @@ function LoadCalculator() {
               borderColor:  tab===t.id ? 'transparent' : 'rgba(255,255,255,0.12)',
               borderRadius: '0.65rem',
               color:        tab===t.id ? '#0a1826' : 'rgba(255,255,255,0.7)',
-              fontFamily:   "'DM Sans', sans-serif",
+              fontFamily:   "var(--font-dm-sans), sans-serif",
               fontSize:     '0.75rem', fontWeight: 800,
               cursor:       'pointer', letterSpacing: '0.04em',
               display:      'flex', flexDirection:'column', alignItems:'center', gap:'0.25rem',
@@ -458,7 +458,7 @@ function LoadCalculator() {
                       </svg>
                     )}
                   </div>
-                  <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'0.92rem', fontWeight:600, color: r.stackable ? 'rgba(91,194,231,0.9)' : 'rgba(255,255,255,0.4)', transition:'color 0.2s' }}>
+                  <span style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.92rem', fontWeight:600, color: r.stackable ? 'rgba(91,194,231,0.9)' : 'rgba(255,255,255,0.4)', transition:'color 0.2s' }}>
                     {r.stackable ? (isAr ? ar.logisticsTools.stackable : 'Stackable') : (isAr ? ar.logisticsTools.nonStackable : 'Non-stackable')}
                   </span>
                 </label>
@@ -508,7 +508,7 @@ function LoadCalculator() {
               </div>
             ))}
             {addRowBtn(()=>setAirRows(r=>[...r,{l:'',w:'',h:'',qty:'1',unit:'cm',actual:''}]))}
-            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'0.78rem', color:'rgba(255,255,255,0.75)', margin:0 }}>
+            <p style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.78rem', color:'rgba(255,255,255,0.75)', margin:0 }}>
               {isAr ? ar.logisticsTools.volWeightNote : 'Volumetric weight = L×W×H ÷ 5000 (in cm) per piece'}
             </p>
           </div>
@@ -582,7 +582,7 @@ function LoadCalculator() {
                 <input style={inp} type="number" value={whDays} placeholder="30" onChange={e=>setWhDays(e.target.value)} />
               </div>
             </div>
-            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'0.78rem', color:'rgba(255,255,255,0.75)', margin:0 }}>
+            <p style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.78rem', color:'rgba(255,255,255,0.75)', margin:0 }}>
               {isAr ? ar.logisticsTools.warehouseRateNote : 'Rate: $0.35 / CBM / day (indicative)'}
             </p>
           </div>
@@ -600,7 +600,7 @@ function LoadCalculator() {
           >
             <div style={{ position:'absolute', top:'-50%', right:'-20%', width:'160px', height:'160px', background:'rgba(91,194,231,0.12)', filter:'blur(40px)', borderRadius:'50%', pointerEvents:'none' }} />
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:'1.1rem' }}>
-              <span style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif", fontSize:'1.4rem', letterSpacing: isAr ? 0 : '0.1em', color:'#5BC2E7' }}>{isAr ? ar.logisticsTools.aiLoadAnalysis : 'AI LOAD ANALYSIS'}</span>
+              <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "var(--font-bebas), sans-serif", fontSize:'1.4rem', letterSpacing: isAr ? 0 : '0.1em', color:'#5BC2E7' }}>{isAr ? ar.logisticsTools.aiLoadAnalysis : 'AI LOAD ANALYSIS'}</span>
               <div style={{ width:9, height:9, background:'#25c864', borderRadius:'50%', boxShadow:'0 0 12px #25c864' }} />
             </div>
 
@@ -609,7 +609,7 @@ function LoadCalculator() {
                 <span style={{ display:'block', fontSize:'0.68rem', color:'rgba(255,255,255,0.88)', textTransform:'uppercase', fontWeight:700, marginBottom:'0.25rem', letterSpacing:'0.1em' }}>
                   {results.tab==='air' ? (isAr ? ar.logisticsTools.chargeableWt : 'Chargeable Wt') : (isAr ? ar.logisticsTools.totalVolume : 'Total Volume')}
                 </span>
-                <span style={{ fontSize:'1.7rem', fontFamily:"'Bebas Neue',sans-serif", color:'#fff', letterSpacing:'0.04em' }}>
+                <span style={{ fontSize:'1.7rem', fontFamily:"var(--font-bebas), sans-serif", color:'#fff', letterSpacing:'0.04em' }}>
                   {results.tab==='air' ? results.chargeable : results.cbm}
                   <span style={{ fontSize:'0.8rem', marginLeft:'0.3rem', color:'#5BC2E7' }}>{results.tab==='air' ? 'KG' : 'CBM'}</span>
                 </span>
@@ -619,8 +619,8 @@ function LoadCalculator() {
                 <div style={{ background:'rgba(255,255,255,0.04)', padding:'0.9rem', borderRadius:'0.7rem', border:'1px solid rgba(255,255,255,0.07)' }}>
                   <span style={{ display:'block', fontSize:'0.68rem', color:'rgba(255,255,255,0.88)', textTransform:'uppercase', fontWeight:700, marginBottom:'0.25rem', letterSpacing:'0.1em' }}>{isAr ? ar.logisticsTools.usageEfficiency : 'Usage Efficiency'}</span>
                   <div style={{ display:'flex', alignItems:'baseline', gap:'0.2rem' }}>
-                    <span style={{ fontSize:'1.7rem', fontFamily:"'Bebas Neue',sans-serif", color: results.loadPct>90 ? '#ff5050' : '#fff' }}>{results.loadPct}</span>
-                    <span style={{ fontSize:'0.9rem', color:'rgba(255,255,255,0.85)', fontFamily:"'Bebas Neue',sans-serif" }}>%</span>
+                    <span style={{ fontSize:'1.7rem', fontFamily:"var(--font-bebas), sans-serif", color: results.loadPct>90 ? '#ff5050' : '#fff' }}>{results.loadPct}</span>
+                    <span style={{ fontSize:'0.9rem', color:'rgba(255,255,255,0.85)', fontFamily:"var(--font-bebas), sans-serif" }}>%</span>
                   </div>
                 </div>
               )}
@@ -628,7 +628,7 @@ function LoadCalculator() {
               {results.tab==='air' && (
                 <div style={{ background:'rgba(255,255,255,0.04)', padding:'0.9rem', borderRadius:'0.7rem', border:'1px solid rgba(255,255,255,0.07)', gridColumn:'span 2' }}>
                   <span style={{ display:'block', fontSize:'0.68rem', color:'rgba(255,255,255,0.88)', textTransform:'uppercase', fontWeight:700, marginBottom:'0.4rem', letterSpacing:'0.1em' }}>{isAr ? ar.logisticsTools.billingBasis : 'Billing Basis'}</span>
-                  <span style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif", fontSize:'1.1rem', color:'#5BC2E7', letterSpacing: isAr ? 0 : '0.05em' }}>
+                  <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "var(--font-bebas), sans-serif", fontSize:'1.1rem', color:'#5BC2E7', letterSpacing: isAr ? 0 : '0.05em' }}>
                     {isAr ? (results.basis==='Volumetric' ? ar.logisticsTools.volumetric : ar.logisticsTools.actual) : results.basis} {isAr ? ar.logisticsTools.weightLabel : 'Weight'} — {results.basis==='Volumetric' ? results.volWeight : results.actWeight} kg
                   </span>
                 </div>
@@ -637,14 +637,14 @@ function LoadCalculator() {
               {results.tab==='land' && (<>
                 <div style={{ background:'rgba(255,255,255,0.04)', padding:'0.9rem', borderRadius:'0.7rem', border:'1px solid rgba(255,255,255,0.07)' }}>
                   <span style={{ display:'block', fontSize:'0.68rem', color:'rgba(255,255,255,0.88)', textTransform:'uppercase', fontWeight:700, marginBottom:'0.25rem', letterSpacing:'0.1em' }}>{isAr ? ar.logisticsTools.volumeFill : 'Volume Fill'}</span>
-                  <span style={{ fontSize:'1.7rem', fontFamily:"'Bebas Neue',sans-serif", color: results.volPct>90?'#ff5050':'#fff' }}>
-                    {results.volPct}<span style={{ fontSize:'0.9rem', color:'rgba(255,255,255,0.85)', fontFamily:"'Bebas Neue',sans-serif" }}>%</span>
+                  <span style={{ fontSize:'1.7rem', fontFamily:"var(--font-bebas), sans-serif", color: results.volPct>90?'#ff5050':'#fff' }}>
+                    {results.volPct}<span style={{ fontSize:'0.9rem', color:'rgba(255,255,255,0.85)', fontFamily:"var(--font-bebas), sans-serif" }}>%</span>
                   </span>
                 </div>
                 <div style={{ background:'rgba(255,255,255,0.04)', padding:'0.9rem', borderRadius:'0.7rem', border:'1px solid rgba(255,255,255,0.07)' }}>
                   <span style={{ display:'block', fontSize:'0.68rem', color:'rgba(255,255,255,0.88)', textTransform:'uppercase', fontWeight:700, marginBottom:'0.25rem', letterSpacing:'0.1em' }}>{isAr ? ar.logisticsTools.weightFill : 'Weight Fill'}</span>
-                  <span style={{ fontSize:'1.7rem', fontFamily:"'Bebas Neue',sans-serif", color: results.wtPct>90?'#ff5050':'#fff' }}>
-                    {results.wtPct}<span style={{ fontSize:'0.9rem', color:'rgba(255,255,255,0.85)', fontFamily:"'Bebas Neue',sans-serif" }}>%</span>
+                  <span style={{ fontSize:'1.7rem', fontFamily:"var(--font-bebas), sans-serif", color: results.wtPct>90?'#ff5050':'#fff' }}>
+                    {results.wtPct}<span style={{ fontSize:'0.9rem', color:'rgba(255,255,255,0.85)', fontFamily:"var(--font-bebas), sans-serif" }}>%</span>
                   </span>
                 </div>
               </>)}
@@ -652,7 +652,7 @@ function LoadCalculator() {
               {results.tab==='warehouse' && (
                 <div style={{ background:'rgba(255,255,255,0.04)', padding:'0.9rem', borderRadius:'0.7rem', border:'1px solid rgba(255,255,255,0.07)', gridColumn:'span 2' }}>
                   <span style={{ display:'block', fontSize:'0.68rem', color:'rgba(255,255,255,0.88)', textTransform:'uppercase', fontWeight:700, marginBottom:'0.25rem', letterSpacing:'0.1em' }}>{isAr ? ar.logisticsTools.indicativeCost : 'Indicative Cost'}</span>
-                  <span style={{ fontSize:'1.7rem', fontFamily:"'Bebas Neue',sans-serif", color:'#fff' }}>
+                  <span style={{ fontSize:'1.7rem', fontFamily:"var(--font-bebas), sans-serif", color:'#fff' }}>
                     ${results.cost}<span style={{ fontSize:'0.8rem', marginLeft:'0.3rem', color:'#5BC2E7' }}>USD</span>
                   </span>
                 </div>
@@ -686,7 +686,7 @@ function LoadCalculator() {
             {/* ── Containers Required (shown prominently when > 1) ── */}
             {results.containerCount > 1 && (
               <div style={{ padding:'1rem', background:'rgba(255,80,80,0.08)', borderRadius:'0.7rem', border:'1px solid rgba(255,80,80,0.3)', marginBottom:'1rem', display:'flex', alignItems:'center', gap:'1rem' }}>
-                <div style={{ fontSize:'2.4rem', fontFamily:"'Bebas Neue',sans-serif", color:'#ff6060', letterSpacing:'0.04em', lineHeight:1, flexShrink:0 }}>
+                <div style={{ fontSize:'2.4rem', fontFamily:"var(--font-bebas), sans-serif", color:'#ff6060', letterSpacing:'0.04em', lineHeight:1, flexShrink:0 }}>
                   {results.containerCount}
                 </div>
                 <div>
@@ -703,7 +703,7 @@ function LoadCalculator() {
             {results.container && (
               <div style={{ padding:'0.9rem', background:'rgba(91,194,231,0.1)', borderRadius:'0.7rem', border:'1px dashed rgba(91,194,231,0.35)', marginBottom:'1.2rem' }}>
                 <span style={{ display:'block', fontSize:'0.68rem', color:'#5BC2E7', textTransform:'uppercase', fontWeight:700, marginBottom:'0.5rem', letterSpacing:'0.1em' }}>{isAr ? ar.logisticsTools.aiRecommendation : 'AI Recommendation'}</span>
-                <span style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif", fontSize:'1.15rem', color:'#fff', letterSpacing: isAr ? 0 : '0.05em', display:'block', marginBottom: results.containerCount > 1 ? '0.6rem' : 0 }}>{results.container}</span>
+                <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "var(--font-bebas), sans-serif", fontSize:'1.15rem', color:'#fff', letterSpacing: isAr ? 0 : '0.05em', display:'block', marginBottom: results.containerCount > 1 ? '0.6rem' : 0 }}>{results.container}</span>
                 {results.containerCount > 1 && (
                   <div style={{ fontSize:'0.72rem', color:'rgba(255,255,255,0.65)', lineHeight:1.55, borderTop:'1px solid rgba(91,194,231,0.2)', paddingTop:'0.5rem' }}>
                     <strong style={{ color:'#5BC2E7' }}>{isAr ? ar.logisticsTools.costTipLabel : 'Cost tip:'}</strong> {isAr ? ar.logisticsTools.costTipBody : '40ft High Cube is most cost-effective per CBM for large volumes. Consolidating into fewer, larger containers reduces handling fees and port charges. Ask Bejoice for a multi-container rate.'}
@@ -732,7 +732,7 @@ function LoadCalculator() {
               const ctype = ctbm <= 25 ? '20ft' : ctbm <= 67 ? '40ft' : '40hc'
               return (
                 <div style={{ marginTop:'1.4rem', borderTop:'1px solid rgba(91,194,231,0.15)', paddingTop:'1.2rem' }}>
-                  <div style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif", fontSize:'2rem', color:'#5BC2E7', letterSpacing: isAr ? 0 : 3, marginBottom:'0.8rem', textAlign:'center' }}>
+                  <div style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "var(--font-bebas), sans-serif", fontSize:'2rem', color:'#5BC2E7', letterSpacing: isAr ? 0 : 3, marginBottom:'0.8rem', textAlign:'center' }}>
                     {isAr ? ar.logisticsTools.viz3dTitle : '3D CONTAINER LOAD VISUALISATION'}
                   </div>
                   <Container3DViewer items={items3d} containerType={ctype} compact={true} />
@@ -743,13 +743,13 @@ function LoadCalculator() {
 
             <div style={{ display:'flex', gap:'0.7rem' }}>
               <button onClick={exportCSV}
-                style={{ flex:1, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:'0.6rem', color:'#fff', padding:'0.7rem', cursor:'pointer', fontFamily:"'DM Sans',sans-serif", fontSize:'0.82rem', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.4rem', transition:'all 0.2s' }}
+                style={{ flex:1, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:'0.6rem', color:'#fff', padding:'0.7rem', cursor:'pointer', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.82rem', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.4rem', transition:'all 0.2s' }}
                 onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.12)'}
                 onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,0.06)'}>
                 📥 CSV
               </button>
               <button onClick={exportPDF}
-                style={{ flex:1, background:'linear-gradient(135deg,#a8e4f7,#5BC2E7)', border:'none', borderRadius:'0.6rem', color:'#0a1826', padding:'0.7rem', cursor:'pointer', fontFamily:"'DM Sans',sans-serif", fontSize:'0.82rem', fontWeight:800, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.4rem', transition:'all 0.2s' }}
+                style={{ flex:1, background:'linear-gradient(135deg,#a8e4f7,#5BC2E7)', border:'none', borderRadius:'0.6rem', color:'#0a1826', padding:'0.7rem', cursor:'pointer', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.82rem', fontWeight:800, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.4rem', transition:'all 0.2s' }}
                 onMouseEnter={e=>e.currentTarget.style.opacity='0.88'}
                 onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
                 📄 PDF Report
@@ -762,7 +762,7 @@ function LoadCalculator() {
 
       {/* ── Calculate button ── */}
       <div style={{ padding:'1rem 1.4rem', borderTop:'1px solid rgba(255,255,255,0.08)', flexShrink:0, display:'flex', justifyContent:'center' }}>
-        <button onClick={calculate} className="btn-gold" style={{ width:'auto', fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : undefined }}>
+        <button onClick={calculate} className="btn-gold" style={{ width:'auto', fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : undefined }}>
           <div className="btn-shine-overlay" />
           {isAr ? ar.logisticsTools.generateAnalysis : 'GENERATE AI ANALYSIS'}
         </button>
@@ -828,7 +828,7 @@ export default function LogisticsTools() {
             {/* ── Heading ── */}
             <div style={{ textAlign:'center', marginBottom:'clamp(2rem,4vw,3.5rem)', position:'relative', zIndex:1 }}>
               <h2 style={{
-                fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif",
+                fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "var(--font-bebas), sans-serif",
                 fontSize:'clamp(2.4rem,5.5vw,4.8rem)',
                 letterSpacing: isAr ? 0 : '0.07em', lineHeight:1,
                 margin:'0 0 clamp(0.6rem,1.5vw,1rem)',
@@ -839,7 +839,7 @@ export default function LogisticsTools() {
                   : <>LOAD <span style={{ color:'#5BC2E7' }}>CALCULATION</span></>}
               </h2>
               <p style={{
-                fontFamily:"'DM Sans',sans-serif", fontSize: isAr ? 'clamp(19px, 2.3vw, 23px)' : 'clamp(15px, 1.9vw, 19px)',
+                fontFamily:"var(--font-dm-sans), sans-serif", fontSize: isAr ? 'clamp(19px, 2.3vw, 23px)' : 'clamp(15px, 1.9vw, 19px)',
                 color:'#ffffff', maxWidth:700, margin:'0 auto', lineHeight:1.8,
                 fontWeight:500, textShadow:'0 0 24px rgba(255,255,255,0.25)', opacity:0.95,
               }}>

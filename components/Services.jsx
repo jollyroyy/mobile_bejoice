@@ -259,7 +259,7 @@ export default function Services() {
           {/* ── Centered heading block ── */}
           <div style={{ textAlign: 'center', padding: 'clamp(2.5rem,5vw,4rem) clamp(1.5rem,5vw,4rem) clamp(1.5rem,3vw,2.5rem)', borderBottom: '1px solid rgba(91,194,231,0.1)', position: 'relative', zIndex: 2 }}>
             <div style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "var(--font-dm-sans), sans-serif",
               fontSize: 'clamp(13px,1.4vw,16px)',
               letterSpacing: '0.45em', textTransform: 'uppercase',
               color: 'rgba(91,194,231,1)',
@@ -275,7 +275,7 @@ export default function Services() {
               animate={isInView ? { x: 0, opacity: 1, clipPath: 'inset(0 0% 0 0)' } : {}}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
               style={{
-                fontFamily: "'Bebas Neue', sans-serif",
+                fontFamily: "var(--font-bebas), sans-serif",
                 fontSize: 'clamp(3rem,7vw,6rem)',
                 letterSpacing: '0.07em', lineHeight: 1,
                 margin: 0,
@@ -349,7 +349,7 @@ export default function Services() {
                     <div>
                       {s.eyebrow && (
                         <div style={{
-                          fontFamily: isAr ? "'Cairo', sans-serif" : "'DM Sans', sans-serif",
+                          fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-dm-sans), sans-serif",
                           fontSize: 'clamp(10px,1vw,12px)',
                           letterSpacing: isAr ? '0' : '0.2em',
                           textTransform: 'uppercase',
@@ -361,7 +361,7 @@ export default function Services() {
                         </div>
                       )}
                       <h3 style={{
-                        fontFamily: isAr ? "'Cairo', sans-serif" : "'Bebas Neue', sans-serif",
+                        fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-bebas), sans-serif",
                         fontSize: isAr ? 'clamp(1.1rem,2vw,1.4rem)' : 'clamp(1.3rem,2.2vw,1.7rem)',
                         letterSpacing: isAr ? '0' : '0.08em', lineHeight: 1.1,
                         color: isExpanded ? 'rgba(91,194,231,1)' : isActive ? 'rgba(91,194,231,1)' : '#ffffff',
@@ -387,7 +387,7 @@ export default function Services() {
                           minHeight: 44,
                         }}
                       >
-                        <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.9)' }}>
+                        <span style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.9)' }}>
                           {isExpanded ? (isAr ? ar.services.viewLess : 'Less') : (isAr ? ar.services.viewMore : 'More')}
                         </span>
                         <motion.svg
@@ -437,14 +437,14 @@ export default function Services() {
                                 {item.includes(' — ') ? (
                                   <>
                                     <span style={{
-                                      fontFamily: "'Bebas Neue', sans-serif",
+                                      fontFamily: "var(--font-bebas), sans-serif",
                                       fontSize: 'clamp(17px,1.7vw,20px)',
                                       letterSpacing: '0.06em',
                                       color: '#5BC2E7',
                                       lineHeight: 1.2,
                                     }}>{item.split(' — ')[0]}</span>
                                     <span style={{
-                                      fontFamily: "'DM Sans', sans-serif",
+                                      fontFamily: "var(--font-dm-sans), sans-serif",
                                       fontSize: 'clamp(13px,1.3vw,15px)',
                                       fontWeight: 450,
                                       color: 'rgba(255,255,255,0.72)',
@@ -453,7 +453,7 @@ export default function Services() {
                                   </>
                                 ) : (
                                   <span style={{
-                                    fontFamily: "'DM Sans', sans-serif",
+                                    fontFamily: "var(--font-dm-sans), sans-serif",
                                     fontSize: 'clamp(13px,1.3vw,15px)',
                                     fontWeight: 450,
                                     color: 'rgba(255,255,255,0.72)',

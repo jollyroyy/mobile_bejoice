@@ -99,14 +99,14 @@ export default function Certifications() {
             {/* Eyebrow */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
               <div style={{ width: 40, height: '1.5px', background: '#5BC2E7' }} />
-              <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, letterSpacing: '0.38em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.85)', fontWeight: 700 }}>
+              <span style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, letterSpacing: '0.38em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.85)', fontWeight: 700 }}>
                 {lang === 'ar' ? 'الامتثال والجودة' : 'Industry Accreditations'}
               </span>
               <div style={{ flex: 1, height: '1px', background: 'linear-gradient(90deg, rgba(91,194,231,0.25), transparent)' }} />
             </div>
 
             {/* Headline */}
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3rem,7vw,6rem)', letterSpacing: '0.07em', lineHeight: 0.95, margin: 0 }}>
+            <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(3rem,7vw,6rem)', letterSpacing: '0.07em', lineHeight: 0.95, margin: 0 }}>
               <span style={{ color: '#ffffff', textShadow: '0 0 60px rgba(255,255,255,0.15), 0 2px 40px rgba(0,0,0,0.8)' }}>{lang === 'ar' ? 'معتمدون' : 'CERTIFIED'}</span>
               <br />
               <span style={{ color: '#5BC2E7', textShadow: '0 0 50px rgba(91,194,231,0.4), 0 2px 40px rgba(0,0,0,0.8)' }}>{lang === 'ar' ? 'للتسليم' : 'TO DELIVER'}</span>
@@ -163,7 +163,7 @@ export default function Certifications() {
                 {/* Code text */}
                 <div style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
                   <div style={{
-                    fontFamily: "'DM Sans', sans-serif",
+                    fontFamily: "var(--font-dm-sans), sans-serif",
                     fontSize: isAr ? 'clamp(15px,1.6vw,18px)' : 'clamp(11px,1.2vw,14px)',
                     letterSpacing: '0.35em',
                     textTransform: 'uppercase',
@@ -173,7 +173,7 @@ export default function Certifications() {
                   }}>{isAr ? 'معتمد' : 'CERTIFIED'}</div>
 
                   <div style={{
-                    fontFamily: isAr ? "'Cairo', sans-serif" : "'Bebas Neue', sans-serif",
+                    fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-bebas), sans-serif",
                     fontSize: isAr ? 'clamp(1.4rem,2.8vw,2.4rem)' : 'clamp(1.6rem,3vw,2.8rem)',
                     letterSpacing: isAr ? '0' : '0.12em',
                     lineHeight: 1,

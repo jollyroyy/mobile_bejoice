@@ -636,7 +636,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                   marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : 0,
-                  transform: i === 0 ? 'translateY(-60px)' : 'translateY(-30px)',
+                  transform: i === 0 ? 'translateY(-60px)' : 'translateY(clamp(-20px, 4vw - 40px, 0px))',
                   direction: isAr ? 'rtl' : 'ltr',
                   textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,
                 }}

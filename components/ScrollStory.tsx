@@ -72,12 +72,12 @@ const CHAPTERS = [
     headline: ['FROM BLUE PRINT TO DELIVERY,', 'WE MOVE IT ALL'],
     align: 'right' as const,
   },
-  // navigating oceans: 449–528 (port/ship footage)
+  // driven by transparency: 440–493 (port footage, just before port to port)
   {
-    frameRange: [449, 528] as [number, number],
-    tag: 'FCL · LCL · BREAKBULK · REEFER · DG · OOG',
-    headline: ['NAVIGATING OCEANS.', 'DELIVERING CONFIDENCE'],
-    align: 'left' as const,
+    frameRange: [440, 493] as [number, number],
+    tag: 'PORT OPERATIONS',
+    headline: ['DRIVEN BY TRANSPARENCY.', 'DELIVERED WITH TRUST'],
+    align: 'right' as const,
   },
   // port to port: 496–550
   {
@@ -107,9 +107,9 @@ const CHAPTERS = [
     headline: ['PRECISION IN HANDLING.', 'EXCELLENCE IN DELIVERY'],
     align: 'right' as const,
   },
-  // technical engineering: 764–799
+  // technical engineering: 740–817
   {
-    frameRange: [764, 799] as [number, number],
+    frameRange: [740, 817] as [number, number],
     tag: '',
     headline: ['TECHNICAL', 'ENGINEERING'],
     align: 'center' as const,

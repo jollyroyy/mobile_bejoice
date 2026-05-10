@@ -503,13 +503,13 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
   }, []);
 
   const inner = (
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem,2vw,4rem)', padding: '0 clamp(0.4rem,2vw,2rem)' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 clamp(0.4rem,2vw,2rem)' }}>
 
-        {/* ── LEFT: Globe ── */}
+        {/* ── Globe ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }} whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }} transition={{ duration: 1.2, ease: [0.16,1,0.3,1] }}
-          style={{ position: 'relative', flexShrink: 0, width: 'clamp(110px, 42vw, 720px)' }}
+          style={{ position: 'relative', width: 'clamp(260px, 70vw, 720px)' }}
         >
           {/* Outer glow ring */}
           <div style={{
@@ -561,94 +561,6 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
           </div>
         </motion.div>
 
-        {/* ── RIGHT: Premium Bento Location Panel ── */}
-        <motion.div
-          initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, ease: [0.16,1,0.3,1] }}
-          style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(0.2rem,1.5vw,3rem)' }}
-        >
-          {/* Headline */}
-          <h2 className="no-reveal" style={{
-            fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif",
-            fontSize: 'clamp(1.8rem,4vw,3.6rem)',
-            fontWeight: 'normal',
-            letterSpacing: isAr ? '0' : '0.05em',
-            lineHeight: isAr ? 1.3 : 0.95,
-            color: '#ffffff',
-            margin: 0,
-            textAlign: 'center',
-          }}>
-            {isAr ? ar.globe.headline : 'BEJOICE CONNECTS SAUDI TO THE WORLD'}
-          </h2>
-
-          {/* ── Bento Grid ── */}
-          <div style={{
-            display:'grid',
-            gridTemplateColumns:'1fr 1fr',
-            gap:'clamp(0.5rem,1vw,0.75rem)',
-            width:'100%',
-          }}>
-
-            {/* HQ Card — spans full width */}
-            <motion.div
-              whileHover={{ scale:1.015, borderColor:'rgba(91,194,231,0.5)' }}
-              transition={{ type:'spring', stiffness:300, damping:20 }}
-              style={{
-                gridColumn:'1 / -1',
-                display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center',
-                gap:'clamp(0.3rem,0.6vw,0.5rem)',
-                padding:'clamp(0.8rem,1.4vw,1.1rem) clamp(1rem,1.6vw,1.3rem)',
-                background:'linear-gradient(135deg, rgba(91,194,231,0.08) 0%, rgba(91,194,231,0.02) 100%)',
-                border:'1px solid rgba(91,194,231,0.22)',
-                borderRadius:12,
-                position:'relative', overflow:'hidden',
-                cursor:'default',
-              }}
-            >
-              {/* Ambient glow */}
-              <div style={{ position:'absolute', top:'-30%', left:'-10%', width:'60%', height:'160%', background:'radial-gradient(ellipse, rgba(91,194,231,0.06) 0%, transparent 70%)', pointerEvents:'none' }} />
-              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(91,194,231,0.8)', fontWeight:700, position:'relative', zIndex:1 }}>
-                {isAr ? 'المقر الرئيسي' : 'HEAD QUARTER'}
-              </div>
-              <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'clamp(1.05rem,2vw,1.4rem)', letterSpacing:'0.08em', lineHeight:1.1, textAlign:'center', position:'relative', zIndex:1,
-                color:'#5BC2E7', textShadow:'0 0 24px rgba(91,194,231,0.6), 0 0 48px rgba(91,194,231,0.25)',
-              }}>
-                {isAr ? ar.globe.hq : 'DUBAI, UNITED ARAB EMIRATES'}
-              </div>
-            </motion.div>
-
-          </div>
-
-          {/* Branch offices — dot separated */}
-          <div style={{ textAlign:'center' }}>
-            <span style={{
-              fontFamily:"'Bebas Neue',sans-serif",
-              fontSize:'clamp(1.1rem,2.8vw,1.5rem)',
-              letterSpacing:'0.08em',
-              color:'rgba(255,255,255,0.75)',
-              lineHeight:1,
-            }}>
-              {isAr ? 'السعودية · الإمارات · الهند · الصين' : 'SAUDI ARABIA · UAE · INDIA · CHINA'}
-            </span>
-          </div>
-
-          {/* Tagline */}
-          <motion.div
-            animate={{ opacity: [0.85, 1, 0.85] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-            style={{ display:'flex', alignItems:'center', gap:10, justifyContent:'center' }}
-          >
-            <div style={{ width:24, height:2, background:'linear-gradient(90deg, rgba(91,194,231,0.2), rgba(91,194,231,0.6))', flexShrink:0, borderRadius:1 }} />
-            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(0.7rem,1.2vw,0.88rem)',
-              color:'rgba(91,194,231,1)', letterSpacing:'0.1em', textTransform:'uppercase',
-              margin:0, fontWeight:600, lineHeight:1.5, textAlign:'center',
-            }}>
-              {isAr ? ar.globe.tagline : 'Strategically positioned for seamless global connectivity'}
-            </p>
-            <div style={{ width:24, height:2, background:'linear-gradient(90deg, rgba(91,194,231,0.6), rgba(91,194,231,0.2))', flexShrink:0, borderRadius:1 }} />
-          </motion.div>
-
-        </motion.div>
       </div>
   )
 

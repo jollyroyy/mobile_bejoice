@@ -28,14 +28,14 @@ const sharedInputCls = {
   borderRadius: '0.5rem',
   padding: '0.9rem 1rem',
   color: '#ffffff',
-  fontFamily: "var(--font-plus-jakarta), sans-serif",
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
   fontSize: '1.1rem',
   width: '100%',
   outline: 'none',
   transition: 'border-color 0.2s',
 };
 const labelCls = {
-  fontFamily: "var(--font-plus-jakarta), sans-serif",
+  fontFamily: "'Plus Jakarta Sans', sans-serif",
   fontSize: '0.88rem',
   fontWeight: 700,
   letterSpacing: '0.14em',
@@ -62,7 +62,7 @@ function Field({ label, children, error }) {
       {children}
       {error && (
         <span style={{
-          fontFamily: "var(--font-dm-sans), sans-serif",
+          fontFamily: "'DM Sans', sans-serif",
           fontSize: '0.75rem',
           color: 'rgba(255,100,100,0.95)',
           marginTop: '0.3rem',
@@ -150,7 +150,7 @@ function UnitDropdown({ value, onChange, options }) {
           borderRadius: open ? '0.4rem 0.4rem 0 0' : '0.4rem',
           padding: '0.32rem 0.65rem',
           color: '#5BC2E7',
-          fontFamily: "var(--font-plus-jakarta), sans-serif",
+          fontFamily: "'Plus Jakarta Sans', sans-serif",
           fontSize: '0.82rem', fontWeight: 700, letterSpacing: '0.08em',
           cursor: 'pointer',
           transition: 'border-color 0.2s',
@@ -185,7 +185,7 @@ function UnitDropdown({ value, onChange, options }) {
                 padding: '0.55rem 0.65rem',
                 color: o.value === value ? '#5BC2E7' : 'rgba(255,255,255,0.75)',
                 background: o.value === value ? 'rgba(91,194,231,0.1)' : 'transparent',
-                fontFamily: "var(--font-plus-jakarta), sans-serif",
+                fontFamily: "'Plus Jakarta Sans', sans-serif",
                 fontSize: '0.82rem', fontWeight: o.value === value ? 700 : 500,
                 letterSpacing: '0.06em',
                 cursor: 'pointer',
@@ -229,7 +229,7 @@ function CheckToggle({ label, checked, onChange }) {
       alignItems: 'center',
       gap: '0.65rem',
       cursor: 'pointer',
-      fontFamily: "var(--font-plus-jakarta), sans-serif",
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
       fontSize: '0.88rem',
       color: 'rgba(255,255,255,0.72)',
       userSelect: 'none',
@@ -285,7 +285,7 @@ function StepIndicator({ steps, current }) {
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: '0.68rem',
-              fontFamily: "var(--font-plus-jakarta), sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontWeight: 600,
               background: i < current
                 ? 'rgba(91,194,231,0.2)'
@@ -303,7 +303,7 @@ function StepIndicator({ steps, current }) {
               {i < current ? '✓' : i + 1}
             </div>
             <span style={{
-              fontFamily: "var(--font-plus-jakarta), sans-serif",
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
               fontSize: '0.62rem',
               fontWeight: i === current ? 600 : 400,
               letterSpacing: '0.1em',
@@ -380,7 +380,7 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           style={{
             display: 'block', margin: '0.9rem auto 0',
             background: 'none', border: 'none',
-            fontFamily: "var(--font-dm-sans), sans-serif",
+            fontFamily: "'DM Sans', sans-serif",
             fontSize: '0.82rem', fontWeight: 500,
             color: 'rgba(255,255,255,0.45)',
             letterSpacing: '0.08em',
@@ -416,21 +416,21 @@ function CargoLoad3D({ containerType, compact }) {
   const addCI   = () => setItems(p => [...p, { l: 100, w: 80, h: 80, weight: 150, qty: 3, unit: 'cm', stackable: true }])
   const removeCI = (i) => setItems(p => p.filter((_, idx) => idx !== i))
 
-  const iS = { background:'rgba(255,255,255,0.07)', border:'1px solid rgba(255,255,255,0.14)', borderRadius:'0.4rem', padding:'0.55rem 0.6rem', color:'#fff', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'16px', width:'100%', outline:'none', boxSizing:'border-box', minHeight:44 }
-  const lS = { fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.7rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.55)', marginBottom:'0.3rem', display:'block' }
+  const iS = { background:'rgba(255,255,255,0.07)', border:'1px solid rgba(255,255,255,0.14)', borderRadius:'0.4rem', padding:'0.55rem 0.6rem', color:'#fff', fontFamily:"'DM Sans', sans-serif", fontSize:'16px', width:'100%', outline:'none', boxSizing:'border-box', minHeight:44 }
+  const lS = { fontFamily:"'DM Sans', sans-serif", fontSize:'0.7rem', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', color:'rgba(255,255,255,0.55)', marginBottom:'0.3rem', display:'block' }
 
   return (
     <div style={{ marginTop: '1.5rem', borderTop: '1px solid rgba(91,194,231,0.14)', paddingTop: '1.2rem' }}>
       <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:'1rem' }}>
-        <span style={{ fontFamily: _cl3dIsAr ? "var(--font-cairo,'Cairo'),sans-serif" : "var(--font-bebas), sans-serif", fontSize:'1rem', color:'#5BC2E7', letterSpacing: _cl3dIsAr ? 0 : 2 }}>{_cl3dIsAr ? 'حاسبة التحميل ثلاثية الأبعاد' : '3D LOAD CALCULATOR'}</span>
-        <span style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:9, color:'rgba(255,255,255,0.28)', letterSpacing:1 }}>{_cl3dIsAr ? 'اختياري — اسحب للتدوير' : 'OPTIONAL — DRAG TO ROTATE'}</span>
+        <span style={{ fontFamily: _cl3dIsAr ? "var(--font-cairo,'Cairo'),sans-serif" : "'Bebas Neue', sans-serif", fontSize:'1rem', color:'#5BC2E7', letterSpacing: _cl3dIsAr ? 0 : 2 }}>{_cl3dIsAr ? 'حاسبة التحميل ثلاثية الأبعاد' : '3D LOAD CALCULATOR'}</span>
+        <span style={{ fontFamily:"'DM Sans', sans-serif", fontSize:9, color:'rgba(255,255,255,0.28)', letterSpacing:1 }}>{_cl3dIsAr ? 'اختياري — اسحب للتدوير' : 'OPTIONAL — DRAG TO ROTATE'}</span>
       </div>
 
       {/* Cargo items */}
       {items.map((item, idx) => (
         <div key={idx} style={{ background:'rgba(255,255,255,0.025)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:'0.6rem', padding:'0.8rem', marginBottom:'0.6rem' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'0.6rem' }}>
-            <span style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:10, fontWeight:700, color:'#5BC2E7', letterSpacing:1.5 }}>
+            <span style={{ fontFamily:"'DM Sans', sans-serif", fontSize:10, fontWeight:700, color:'#5BC2E7', letterSpacing:1.5 }}>
               BOX {idx + 1}
             </span>
             <div style={{ display:'flex', gap:6, alignItems:'center' }}>
@@ -473,14 +473,14 @@ function CargoLoad3D({ containerType, compact }) {
             <span style={{ width:34, height:18, borderRadius:9, position:'relative', flexShrink:0, background: item.stackable?'rgba(91,194,231,0.65)':'rgba(255,255,255,0.1)', transition:'background .2s', display:'block' }}>
               <span style={{ position:'absolute', top:2, width:14, height:14, borderRadius:7, background:'#fff', left:item.stackable?18:2, transition:'left .2s' }} />
             </span>
-            <span style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:11, color: item.stackable?'rgba(255,255,255,0.65)':'rgba(255,255,255,0.38)' }}>
+            <span style={{ fontFamily:"'DM Sans', sans-serif", fontSize:11, color: item.stackable?'rgba(255,255,255,0.65)':'rgba(255,255,255,0.38)' }}>
               {item.stackable ? 'Stackable' : 'Non-stackable'}
             </span>
           </button>
         </div>
       ))}
 
-      <button onClick={addCI} style={{ width:'100%', padding:'0.5rem', borderRadius:7, border:'1px dashed rgba(91,194,231,0.3)', background:'transparent', color:'rgba(91,194,231,0.6)', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:12, fontWeight:600, cursor:'pointer', letterSpacing:1, marginBottom:'1rem' }}>
+      <button onClick={addCI} style={{ width:'100%', padding:'0.5rem', borderRadius:7, border:'1px dashed rgba(91,194,231,0.3)', background:'transparent', color:'rgba(91,194,231,0.6)', fontFamily:"'DM Sans', sans-serif", fontSize:12, fontWeight:600, cursor:'pointer', letterSpacing:1, marginBottom:'1rem' }}>
         + ADD BOX TYPE
       </button>
 
@@ -1317,7 +1317,7 @@ function ContactStep({ d, up, errors = {}, setErrors = () => {} }) {
           <Textarea placeholder="Special instructions, preferred carriers, delivery timeline…" value={d.notes} onChange={e => up('notes', e.target.value)} />
         </Field>
       </div>
-      <p style={{ marginTop: '1rem', fontFamily: "var(--font-plus-jakarta), sans-serif", fontSize: '0.76rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
+      <p style={{ marginTop: '1rem', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.76rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
         Your details are used solely to prepare your quote. We respond within 4 business hours.
       </p>
     </div>
@@ -1342,10 +1342,10 @@ function SuccessState({ type, onReset }) {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         fontSize: '1.6rem',
       }}>✓</div>
-      <h3 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: '1.8rem', letterSpacing: '0.06em', color: '#fff' }}>
+      <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', letterSpacing: '0.06em', color: '#fff' }}>
         Quote Requested
       </h3>
-      <p style={{ fontFamily: "var(--font-plus-jakarta), sans-serif", fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, maxWidth: '22rem' }}>
+      <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, maxWidth: '22rem' }}>
         Your <strong style={{ color: 'rgba(91,194,231,0.85)' }}>{SUCCESS_LABELS[type]}</strong> quote request has been received.
         Our team will respond within <strong style={{ color: 'rgba(91,194,231,0.85)' }}>4 business hours</strong>.
       </p>
@@ -1439,7 +1439,7 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
             background: 'linear-gradient(135deg,rgba(10,30,50,0.97),rgba(15,40,65,0.97))',
             border: '1px solid rgba(91,194,231,0.45)', borderRadius: 12,
             padding: '14px 22px', boxShadow: '0 8px 40px rgba(0,0,0,0.5)',
-            fontFamily: "var(--font-dm-sans), sans-serif", color: '#fff', maxWidth: 'calc(100% - 32px)',
+            fontFamily: "'DM Sans', sans-serif", color: '#fff', maxWidth: 'calc(100% - 32px)',
             animation: 'qqToastIn 0.35s cubic-bezier(0.34,1.56,0.64,1)',
           }}>
             <span style={{ fontSize: 22 }}>✅</span>
@@ -1456,7 +1456,7 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
         {/* Multi-service selector */}
         {!successType && (
           <div style={{ marginBottom: '1rem', padding: '0.75rem 1rem', background: 'rgba(91,194,231,0.06)', borderRadius: 10, border: '1px solid rgba(91,194,231,0.15)' }}>
-            <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.8)', fontWeight: 700, marginBottom: 8 }}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.8)', fontWeight: 700, marginBottom: 8 }}>
               Also need assistance with:
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -1468,7 +1468,7 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
                     borderRadius: 20, border: `1px solid ${sel ? 'rgba(91,194,231,0.7)' : 'rgba(255,255,255,0.15)'}`,
                     background: sel ? 'rgba(91,194,231,0.15)' : 'rgba(255,255,255,0.04)',
                     color: sel ? '#5BC2E7' : 'rgba(255,255,255,0.6)',
-                    fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 12, fontWeight: 600,
+                    fontFamily: "'DM Sans', sans-serif", fontSize: 12, fontWeight: 600,
                     cursor: 'pointer', transition: 'all 0.2s',
                   }}>
                     <span style={{ fontSize: 14 }}>{sel ? '✓' : t.icon}</span>

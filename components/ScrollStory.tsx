@@ -107,9 +107,9 @@ const CHAPTERS = [
     headline: ['PRECISION IN HANDLING.', 'EXCELLENCE IN DELIVERY'],
     align: 'right' as const,
   },
-  // technical engineering: 740–817
+  // technical engineering: 764–799
   {
-    frameRange: [740, 817] as [number, number],
+    frameRange: [764, 799] as [number, number],
     tag: '',
     headline: ['TECHNICAL', 'ENGINEERING'],
     align: 'center' as const,

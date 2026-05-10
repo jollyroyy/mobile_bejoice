@@ -85,45 +85,88 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
 
-        {/* Cal.com booking modal — identical to backup's index.html inline script */}
+        {/* Cal.com booking modal — styled overlay matching Bejoice_backup */}
         <Script id="cal-modal" strategy="afterInteractive">{`
           (function(){
-            var iframe = null;
-            var visible = false;
+            var overlay=null,box=null,iframeEn=null,iframeAr=null,closeBtn=null;
+            var visible=false,initialized=false,built=false;
+            var CAL_BASE='https://cal.com/bejoice/freight-expert-consultation?embed=true&theme=dark&layout=month_view&brandColor=%235BC2E7&hideEventTypeDetails=false';
 
-            function createIframe(){
-              if(iframe) return;
-              iframe = document.createElement('iframe');
-              iframe.src = 'https://cal.com/bejoice/freight-expert-consultation?embed=true';
-              iframe.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation');
-              iframe.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;border:none;z-index:99998;background:rgba(0,0,0,0.8);display:none;';
-              document.body.appendChild(iframe);
+            function buildModal(){
+              if(initialized) return;
+              initialized=true;
 
-              window.addEventListener('message', function(e){
-                if(e.origin !== 'https://cal.com' && e.origin !== 'https://app.cal.com') return;
-                if(e.data && (e.data.type === 'cal:close' || e.data.type === 'close')) hideModal();
+              overlay=document.createElement('div');
+              overlay.style.cssText='position:fixed;inset:0;z-index:99999;background:rgba(3,3,6,0.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);display:none;align-items:center;justify-content:center;padding:1rem;';
+              overlay.addEventListener('click',function(e){if(e.target===overlay)hideModal();});
+
+              box=document.createElement('div');
+              box.style.cssText='position:relative;width:100%;max-width:900px;height:min(90vh,720px);background:#0c1c30;border:1px solid rgba(91,194,231,0.25);border-radius:16px;overflow:visible;box-shadow:0 32px 80px rgba(0,0,0,0.9);';
+
+              iframeEn=document.createElement('iframe');
+              iframeEn.src=CAL_BASE+'&locale=en';
+              iframeEn.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation');
+              iframeEn.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:16px;';
+
+              iframeAr=document.createElement('iframe');
+              iframeAr.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-popups allow-top-navigation-by-user-activation');
+              iframeAr.style.cssText='position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:16px;display:none;';
+
+              closeBtn=document.createElement('button');
+              closeBtn.innerHTML='&times;';
+              closeBtn.title='Close';
+              closeBtn.style.cssText='position:absolute;top:12px;right:12px;z-index:2147483647;background:rgba(7,16,28,0.97);border:2px solid rgba(91,194,231,0.85);border-radius:50%;width:44px;height:44px;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,0.9),0 0 14px rgba(91,194,231,0.35);transition:all 0.2s ease;pointer-events:all;isolation:isolate;line-height:1;';
+              closeBtn.onmouseenter=function(){closeBtn.style.background='rgba(91,194,231,0.25)';closeBtn.style.borderColor='#5BC2E7';closeBtn.style.boxShadow='0 2px 20px rgba(91,194,231,0.5)';};
+              closeBtn.onmouseleave=function(){closeBtn.style.background='rgba(7,16,28,0.97)';closeBtn.style.borderColor='rgba(91,194,231,0.85)';closeBtn.style.boxShadow='0 2px 16px rgba(0,0,0,0.9),0 0 14px rgba(91,194,231,0.35)';};
+              closeBtn.onclick=hideModal;
+
+              box.appendChild(iframeEn);
+              box.appendChild(iframeAr);
+              box.appendChild(closeBtn);
+              overlay.appendChild(box);
+              document.body.appendChild(overlay);
+
+              window.addEventListener('message',function(e){
+                if(e.origin!=='https://cal.com'&&e.origin!=='https://app.cal.com') return;
+                if(e.data&&(e.data.type==='cal:close'||e.data.type==='close')) hideModal();
               });
             }
 
+            function getLang(){try{return document.documentElement.lang||'en';}catch(_){return 'en';}}
+
             function showModal(){
-              createIframe();
-              iframe.style.display = 'block';
-              document.body.style.overflow = 'hidden';
-              visible = true;
+              buildModal();
+              var isAr=getLang()==='ar';
+              if(isAr){
+                if(!iframeAr.src) iframeAr.src=CAL_BASE+'&locale=ar';
+                iframeEn.style.display='none';
+                iframeAr.style.display='block';
+              } else {
+                iframeEn.style.display='block';
+                iframeAr.style.display='none';
+              }
+              overlay.style.display='flex';
+              document.body.style.overflow='hidden';
+              visible=true;
             }
 
             function hideModal(){
-              if(!iframe) return;
-              iframe.style.display = 'none';
-              document.body.style.overflow = '';
-              visible = false;
+              if(!overlay) return;
+              overlay.style.display='none';
+              document.body.style.overflow='';
+              visible=false;
             }
 
-            window.__showCalModal = showModal;
-            window.__hideCalModal = hideModal;
+            window.__showCalModal=showModal;
+            window.__hideCalModal=hideModal;
 
-            document.addEventListener('keydown', function(e){
-              if(e.key === 'Escape' && visible) hideModal();
+            document.addEventListener('keydown',function(e){if(e.key==='Escape'&&visible)hideModal();});
+
+            // Deferred build: after 3s or first interaction — keeps page load snappy
+            function deferBuild(){if(built)return;built=true;buildModal();}
+            setTimeout(deferBuild,3000);
+            ['scroll','click','touchstart','keydown'].forEach(function(ev){
+              window.addEventListener(ev,deferBuild,{once:true,passive:true});
             });
           })();
         `}</Script>

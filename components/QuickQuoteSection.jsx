@@ -407,6 +407,8 @@ const CTYPE_MAP = {
 
 // Inline cargo-dimensions + 3D viewer panel used in Sea form
 function CargoLoad3D({ containerType, compact }) {
+  const { lang: _cl3dLang } = useLang();
+  const _cl3dIsAr = _cl3dLang === 'ar';
   const [items, setItems] = useState([
     { l: 120, w: 80, h: 80, weight: 200, qty: 5, unit: 'cm', stackable: true }
   ])
@@ -420,8 +422,8 @@ function CargoLoad3D({ containerType, compact }) {
   return (
     <div style={{ marginTop: '1.5rem', borderTop: '1px solid rgba(91,194,231,0.14)', paddingTop: '1.2rem' }}>
       <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:'1rem' }}>
-        <span style={{ fontFamily:"var(--font-bebas), sans-serif", fontSize:'1rem', color:'#5BC2E7', letterSpacing:2 }}>3D LOAD CALCULATOR</span>
-        <span style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:9, color:'rgba(255,255,255,0.28)', letterSpacing:1 }}>OPTIONAL — DRAG TO ROTATE</span>
+        <span style={{ fontFamily: _cl3dIsAr ? "var(--font-cairo,'Cairo'),sans-serif" : "var(--font-bebas), sans-serif", fontSize:'1rem', color:'#5BC2E7', letterSpacing: _cl3dIsAr ? 0 : 2 }}>{_cl3dIsAr ? 'حاسبة التحميل ثلاثية الأبعاد' : '3D LOAD CALCULATOR'}</span>
+        <span style={{ fontFamily:"var(--font-dm-sans), sans-serif", fontSize:9, color:'rgba(255,255,255,0.28)', letterSpacing:1 }}>{_cl3dIsAr ? 'اختياري — اسحب للتدوير' : 'OPTIONAL — DRAG TO ROTATE'}</span>
       </div>
 
       {/* Cargo items */}

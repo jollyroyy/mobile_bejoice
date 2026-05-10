@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import { useLang } from '@/context/LangContext';
+import ar from '@/i18n/ar';
 
 const BejoiceGlobeInner = dynamic(() => import('@/components/BejoiceGlobe'), { ssr: false, loading: () => null });
 
@@ -56,7 +58,7 @@ const FRAME_URLS: string[] = [
 // Footage cut points → trigger dip-to-black overlay
 const SEG_CUTS = [BEJOICE_START, PORT_START, FRAMES8_START, TECH_START]; // [211, 440, 534, 655]
 
-// ── Chapter overlay configs (9 chapters = 9 nav dots) ────────────────────
+// ── Chapter overlay configs (8 chapters = 8 nav dots) ────────────────────
 const CHAPTERS = [
   // bic: 0–144
   {
@@ -116,33 +118,56 @@ const CHAPTERS = [
   },
 ] as const;
 
+// Maps current CHAPTERS index → ar.hero.chapters index
+// ar.js has 10 entries; current ScrollStory skips globe [1] and ocean-freight [3]
+const AR_CHAPTER_IDX = [0, 2, 4, 5, 6, 7, 8, 9] as const;
+
+// ── Stat definitions (English + Arabic values) ────────────────────────────
+const STATS = [
+  { v: '120+', arV: '١٢٠+', l: 'Countries',  ar: 'دولة'    },
+  { v: '25+',  arV: '٢٥+',  l: 'Years',      ar: 'عامًا'   },
+  { v: '24/7', arV: '٢٤/٧', l: 'Operations', ar: 'عمليات'  },
+  { v: 'KSA',  arV: 'م.ع.س', l: 'Specialist', ar: 'متخصص'  },
+] as const;
+
 // ── Track Shipment card ───────────────────────────────────────────────────
-function TrackCard() {
+function TrackCard({ isAr }: { isAr: boolean }) {
+  const cairoFont = "var(--font-cairo,'Cairo'),sans-serif";
   return (
     <div style={{
       width: '100%', height: '100%', flex: '1 1 auto', position: 'relative', overflow: 'hidden',
-      padding: '1.25rem 1.75rem',
-      display: 'flex', flexDirection: 'column', justifyContent: 'center',
+      padding: '1rem 1.25rem',
+      display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
+      gap: 10,
+      direction: isAr ? 'rtl' : 'ltr',
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
-        <button
-          onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
-          className="btn-gold hero-card-btn"
-          style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: 10, whiteSpace: 'nowrap', flexShrink: 0, fontWeight: 700, cursor: 'pointer' }}
-        >
-          Track Shipment
-        </button>
-        <button
-          onClick={() => {
-            const el = document.getElementById('tools');
-            if (el) el.scrollIntoView({ behavior: 'instant' });
-          }}
-          className="btn-gold hero-card-btn"
-          style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: 10, whiteSpace: 'nowrap', flexShrink: 0, fontWeight: 700, cursor: 'pointer' }}
-        >
-          Load Calculator
-        </button>
-      </div>
+      <button
+        onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
+        className="btn-gold hero-card-btn"
+        style={{
+          padding: '12px 28px', fontSize: '1rem', borderRadius: 10,
+          whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
+          fontFamily: isAr ? cairoFont : undefined,
+          flex: '1 1 0',
+        }}
+      >
+        {isAr ? ar.hero.trackBtn : 'Track Shipment'}
+      </button>
+      <button
+        onClick={() => {
+          const el = document.getElementById('tools');
+          if (el) el.scrollIntoView({ behavior: 'instant' });
+        }}
+        className="btn-gold hero-card-btn"
+        style={{
+          padding: '12px 28px', fontSize: '1rem', borderRadius: 10,
+          whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
+          fontFamily: isAr ? cairoFont : undefined,
+          flex: '1 1 0',
+        }}
+      >
+        {isAr ? ar.hero.calcBtn : 'Load Calculator'}
+      </button>
     </div>
   );
 }
@@ -158,6 +183,10 @@ interface ScrollStoryProps {
 }
 
 export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQuoteClick }: ScrollStoryProps) {
+  const { lang } = useLang();
+  const isAr = lang === 'ar';
+  const cairoFont = "var(--font-cairo,'Cairo'),sans-serif";
+
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const canvasRef   = useRef<HTMLCanvasElement>(null);
   const chapRefs    = useRef<(HTMLDivElement | null)[]>([]);
@@ -436,6 +465,8 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // stats derived from module-level STATS constant
+
   return (
     <div
       ref={wrapperRef}
@@ -539,8 +570,18 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
 
         {/* Chapter text overlays */}
         {CHAPTERS.map((ch, i) => {
-          const right = ch.align === 'right';
+          const right  = ch.align === 'right';
           const center = ch.align === 'center';
+
+          // Arabic chapter text lookup
+          const arCh         = ar.hero.chapters[AR_CHAPTER_IDX[i]];
+          const displayTag      = isAr && arCh && 'eyebrow' in arCh && arCh.eyebrow != null
+            ? arCh.eyebrow
+            : ch.tag;
+          const displayHeadline = isAr && arCh && arCh.headline != null
+            ? arCh.headline
+            : ch.headline;
+
           return (
             <div
               key={i}
@@ -577,18 +618,20 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                   marginTop: i === 0 ? 20 : 0,
+                  direction: isAr ? 'rtl' : 'ltr',
+                  textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,
                 }}
               >
                 {/* Eyebrow pill — only rendered when tag is non-empty */}
-                {ch.tag && (
+                {displayTag && (
                   <div
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
-                      fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
-                      fontSize: 'clamp(10px, 1.1vw, 13px)',
-                      letterSpacing: '0.2em',
-                      textTransform: 'uppercase',
+                      fontFamily: isAr ? cairoFont : 'var(--font-dm-sans, system-ui), sans-serif',
+                      fontSize: isAr ? 'clamp(14px, 1.4vw, 18px)' : 'clamp(10px, 1.1vw, 13px)',
+                      letterSpacing: isAr ? '0' : '0.2em',
+                      textTransform: isAr ? 'none' : 'uppercase',
                       fontWeight: 700,
                       color: 'rgba(255,255,255,0.92)',
                       background: 'rgba(255,255,255,0.1)',
@@ -599,21 +642,21 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       userSelect: 'none',
                     }}
                   >
-                    {ch.tag}
+                    {displayTag}
                   </div>
                 )}
 
                 {/* Headline */}
                 <div style={{ userSelect: 'none' }}>
-                  {ch.headline.map((line, li) => (
+                  {(displayHeadline as readonly string[]).map((line, li) => (
                     <div
                       key={li}
                       style={{
-                        fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: 'clamp(1.4rem, 3.8vw, 4.3rem)',
-                        fontWeight: 400,
-                        lineHeight: 0.87,
-                        letterSpacing: '0.06em',
+                        fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
+                        fontSize: isAr ? 'clamp(1.5rem, 4vw, 4rem)' : 'clamp(1.4rem, 3.8vw, 4.3rem)',
+                        fontWeight: isAr ? 700 : 400,
+                        lineHeight: isAr ? 1.2 : 0.87,
+                        letterSpacing: isAr ? '0' : '0.06em',
                         color: li % 2 === 0 ? '#ffffff' : 'var(--gold)',
                         textShadow: li % 2 === 0
                           ? '0 1px 12px rgba(0,0,0,0.9)'
@@ -652,10 +695,10 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: 10,
-                      fontFamily: "'Bebas Neue', sans-serif",
-                      fontSize: '1rem',
+                      fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
+                      fontSize: isAr ? '1.1rem' : '1rem',
                       fontWeight: 700,
-                      letterSpacing: '0.18em',
+                      letterSpacing: isAr ? '0' : '0.18em',
                       padding: '12px 32px',
                       borderRadius: 10,
                       cursor: 'pointer',
@@ -665,8 +708,10 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       userSelect: 'none',
                     }}
                   >
-                    <span style={{ pointerEvents: 'none', userSelect: 'none' }}>START SHIPMENT</span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, pointerEvents: 'none' }}>
+                    <span style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                      {isAr ? ar.hero.ctaQuote : 'START SHIPMENT'}
+                    </span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, pointerEvents: 'none', transform: isAr ? 'scaleX(-1)' : undefined }}>
                       <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                     <div className="btn-shine-overlay" />
@@ -698,7 +743,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
         >
           {/* Track shipment card */}
           <div className="hero-track-wrap" style={{ flex: '0 1 auto', minWidth: 0, display: 'flex', alignItems: 'stretch' }}>
-            <TrackCard />
+            <TrackCard isAr={isAr} />
           </div>
 
           {/* Stats bar */}
@@ -712,40 +757,35 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             overflow: 'hidden',
           }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1.5, background: 'linear-gradient(90deg,transparent,rgba(91,194,231,0.35),transparent)', pointerEvents: 'none', zIndex: 1 }} />
-            {([
-              { v: '120+', l: 'Countries' },
-              { v: '25+',  l: 'Years' },
-              { v: '24/7', l: 'Operations' },
-              { v: 'KSA',  l: 'Specialist' },
-            ] as { v: string; l: string }[]).map((s, idx, arr) => (
+            {STATS.map((s, idx, arr) => (
               <div key={s.l} className="hero-stat-cell" style={{
                 display: 'flex', alignItems: 'center',
-                padding: '8px clamp(8px,1.2vw,16px)',
+                padding: '1.25rem clamp(8px,1.2vw,16px)',
                 borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 flexShrink: 0,
               }}>
                 <div style={{ textAlign: 'center' }}>
                   <div className="hero-stat-number" style={{
-                    fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: '1.1rem',
-                    letterSpacing: '0.08em',
-                    lineHeight: 1,
+                    fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
+                    fontSize: '1.8rem',
+                    letterSpacing: isAr ? '0' : '0.08em',
+                    lineHeight: 1.1,
                     color: '#ffffff',
                     textShadow: '0 0 20px rgba(255,255,255,0.3)',
                   }}>
-                    {s.v}
+                    {isAr ? s.arV : s.v}
                   </div>
                   <div className="hero-stat-label" style={{
-                    fontFamily: "'Inter', sans-serif",
-                    fontSize: 8,
-                    letterSpacing: '0.14em',
-                    textTransform: 'uppercase',
+                    fontFamily: isAr ? cairoFont : "'Inter', sans-serif",
+                    fontSize: isAr ? '15px' : '11px',
+                    letterSpacing: isAr ? '0' : '0.14em',
+                    textTransform: isAr ? 'none' : 'uppercase',
                     color: 'rgba(91,194,231,0.85)',
                     fontWeight: 600,
-                    marginTop: 2,
+                    marginTop: 6,
                     whiteSpace: 'nowrap',
                   }}>
-                    {s.l}
+                    {isAr ? s.ar : s.l}
                   </div>
                 </div>
               </div>
@@ -773,14 +813,14 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
         >
           <span
             style={{
-              fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
+              fontFamily: isAr ? cairoFont : 'var(--font-dm-sans, system-ui), sans-serif',
               fontSize: '0.58rem',
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
+              letterSpacing: isAr ? '0' : '0.2em',
+              textTransform: isAr ? 'none' : 'uppercase',
               color: 'rgba(255,255,255,0.28)',
             }}
           >
-            Scroll
+            {isAr ? 'مرر' : 'Scroll'}
           </span>
           <div
             style={{

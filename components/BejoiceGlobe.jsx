@@ -521,8 +521,8 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
             </motion.div>
           )}
 
-          <div style={{ textAlign:'center', marginTop:'0.8rem', fontFamily:"'DM Sans',sans-serif", fontSize:'0.65rem', color:'rgba(91,194,231,0.4)', letterSpacing:'0.22em', textTransform:'uppercase' }}>
-            DRAG TO ROTATE
+          <div style={{ textAlign:'center', marginTop:'0.8rem', fontFamily: isAr ? "var(--font-cairo,'Cairo'),sans-serif" : "'DM Sans',sans-serif", fontSize:'0.65rem', color:'rgba(91,194,231,0.4)', letterSpacing: isAr ? '0' : '0.22em', textTransform: isAr ? 'none' : 'uppercase' }}>
+            {isAr ? 'اسحب للتدوير' : 'DRAG TO ROTATE'}
           </div>
         </motion.div>
 

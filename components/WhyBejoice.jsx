@@ -114,7 +114,7 @@ export default function WhyBejoice() {
             position: 'relative', zIndex: 2,
           }}>
             <div style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "var(--font-dm-sans), sans-serif",
               fontSize: 'clamp(13px,1.4vw,16px)',
               letterSpacing: '0.45em', textTransform: 'uppercase',
               color: 'rgba(91,194,231,1)',
@@ -130,7 +130,7 @@ export default function WhyBejoice() {
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
               style={{
-                fontFamily: "'Bebas Neue', sans-serif",
+                fontFamily: "var(--font-bebas), sans-serif",
                 fontSize: 'clamp(3rem,7vw,6rem)',
                 letterSpacing: '0.07em', lineHeight: 1,
                 margin: 0,
@@ -166,7 +166,7 @@ export default function WhyBejoice() {
             }}
           >
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "var(--font-dm-sans), sans-serif",
               fontSize: 'clamp(16px,1.6vw,18.5px)',
               fontWeight: 400, color: 'rgba(255,255,255,0.78)',
               lineHeight: 1.85, margin: 0,
@@ -194,7 +194,7 @@ export default function WhyBejoice() {
               )}
             </p>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "var(--font-dm-sans), sans-serif",
               fontSize: 'clamp(16px,1.6vw,18px)',
               fontWeight: 400, color: 'rgba(255,255,255,0.6)',
               lineHeight: 1.85, margin: '1.2rem 0 0',
@@ -216,7 +216,7 @@ export default function WhyBejoice() {
             <div style={{ display:'flex', alignItems:'center', justifyContent: 'center', gap:12, marginBottom:'clamp(1.5rem,2.5vw,2rem)' }}>
               <div style={{ width:40, height:2, background:'linear-gradient(90deg, transparent, #5BC2E7)', borderRadius:1 }} />
               <span style={{
-                fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(16px,1.8vw,21px)',
+                fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'clamp(16px,1.8vw,21px)',
                 fontWeight:800, letterSpacing:'0.35em', textTransform:'uppercase',
                 color:'#5BC2E7', textShadow:'0 0 20px rgba(91,194,231,0.6)',
               }}>
@@ -268,7 +268,7 @@ export default function WhyBejoice() {
                   </div>
                   <div>
                     <div style={{
-                      fontFamily: "'Bebas Neue', sans-serif",
+                      fontFamily: "var(--font-bebas), sans-serif",
                       fontSize: 'clamp(1.4rem,2.2vw,1.7rem)',
                       letterSpacing: '0.06em', lineHeight: 1.1,
                       color: '#5BC2E7', marginBottom: 4,
@@ -277,7 +277,7 @@ export default function WhyBejoice() {
                       {cap.title}
                     </div>
                     <div style={{
-                      fontFamily: "'DM Sans', sans-serif",
+                      fontFamily: "var(--font-dm-sans), sans-serif",
                       fontSize: 'clamp(20px,2.0vw,22.5px)',
                       color: 'rgba(255,255,255,0.65)', lineHeight: 1.6, fontWeight: 450,
                     }}>
@@ -299,7 +299,7 @@ export default function WhyBejoice() {
               <div style={{ display:'inline-flex', alignItems:'center', gap:12, marginBottom:'clamp(0.6rem,1vw,0.8rem)' }}>
                 <div style={{ width:40, height:2, background:'linear-gradient(90deg, transparent, #5BC2E7)', borderRadius:1 }} />
                 <span style={{
-                  fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,1.6vw,18px)',
+                  fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'clamp(14px,1.6vw,18px)',
                   fontWeight:800, letterSpacing:'0.35em', textTransform:'uppercase',
                   color:'#5BC2E7', textShadow:'0 0 20px rgba(91,194,231,0.6)',
                 }}>
@@ -373,7 +373,7 @@ export default function WhyBejoice() {
 
                   {/* Name */}
                   <div style={{
-                    fontFamily: isAr ? "'Cairo', sans-serif" : "'Bebas Neue', sans-serif",
+                    fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-bebas), sans-serif",
                     fontSize: isAr ? 'clamp(1rem,1.8vw,1.3rem)' : 'clamp(0.9rem,1.6vw,1.15rem)',
                     letterSpacing: isAr ? '0' : '0.12em', lineHeight: 1.15,
                     color: '#ffffff',
@@ -384,7 +384,7 @@ export default function WhyBejoice() {
 
                   {/* Role */}
                   <div style={{
-                    fontFamily: isAr ? "'Cairo', sans-serif" : "'DM Sans', sans-serif",
+                    fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-dm-sans), sans-serif",
                     fontSize: isAr ? 'clamp(12px,1.2vw,14px)' : 'clamp(13px,1.35vw,16px)',
                     fontWeight: 600, letterSpacing: isAr ? '0' : '0.12em',
                     textTransform: isAr ? 'none' : 'uppercase',

@@ -2,12 +2,11 @@
 
 // All sections use browser APIs (window, canvas, GSAP, Lenis, Three.js).
 // Using next/dynamic with ssr:false for all prevents SSR window errors.
-import { useEffect, useState, useRef, useCallback, startTransition, Suspense } from 'react';
+import { useEffect, useState, useRef, startTransition, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { LangProvider } from '@/context/LangContext';
 
 // ── Core always-visible UI — ssr:false so GSAP/Lenis never run on server ──
-const Loader           = dynamic(() => import('@/components/Loader'),           { ssr: false });
 const Nav              = dynamic(() => import('@/components/Nav'),              { ssr: false });
 const ScrollStory      = dynamic(() => import('@/components/ScrollStory'),      { ssr: false });
 const ScrollProgress   = dynamic(() => import('@/components/ScrollProgress'),   { ssr: false });
@@ -23,7 +22,6 @@ const Certifications = dynamic(() => import('@/components/Certifications'), { ss
 const Footer        = dynamic(() => import('@/components/Footer'),        { ssr: false });
 const FloatingBookCTA = dynamic(() => import('@/components/FloatingBookCTA'), { ssr: false });
 const QuickQuoteModal = dynamic(() => import('@/components/QuickQuoteModal'), { ssr: false });
-const Finale        = dynamic(() => import('@/components/Finale'),        { ssr: false });
 
 // Skeleton fallbacks (these are simple, no browser deps — keep as regular imports)
 import {
@@ -35,20 +33,9 @@ import {
 } from '@/components/SkeletonSection';
 
 export default function Page() {
-  const [loaderProgress, setLoaderProgress] = useState(0);
-  const [loaderVisible, setLoaderVisible]   = useState(true);
-  const [quoteOpen, setQuoteOpen]           = useState(false);
+  const [quoteOpen, setQuoteOpen] = useState(false);
 
-  const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0]);
-
-  const handleProgress = useCallback((pct: number) => {
-    setLoaderProgress(pct);
-  }, []);
-
-  const handleLoaded = useCallback(() => {
-    setLoaderProgress(100);
-    setTimeout(() => setLoaderVisible(false), 350);
-  }, []);
+  const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
   // Scroll restoration
   useEffect(() => {
@@ -137,9 +124,6 @@ export default function Page() {
   return (
     <LangProvider>
       <div className="grain">
-        {/* Loader — shown until hero frames load */}
-        <Loader progress={loaderProgress} visible={loaderVisible} />
-
         <ScrollProgress />
         <GlobalInteractions />
         <ScrollReveal />
@@ -154,8 +138,8 @@ export default function Page() {
 
           {/* Mobile-optimised 800-frame canvas scrollytelling hero */}
           <ScrollStory
-            onProgress={handleProgress}
-            onLoaded={handleLoaded}
+            onProgress={() => {}}
+            onLoaded={() => {}}
             chapterOffsets={chapterOffsets}
             onQuoteClick={() => setQuoteOpen(true)}
           />
@@ -169,7 +153,6 @@ export default function Page() {
 
         <Suspense fallback={<FooterSkeleton />}><Footer /></Suspense>
         <Suspense fallback={null}><FloatingBookCTA /></Suspense>
-        <Suspense fallback={null}><Finale /></Suspense>
 
         {quoteOpen && (
           <QuickQuoteModal onClose={() => {

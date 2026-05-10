@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Bebas_Neue, DM_Sans, Cormorant_Garamond, Cairo } from 'next/font/google';
+import { Bebas_Neue, DM_Sans, Cormorant_Garamond, Cairo, Plus_Jakarta_Sans, Inter } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 
@@ -11,13 +11,15 @@ const bebasNeue = Bebas_Neue({
 });
 
 const dmSans = DM_Sans({
+  weight: ['300', '400', '500', '600'],
   subsets: ['latin'],
   variable: '--font-dm-sans',
   display: 'swap',
 });
 
 const cormorant = Cormorant_Garamond({
-  weight: ['400', '600'],
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--font-cormorant',
   display: 'swap',
@@ -26,6 +28,20 @@ const cormorant = Cormorant_Garamond({
 const cairo = Cairo({
   subsets: ['arabic', 'latin'],
   variable: '--font-cairo',
+  display: 'swap',
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  weight: ['400', '500', '600', '700', '800'],
+  subsets: ['latin'],
+  variable: '--font-plus-jakarta',
+  display: 'swap',
+});
+
+const inter = Inter({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-inter',
   display: 'swap',
 });
 
@@ -52,7 +68,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       dir="ltr"
-      className={`${bebasNeue.variable} ${dmSans.variable} ${cormorant.variable} ${cairo.variable}`}
+      className={`${bebasNeue.variable} ${dmSans.variable} ${cormorant.variable} ${cairo.variable} ${plusJakarta.variable} ${inter.variable}`}
     >
       <head>
         {/* Preconnect for performance */}

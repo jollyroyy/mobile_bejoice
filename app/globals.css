@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+  /* Plus Jakarta Sans — used in QuickQuoteSection form fields */
+  --font-plus-jakarta: 'Plus Jakarta Sans', sans-serif;
+
   /* Fracht Blue Palette — sky & navy */
   --gold: #5BC2E7;          /* sky blue (replaces core gold) */
   --gold-light: #8DD8F0;    /* light blue shimmer */
@@ -513,9 +516,9 @@ body {
   border-bottom: 2px solid rgba(0,0,0,0.2);
   color: #07101c;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
-  letter-spacing: 0.22em; text-transform: uppercase;
-  border-radius: 4px;
+  font-size: clamp(12px, 1.4vw, 14px);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  border-radius: 10px;
   cursor: pointer; overflow: hidden;
   box-shadow:
     0 10px 40px rgba(91,194,231,0.35),
@@ -696,6 +699,71 @@ body {
     padding: 0.35rem 0.7rem !important;
   }
   .hero-track-wrap input { font-size: 13px !important; }
+}
+
+/* ── Hero bottom bar — Track card + Stats (responsive scaling) ── */
+@media (max-width: 767px) {
+  /* Show bottom bar on mobile — compact layout above scroll hint */
+  .hero-bottom-bar {
+    bottom: clamp(3.2rem, 8vh, 4.5rem) !important;
+    padding: 0 0.4rem !important;
+    gap: 4px !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+  }
+  .hero-track-wrap {
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    max-width: 55% !important;
+  }
+
+  /* Chapter overlays: center text, reduce top padding so content clears the nav */
+  .hero-chapter-overlay {
+    justify-content: flex-start !important;
+    align-items: center !important;
+    padding-top: 5rem !important;
+    padding-bottom: 9rem !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  .hero-glass-card {
+    align-items: center !important;
+    text-align: center !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+  .hero-accent-rule { align-self: center !important; }
+  .hero-intro-cta   { align-self: center !important; }
+}
+@media (max-width: 1200px) {
+  .hero-card-title { font-size: 1.4rem !important; }
+  .hero-card-btn   { padding: 10px 18px !important; font-size: 0.88rem !important; }
+  .hero-stat-number { font-size: 1.5rem !important; }
+  .hero-stat-cell  { padding: 1rem clamp(6px,1vw,12px) !important; }
+}
+@media (max-width: 1000px) {
+  .hero-card-title { font-size: 1.1rem !important; }
+  .hero-card-sub   { font-size: 9.5px !important; }
+  .hero-card-btn   { padding: 8px 14px !important; font-size: 0.8rem !important; }
+  .hero-stat-number { font-size: 1.25rem !important; }
+  .hero-stat-label { font-size: 8.5px !important; letter-spacing: 0.09em !important; }
+  .hero-stat-cell  { padding: 0.9rem 6px !important; }
+}
+@media (max-width: 870px) {
+  .hero-card-title { font-size: 0.95rem !important; }
+  .hero-card-sub   { display: none !important; }
+  .hero-card-btn   { padding: 7px 10px !important; font-size: 0.74rem !important; }
+  .hero-stat-number { font-size: 1.1rem !important; }
+  .hero-stat-label { font-size: 7.5px !important; letter-spacing: 0.06em !important; }
+  .hero-stat-cell  { padding: 0.75rem 5px !important; }
+}
+/* Mobile phones (≤767px): stat/card sizing — must come after 870px block to win cascade */
+@media (max-width: 767px) {
+  .hero-stat-cell   { padding: 0.5rem 5px !important; }
+  .hero-stat-number { font-size: 0.95rem !important; }
+  .hero-stat-label  { font-size: 6.5px !important; letter-spacing: 0.05em !important; }
+  .hero-card-title  { font-size: 0.85rem !important; }
+  .hero-card-btn    { padding: 6px 8px !important; font-size: 0.68rem !important; letter-spacing: 0.12em !important; }
 }
 
 /* ── Floating chatbot (Layla): move to bottom-LEFT on mobile so it doesn't block right-side content ── */

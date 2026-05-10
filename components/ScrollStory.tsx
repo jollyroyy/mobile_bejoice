@@ -56,44 +56,108 @@ const FRAME_URLS: string[] = [
 // Footage cut points → trigger dip-to-black overlay
 const SEG_CUTS = [BEJOICE_START, PORT_START, FRAMES8_START, TECH_START]; // [211, 440, 534, 655]
 
-// ── Chapter overlay configs (5 chapters = 5 nav dots) ────────────────────
+// ── Chapter overlay configs (9 chapters = 9 nav dots) ────────────────────
 const CHAPTERS = [
+  // bic: 0–144
   {
-    frameRange: [0, BIC_COUNT - 1] as [number, number],          // 0–144
-    tag: 'Chapter 01 — Origins',
+    frameRange: [0, 144] as [number, number],
+    tag: 'CONNECTING KSA TO THE WORLD',
     headline: ['SMART FREIGHT', 'POWERED BY AI'],
-    body: 'Award-winning freight forwarder delivering seamless end-to-end logistics with reliability and global reach.',
     align: 'left' as const,
   },
+  // bejoice heavy lift: 211–285
   {
-    frameRange: [BEJOICE_START, PORT_START - 1] as [number, number],  // 211–439
-    tag: 'Chapter 02 — Heavy Lift',
-    headline: ['FROM BLUEPRINT TO DELIVERY,', 'WE MOVE IT ALL'],
-    body: 'Seamless cross-border land transport across the GCC — powered by a modern fleet connecting Saudi Arabia to every regional hub.',
+    frameRange: [211, 285] as [number, number],
+    tag: 'PROJECTS & HEAVY LIFT',
+    headline: ['FROM BLUE PRINT TO DELIVERY,', 'WE MOVE IT ALL'],
     align: 'right' as const,
   },
+  // navigating oceans: 327–440 (spans bejoice end → port start)
   {
-    frameRange: [PORT_START, FRAMES8_START - 1] as [number, number],  // 440–533
-    tag: 'Chapter 03 — Port & Ocean',
+    frameRange: [327, 440] as [number, number],
+    tag: 'FCL · LCL · BREAKBULK · REEFER · DG · OOG',
     headline: ['NAVIGATING OCEANS.', 'DELIVERING CONFIDENCE'],
-    body: 'Full-spectrum sea freight — containerized, breakbulk, consolidated, reefer, dangerous goods, and out-of-gauge cargo handled end to end.',
     align: 'left' as const,
   },
+  // port operations: 440–490
   {
-    frameRange: [FRAMES8_START, TECH_START - 1] as [number, number],  // 534–654
-    tag: 'Chapter 04 — Air Freight',
-    headline: ['SPEED ABOVE ALL.', 'DELIVERED ON TIME'],
-    body: 'Express air cargo solutions connecting Saudi Arabia to global hubs — critical shipments, time-sensitive freight, temperature-controlled cargo.',
+    frameRange: [440, 490] as [number, number],
+    tag: 'PORT OPERATIONS',
+    headline: ['DRIVEN BY TRANSPARENCY.', 'DELIVERED WITH TRUST'],
     align: 'right' as const,
   },
+  // port to port: 496–550
   {
-    frameRange: [TECH_START, TOTAL_FRAMES - 1] as [number, number],   // 655–799
-    tag: 'Chapter 05 — Engineering',
-    headline: ['PRECISION IN HANDLING.', 'EXCELLENCE IN DELIVERY'],
-    body: 'End-to-end technical cargo solutions engineered for complexity — heavy machinery, industrial equipment, and high-value freight.',
+    frameRange: [496, 550] as [number, number],
+    tag: 'POWERING SAUDI PROJECTS THROUGH EVERY STORM',
+    headline: ['FROM PORT TO PORT.', 'WORLD-CLASS LOGISTICS'],
     align: 'left' as const,
+  },
+  // air freight: 534–599
+  {
+    frameRange: [534, 599] as [number, number],
+    tag: 'AIR FREIGHT',
+    headline: ['SPEED ABOVE ALL.', 'DELIVERED ON TIME'],
+    align: 'right' as const,
+  },
+  // world class air: 604–654
+  {
+    frameRange: [604, 654] as [number, number],
+    tag: '',
+    headline: ['WORLD CLASS', 'AIR FREIGHT'],
+    align: 'right' as const,
+  },
+  // precision/tech: 655–729
+  {
+    frameRange: [655, 729] as [number, number],
+    tag: '',
+    headline: ['PRECISION IN HANDLING.', 'EXCELLENCE IN DELIVERY'],
+    align: 'right' as const,
+  },
+  // technical engineering: 764–799
+  {
+    frameRange: [764, 799] as [number, number],
+    tag: '',
+    headline: ['TECHNICAL', 'ENGINEERING'],
+    align: 'center' as const,
   },
 ] as const;
+
+// ── Track Shipment card ───────────────────────────────────────────────────
+function TrackCard() {
+  return (
+    <div style={{
+      width: '100%', height: '100%', flex: '1 1 auto', position: 'relative', overflow: 'hidden',
+      background: 'rgba(10,10,14,0.55)',
+      backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)',
+      border: '1px solid rgba(91,194,231,0.12)',
+      borderRadius: 14,
+      padding: '1.25rem 1.75rem',
+      boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 20px rgba(91,194,231,0.04)',
+      display: 'flex', flexDirection: 'column', justifyContent: 'center',
+    }}>
+      {/* Top accent line */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1.5, background: 'linear-gradient(90deg,transparent,rgba(91,194,231,0.35),transparent)', pointerEvents: 'none', zIndex: 1 }} />
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
+        <div>
+          <p className="hero-card-title" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#fff', letterSpacing: '0.08em', margin: 0, lineHeight: 1.1, textShadow: '0 0 24px rgba(255,255,255,0.25)' }}>
+            SHIPMENT TRACKING
+          </p>
+          <p className="hero-card-sub" style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.75)', margin: '6px 0 0', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 600 }}>
+            Real-Time Global Visibility
+          </p>
+        </div>
+        <button
+          onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
+          className="btn-gold hero-card-btn"
+          style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: 10, whiteSpace: 'nowrap', flexShrink: 0, fontWeight: 400, cursor: 'pointer' }}
+        >
+          Track Now
+        </button>
+      </div>
+    </div>
+  );
+}
 
 // ── Props ─────────────────────────────────────────────────────────────────
 interface ScrollStoryProps {
@@ -113,6 +177,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
   const segRefs     = useRef<(HTMLDivElement | null)[]>([]);
   const shRef       = useRef<HTMLDivElement>(null);
   const globeRef    = useRef<HTMLDivElement>(null);
+  const bottomBarRef = useRef<HTMLDivElement>(null);
 
   const framesRef     = useRef<(HTMLImageElement | null)[]>([]);
   const lastIdxRef    = useRef(-1);
@@ -140,23 +205,21 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
 
     const cw    = canvas.width;
     const ch    = canvas.height;
+
+    // Cover: always fill the full canvas — no black bars on any screen size or orientation.
     const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+
     const w     = Math.ceil(img.naturalWidth  * scale);
     const h     = Math.ceil(img.naturalHeight * scale);
     const x     = Math.floor((cw - w) / 2);
     const y     = Math.floor((ch - h) / 2);
 
-    ctx.fillStyle = '#080808';
-    ctx.fillRect(0, 0, cw, ch);
-
     ctx.save();
     ctx.imageSmoothingEnabled = true;
-    if (typeof window !== 'undefined' && window.innerWidth > 768) {
-      ctx.imageSmoothingQuality = 'high';
-      if ('filter' in ctx) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (ctx as any).filter = 'contrast(1.08) saturate(1.12) brightness(1.02)';
-      }
+    ctx.imageSmoothingQuality = 'high';
+    if ('filter' in ctx) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (ctx as any).filter = 'contrast(1.08) saturate(1.12) brightness(1.02)';
     }
     ctx.drawImage(img, x, y, w, h);
     ctx.restore();
@@ -194,6 +257,15 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
         ));
         pf.style.width = `${progress * 100}%`;
       }
+    }
+
+    // Bottom bar (Track card + Stats): visible only during Chapter 0, fades with it
+    const bbEl = bottomBarRef.current;
+    if (bbEl) {
+      const [, end0] = CHAPTERS[0].frameRange; // 144
+      const bbOp = Math.min(Math.max(0, end0 - frameIdx) / FRAME_FADE, 1);
+      bbEl.style.opacity       = String(bbOp);
+      bbEl.style.pointerEvents = bbOp > 0.1 ? 'all' : 'none';
     }
 
     // Globe overlay — visible during globe-bridge segment (frames 145–210)
@@ -384,10 +456,11 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
     >
       {/* ── Sticky viewport ─────────────────────────────────────────── */}
       <div
+        className="hero-sticky-viewport"
         style={{
           position: 'sticky',
           top: 0,
-          height: '100vh',
+          height: '100vh',         /* fallback */
           overflow: 'hidden',
           background: '#080808',
         }}
@@ -479,17 +552,19 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
         {/* Chapter text overlays */}
         {CHAPTERS.map((ch, i) => {
           const right = ch.align === 'right';
+          const center = ch.align === 'center';
           return (
             <div
               key={i}
               ref={el => { chapRefs.current[i] = el; }}
+              className="hero-chapter-overlay"
               style={{
                 position: 'absolute',
                 inset: 0,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
-                alignItems: right ? 'flex-end' : 'flex-start',
+                alignItems: center ? 'center' : right ? 'flex-end' : 'flex-start',
                 padding: 'clamp(1.2rem, 5vw, 6rem)',
                 paddingTop: 'clamp(10rem, 20vh, 13rem)',
                 paddingBottom: 'clamp(7rem, 14vh, 12rem)',
@@ -501,40 +576,43 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             >
               {/* Glass card */}
               <div
+                className="hero-glass-card"
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: right ? 'flex-end' : 'flex-start',
-                  background: 'rgba(0,0,0,0.42)',
-                  backdropFilter: 'blur(6px)',
-                  WebkitBackdropFilter: 'blur(6px)',
+                  alignItems: center ? 'center' : right ? 'flex-end' : 'flex-start',
+                  background: 'rgba(0,0,0,0.52)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
                   borderRadius: 10,
                   padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                 }}
               >
-                {/* Eyebrow pill */}
-                <div
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
-                    fontSize: 'clamp(10px, 1.1vw, 13px)',
-                    letterSpacing: '0.2em',
-                    textTransform: 'uppercase',
-                    fontWeight: 700,
-                    color: 'rgba(255,255,255,0.92)',
-                    background: 'rgba(255,255,255,0.1)',
-                    border: '1.5px solid rgba(255,255,255,0.44)',
-                    borderRadius: 3,
-                    padding: '5px 13px',
-                    marginBottom: 14,
-                    userSelect: 'none',
-                  }}
-                >
-                  {ch.tag}
-                </div>
+                {/* Eyebrow pill — only rendered when tag is non-empty */}
+                {ch.tag && (
+                  <div
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
+                      fontSize: 'clamp(10px, 1.1vw, 13px)',
+                      letterSpacing: '0.2em',
+                      textTransform: 'uppercase',
+                      fontWeight: 700,
+                      color: 'rgba(255,255,255,0.92)',
+                      background: 'rgba(255,255,255,0.1)',
+                      border: '1.5px solid rgba(255,255,255,0.44)',
+                      borderRadius: 3,
+                      padding: '5px 13px',
+                      marginBottom: 14,
+                      userSelect: 'none',
+                    }}
+                  >
+                    {ch.tag}
+                  </div>
+                )}
 
                 {/* Headline */}
                 <div style={{ userSelect: 'none' }}>
@@ -543,14 +621,14 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       key={li}
                       style={{
                         fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: 'clamp(2.4rem, 5.8vw, 5.8rem)',
+                        fontSize: 'clamp(1.6rem, 4vw, 4.5rem)',
                         fontWeight: 400,
-                        lineHeight: 0.88,
-                        letterSpacing: '0.05em',
+                        lineHeight: 0.87,
+                        letterSpacing: '0.06em',
                         color: li % 2 === 0 ? '#ffffff' : 'var(--gold)',
                         textShadow: li % 2 === 0
-                          ? '0 1px 16px rgba(0,0,0,0.9)'
-                          : '0 1px 16px rgba(0,0,0,0.9), 0 0 24px rgba(200,168,107,0.28)',
+                          ? '0 1px 12px rgba(0,0,0,0.9)'
+                          : '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)',
                       }}
                     >
                       {line}
@@ -558,59 +636,132 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   ))}
                 </div>
 
-                {/* Gold accent rule */}
+                {/* Accent rule */}
                 <div
+                  className="hero-accent-rule"
                   style={{
-                    width: 56,
+                    width: 60,
                     height: 2,
-                    marginTop: 20,
-                    marginBottom: 14,
-                    background: right
-                      ? 'linear-gradient(270deg, rgba(200,168,107,0.85), rgba(200,168,107,0.06))'
-                      : 'linear-gradient(90deg,  rgba(200,168,107,0.85), rgba(200,168,107,0.06))',
-                    alignSelf: right ? 'flex-end' : 'flex-start',
+                    marginTop: 26,
+                    background: center
+                      ? 'linear-gradient(90deg, rgba(91,194,231,0.08), rgba(91,194,231,0.85), rgba(91,194,231,0.08))'
+                      : right
+                        ? 'linear-gradient(270deg, rgba(91,194,231,0.85), rgba(91,194,231,0.08))'
+                        : 'linear-gradient(90deg, rgba(91,194,231,0.85), rgba(91,194,231,0.08))',
+                    alignSelf: center ? 'center' : right ? 'flex-end' : 'flex-start',
                   }}
                 />
 
-                {/* Body */}
-                <p
-                  style={{
-                    fontFamily: 'var(--font-dm-sans, system-ui), sans-serif',
-                    fontSize: 'clamp(0.8rem, 1.6vw, 0.94rem)',
-                    color: 'rgba(255,255,255,0.6)',
-                    maxWidth: '40ch',
-                    lineHeight: 1.66,
-                    margin: 0,
-                    textAlign: right ? 'right' : 'left',
-                  }}
-                >
-                  {ch.body}
-                </p>
-
-                {/* Per-chapter progress bar */}
-                <div
-                  style={{
-                    marginTop: 16,
-                    width: 'min(150px, 34vw)',
-                    height: 1,
-                    background: 'rgba(255,255,255,0.09)',
-                    alignSelf: right ? 'flex-end' : 'flex-start',
-                  }}
-                >
-                  <div
-                    ref={el => { pfRefs.current[i] = el; }}
+                {/* START SHIPMENT CTA — first chapter only */}
+                {i === 0 && (
+                  <button
+                    className="hero-intro-cta btn-gold"
+                    onClick={() => onQuoteClick?.()}
                     style={{
-                      height: '100%',
-                      background: 'var(--gold)',
-                      width: 0,
-                      willChange: 'width',
+                      marginTop: 28,
+                      alignSelf: right ? 'flex-end' : 'flex-start',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 10,
+                      fontFamily: "'Bebas Neue', sans-serif",
+                      fontSize: '1rem',
+                      letterSpacing: '0.18em',
+                      padding: '12px 32px',
+                      borderRadius: 10,
+                      cursor: 'pointer',
+                      pointerEvents: 'all',
+                      position: 'relative',
+                      zIndex: 1000,
+                      userSelect: 'none',
                     }}
-                  />
-                </div>
+                  >
+                    <span style={{ pointerEvents: 'none', userSelect: 'none' }}>START SHIPMENT</span>
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, pointerEvents: 'none' }}>
+                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <div className="btn-shine-overlay" />
+                  </button>
+                )}
               </div>
             </div>
           );
         })}
+
+        {/* ── Bottom bar: Track card + Stats — visible only during Chapter 0 ── */}
+        <div
+          ref={bottomBarRef}
+          className="hero-bottom-bar"
+          style={{
+            position: 'absolute',
+            bottom: 'clamp(24px, 5vh, 60px)',
+            left: 0,
+            right: 0,
+            zIndex: 8,
+            display: 'flex',
+            flexWrap: 'nowrap',
+            gap: 'clamp(4px, 0.6vw, 10px)',
+            alignItems: 'stretch',
+            justifyContent: 'center',
+            padding: '0 clamp(0.5rem, 2vw, 2rem)',
+            pointerEvents: 'all',
+          }}
+        >
+          {/* Track shipment card */}
+          <div className="hero-track-wrap" style={{ flex: '0 1 auto', minWidth: 0, display: 'flex', alignItems: 'stretch' }}>
+            <TrackCard />
+          </div>
+
+          {/* Stats bar */}
+          <div style={{
+            flex: '0 0 auto', position: 'relative',
+            display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', alignItems: 'stretch',
+            background: 'rgba(10,10,14,0.55)',
+            border: '1px solid rgba(91,194,231,0.12)', borderRadius: 14,
+            backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)',
+            boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 20px rgba(91,194,231,0.04)',
+            overflow: 'hidden',
+          }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1.5, background: 'linear-gradient(90deg,transparent,rgba(91,194,231,0.35),transparent)', pointerEvents: 'none', zIndex: 1 }} />
+            {([
+              { v: '120+', l: 'Countries' },
+              { v: '25+',  l: 'Years' },
+              { v: '24/7', l: 'Operations' },
+              { v: 'KSA',  l: 'Specialist' },
+            ] as { v: string; l: string }[]).map((s, idx, arr) => (
+              <div key={s.l} className="hero-stat-cell" style={{
+                display: 'flex', alignItems: 'center',
+                padding: '1.25rem clamp(8px,1.2vw,16px)',
+                borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                flexShrink: 0,
+              }}>
+                <div style={{ textAlign: 'center' }}>
+                  <div className="hero-stat-number" style={{
+                    fontFamily: "'Bebas Neue', sans-serif",
+                    fontSize: '1.8rem',
+                    letterSpacing: '0.08em',
+                    lineHeight: 1.1,
+                    color: '#ffffff',
+                    textShadow: '0 0 20px rgba(255,255,255,0.3)',
+                  }}>
+                    {s.v}
+                  </div>
+                  <div className="hero-stat-label" style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: 11,
+                    letterSpacing: '0.14em',
+                    textTransform: 'uppercase',
+                    color: 'rgba(91,194,231,0.85)',
+                    fontWeight: 600,
+                    marginTop: 6,
+                    whiteSpace: 'nowrap',
+                  }}>
+                    {s.l}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         {/* Scroll hint */}
         <div

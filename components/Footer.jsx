@@ -13,7 +13,7 @@ const footerLinks = {
 
 const POLICIES = {
   'Privacy Policy': {
-    updated: 'May 2026',
+    updated: '',
     sections: [
       {
         title: '1. Who We Are',
@@ -66,7 +66,7 @@ const POLICIES = {
     ],
   },
   'Terms of Service': {
-    updated: 'May 2026',
+    updated: '',
     sections: [
       {
         title: 'I. Definitions',
@@ -105,7 +105,7 @@ const POLICIES = {
 17. Interpretation – Words such as "includes" or "including" are not restrictive. References to documents apply equally in both paper and electronic format. Headings are for convenience only. If there is a conflict between these Terms and any Transport or Storage Document, the latter shall govern. If any provision is held invalid, the remaining Terms shall remain fully enforceable.`,
       },
       {
-        title: 'II. Company\'s Role',
+        title: "II. Company's Role",
         body: `1. Unless otherwise agreed in writing, the Customer recognizes that the Company operates solely as the Customer's agent.
 
 2. The Company retains full discretion regarding the choice of methods, routes, and procedures for handling goods and may appoint third parties where necessary. These third parties are considered agents of the Customer, who remains responsible for their charges unless the Company has agreed to assume them in writing.
@@ -124,12 +124,28 @@ const POLICIES = {
 
 5. The Company reserves the right to select the carrier unless the Customer specifies otherwise.
 
+6. Rates are subject to change due to fuel surcharges, currency fluctuations, war risk premiums, or other carrier-applied charges.
+
+7. Quoted rates exclude:
+   • Destination Terminal Handling Charges (THC) and local port fees (unless otherwise agreed).
+   • Government inspection fees and related detention/demurrage costs.
+   • General Rate Increases, Rate Restorations, or Peak Season Surcharges applied at the time of booking.
+   • Charges resulting from discrepancies in weight, size, or container type at shipment time.
+   • Special equipment repositioning or arrangement fees.
+   • Insurance, unless specifically arranged and paid for by the Customer.
+
+8. Transit times are estimates only and based on carrier schedules. The Company is not liable for delays but will take reasonable steps to facilitate timely delivery.
+
+9. Quoted rates apply to general cargo unless expressly noted for perishable, hazardous, or oversized cargo.
+
+10. Dangerous goods are subject to carrier approval and must comply with the IMDG Code and national regulations.
+
 11. Quoted rates expressly excludes insurance coverage. Procuring insurance is solely the responsibility of the Shipper, Consignee, or Customer. The Company shall bear no liability of any kind, under any circumstances, for the Customer's failure or decision not to obtain insurance coverage.
 
 A Customer who wishes to insure their cargo must arrange such insurance independently and at their own cost and expense, or inform the Company in prior for insurance arrangements on their behalf.`,
       },
       {
-        title: 'IV. Customer\'s Obligations',
+        title: "IV. Customer's Obligations",
         body: `1. The Customer must provide all required documentation and data, including licenses, permits, invoices, customs information, weights, measures, classification, and country of origin details.
 
 2. Any errors or omissions must be promptly corrected by the Customer.
@@ -249,47 +265,6 @@ A Customer who wishes to insure their cargo must arrange such insurance independ
 3. Any amendments must be made in writing and signed by the Company.
 
 4. Notices must be provided in writing and delivered by hand, email, or registered post to the parties' designated addresses.`,
-      },
-    ],
-  },
-  'Cookie Policy': {
-    updated: 'May 2026',
-    sections: [
-      {
-        title: '1. What Are Cookies?',
-        body: `Cookies are small text files placed on your device (computer, tablet, or mobile phone) when you visit a website. They are widely used to make websites work efficiently, improve user experience, and provide information to the website owner.\n\nSimilar technologies — such as web beacons, pixels, and local storage — may also be used for the same purposes and are covered by this policy.`,
-      },
-      {
-        title: '2. Why We Use Cookies',
-        body: `Bejoice uses cookies and similar technologies to:\n\n• Ensure our website functions correctly and securely.\n• Remember your preferences (such as language) across visits.\n• Understand how visitors interact with our website so we can improve it.\n• Measure the effectiveness of our marketing campaigns.\n• Personalise content and advertisements relevant to your interests (only with your consent).`,
-      },
-      {
-        title: '3. Categories of Cookies We Use',
-        body: `Strictly Necessary Cookies\nThese cookies are essential for the website to operate. They enable core features such as page navigation, security, and form submissions. You cannot opt out of these cookies as the website cannot function without them.\n\nPerformance & Analytics Cookies\nThese cookies collect anonymised information about how visitors use our website — such as which pages are visited most often and error messages encountered. We use Google Analytics and similar tools for this purpose. All data is aggregated and does not identify individual users.\n\nFunctional Cookies\nThese cookies allow the website to remember choices you make (such as language preference, region, or currency) to provide a more personalised experience. Disabling them may affect some features.\n\nMarketing & Targeting Cookies\nThese cookies are used to deliver advertisements relevant to you and your interests, and to measure the effectiveness of our campaigns. They may be set by us or by third-party advertising networks. They track your browsing activity across websites. We only deploy these cookies with your prior consent.\n\nSession vs. Persistent Cookies\nSession cookies expire when you close your browser. Persistent cookies remain on your device for a set period (ranging from days to years) or until you delete them.`,
-      },
-      {
-        title: '4. Specific Cookies & Third-Party Services',
-        body: `The following third-party services may place cookies on your device when you use our website:\n\n• Google Analytics (analytics.google.com): Collects anonymised usage statistics. Data is retained for 14 months. You can opt out via Google Analytics Opt-out Browser Add-on.\n• Cal.com (cal.com): Used for our booking and scheduling system. May set session cookies to maintain your booking session.\n• Google Maps / Mapbox: Embedded maps may set cookies for functionality and analytics.\n• EmailJS: Used to process contact form submissions. Does not set persistent tracking cookies.\n\nEach third-party service is governed by its own privacy and cookie policy. We encourage you to review those policies directly.`,
-      },
-      {
-        title: '5. Your Cookie Choices & Controls',
-        body: `You have the following options to manage cookies:\n\nBrowser Settings: Most browsers allow you to block, delete, or receive alerts about cookies through their settings menus. Common browser instructions:\n• Google Chrome: Settings → Privacy and Security → Cookies and other site data\n• Safari: Preferences → Privacy → Manage Website Data\n• Firefox: Options → Privacy & Security → Cookies and Site Data\n• Microsoft Edge: Settings → Cookies and site permissions\n\nOpt-Out Tools:\n• Google Analytics: tools.google.com/dlpage/gaoptout\n• Network Advertising Initiative: optout.networkadvertising.org\n• Digital Advertising Alliance: optout.aboutads.info\n\nPlease note: blocking all cookies may impair the functionality of our website and prevent you from using certain features such as booking or form submissions.`,
-      },
-      {
-        title: '6. Do Not Track',
-        body: `Some browsers transmit "Do Not Track" (DNT) signals to websites. As there is currently no universally accepted standard for responding to DNT signals, our website does not alter its data collection practices based on DNT browser settings. We continue to apply the same cookie controls described in this policy regardless of DNT status.`,
-      },
-      {
-        title: '7. Cross-Border Data Transfers',
-        body: `Some third-party services we use (such as Google Analytics) may process and store cookie data on servers located outside Saudi Arabia, including in the United States and European Union. Such transfers are subject to appropriate safeguards in accordance with applicable data protection law.`,
-      },
-      {
-        title: '8. Updates to This Policy',
-        body: `We may update this Cookie Policy from time to time to reflect changes in technology, regulation, or our business practices. The "Last Updated" date at the top of this policy will be revised accordingly. We encourage you to review this page periodically. Continued use of our website following any changes constitutes acceptance of the updated Cookie Policy.`,
-      },
-      {
-        title: '9. Contact Us',
-        body: `If you have questions about our use of cookies or this policy, please contact us:\n\nBejoice Global Logistics LLC\nBlock A, Al Raja Avenue, 1st Floor, Office No. 2\nDammam 32234, Kingdom of Saudi Arabia\nEmail: info@bejoiceshipping-ksa.com\nPhone: +966 13 823 3461`,
       },
     ],
   },
@@ -739,9 +714,11 @@ function PolicyModal({ title, onClose }) {
             }}
           >✕</button>
         </div>
-        <p style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: '15px', color: 'rgba(91,194,231,0.8)', marginBottom: '32px', letterSpacing: '0.05em' }}>
-          {isAr ? ar.footer.lastUpdated : 'Last updated:'} {policy.updated}
-        </p>
+        {policy.updated && (
+          <p style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: '15px', color: 'rgba(91,194,231,0.8)', marginBottom: '32px', letterSpacing: '0.05em' }}>
+            {isAr ? ar.footer.lastUpdated : 'Last updated:'} {policy.updated}
+          </p>
+        )}
 
         {/* Sections */}
         {policy.sections.map(s => (

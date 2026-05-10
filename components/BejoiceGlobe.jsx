@@ -568,18 +568,17 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
           style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(0.2rem,1.5vw,3rem)' }}
         >
           {/* Headline */}
-          <h2 className="no-reveal globe-headline" style={{
+          <h2 className="no-reveal" style={{
             fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif",
-            fontSize:'clamp(1.8rem,4vw,3.6rem)',
-            color:'#ffffff', letterSpacing: isAr ? '0' : '0.05em',
-            lineHeight: isAr ? 1.3 : 0.95, margin:0,
-            textShadow:'0 2px 4px rgba(0,0,0,0.9), 0 0 40px rgba(91,194,231,0.15)',
-            textAlign:'center',
+            fontSize: 'clamp(1.8rem,4vw,3.6rem)',
+            fontWeight: 'normal',
+            letterSpacing: isAr ? '0' : '0.05em',
+            lineHeight: isAr ? 1.3 : 0.95,
+            color: '#ffffff',
+            margin: 0,
+            textAlign: 'center',
           }}>
-            {isAr ? ar.globe.headline : <>
-              <span style={{ color:'#ffffff' }}>BEJOICE CONNECTS </span><br/>
-              <span style={{ color:'#5BC2E7', textShadow:'0 0 30px rgba(91,194,231,0.4)' }}>SAUDI TO THE WORLD</span>
-            </>}
+            {isAr ? ar.globe.headline : 'BEJOICE CONNECTS SAUDI TO THE WORLD'}
           </h2>
 
           {/* ── Bento Grid ── */}

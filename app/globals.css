@@ -766,15 +766,6 @@ body {
   .hero-card-btn    { padding: 6px 8px !important; font-size: 0.68rem !important; letter-spacing: 0.12em !important; }
 }
 
-/* ── Globe section headline — scale down on mobile so it fits beside the globe ── */
-@media (max-width: 767px) {
-  .globe-headline {
-    font-size: clamp(0.85rem, 4.5vw, 1.8rem) !important;
-    line-height: 0.95 !important;
-    letter-spacing: 0.04em !important;
-  }
-}
-
 /* ── Floating chatbot (Layla): move to bottom-LEFT on mobile so it doesn't block right-side content ── */
 @media (max-width: 767px) {
   .layla-fab-wrap {

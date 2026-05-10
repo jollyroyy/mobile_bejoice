@@ -503,13 +503,13 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
   }, []);
 
   const inner = (
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 'clamp(1.5rem,4vw,4rem)', padding: '0 clamp(1rem,3vw,2rem)' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 'clamp(0.5rem,2vw,4rem)', padding: '0 clamp(0.4rem,2vw,2rem)' }}>
 
         {/* ── LEFT: Globe ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }} whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }} transition={{ duration: 1.2, ease: [0.16,1,0.3,1] }}
-          style={{ position: 'relative', flexShrink: 0, width: 'clamp(320px, 55vw, 720px)' }}
+          style={{ position: 'relative', flexShrink: 0, width: 'clamp(110px, 42vw, 720px)' }}
         >
           {/* Outer glow ring */}
           <div style={{
@@ -565,10 +565,10 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
         <motion.div
           initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, ease: [0.16,1,0.3,1] }}
-          style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(1rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(1rem,3vw,3rem)' }}
+          style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(0.5rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(0.2rem,1.5vw,3rem)' }}
         >
           {/* Headline */}
-          <h2 className="no-reveal" style={{
+          <h2 className="no-reveal globe-headline" style={{
             fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif",
             fontSize:'clamp(1.8rem,4vw,3.6rem)',
             color:'#ffffff', letterSpacing: isAr ? '0' : '0.05em',

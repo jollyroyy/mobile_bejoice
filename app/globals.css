@@ -668,7 +668,7 @@ body {
   /* Book a Call: shorter label + tighter padding */
   .nav-book-call {
     padding: 9px 14px !important;
-    font-size: 11px !important;
+    font-size: 9px !important;
     letter-spacing: 0.09em !important;
     gap: 6px !important;
     white-space: nowrap !important;

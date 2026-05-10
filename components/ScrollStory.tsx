@@ -72,19 +72,12 @@ const CHAPTERS = [
     headline: ['FROM BLUE PRINT TO DELIVERY,', 'WE MOVE IT ALL'],
     align: 'right' as const,
   },
-  // navigating oceans: 327–440 (spans bejoice end → port start)
+  // navigating oceans: 449–528 (port/ship footage)
   {
-    frameRange: [327, 440] as [number, number],
+    frameRange: [449, 528] as [number, number],
     tag: 'FCL · LCL · BREAKBULK · REEFER · DG · OOG',
     headline: ['NAVIGATING OCEANS.', 'DELIVERING CONFIDENCE'],
     align: 'left' as const,
-  },
-  // port operations: 440–490
-  {
-    frameRange: [440, 490] as [number, number],
-    tag: 'PORT OPERATIONS',
-    headline: ['DRIVEN BY TRANSPARENCY.', 'DELIVERED WITH TRUST'],
-    align: 'right' as const,
   },
   // port to port: 496–550
   {
@@ -128,31 +121,26 @@ function TrackCard() {
   return (
     <div style={{
       width: '100%', height: '100%', flex: '1 1 auto', position: 'relative', overflow: 'hidden',
-      background: 'rgba(10,10,14,0.55)',
-      backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)',
-      border: '1px solid rgba(91,194,231,0.12)',
-      borderRadius: 14,
       padding: '1.25rem 1.75rem',
-      boxShadow: '0 24px 64px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08), 0 0 20px rgba(91,194,231,0.04)',
       display: 'flex', flexDirection: 'column', justifyContent: 'center',
     }}>
-      {/* Top accent line */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1.5, background: 'linear-gradient(90deg,transparent,rgba(91,194,231,0.35),transparent)', pointerEvents: 'none', zIndex: 1 }} />
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24 }}>
-        <div>
-          <p className="hero-card-title" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#fff', letterSpacing: '0.08em', margin: 0, lineHeight: 1.1, textShadow: '0 0 24px rgba(255,255,255,0.25)' }}>
-            SHIPMENT TRACKING
-          </p>
-          <p className="hero-card-sub" style={{ fontFamily: "'Inter', sans-serif", fontSize: 11, color: 'rgba(255,255,255,0.75)', margin: '6px 0 0', letterSpacing: '0.14em', textTransform: 'uppercase', fontWeight: 600 }}>
-            Real-Time Global Visibility
-          </p>
-        </div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12 }}>
         <button
           onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
           className="btn-gold hero-card-btn"
-          style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: 10, whiteSpace: 'nowrap', flexShrink: 0, fontWeight: 400, cursor: 'pointer' }}
+          style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: 10, whiteSpace: 'nowrap', flexShrink: 0, fontWeight: 700, cursor: 'pointer' }}
         >
-          Track Now
+          Track Shipment
+        </button>
+        <button
+          onClick={() => {
+            const el = document.getElementById('tools');
+            if (el) el.scrollIntoView({ behavior: 'instant' });
+          }}
+          className="btn-gold hero-card-btn"
+          style={{ padding: '12px 28px', fontSize: '1rem', borderRadius: 10, whiteSpace: 'nowrap', flexShrink: 0, fontWeight: 700, cursor: 'pointer' }}
+        >
+          Load Calculator
         </button>
       </div>
     </div>
@@ -588,6 +576,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
+                  marginTop: i === 0 ? 20 : 0,
                 }}
               >
                 {/* Eyebrow pill — only rendered when tag is non-empty */}
@@ -621,7 +610,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       key={li}
                       style={{
                         fontFamily: 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: 'clamp(1.6rem, 4vw, 4.5rem)',
+                        fontSize: 'clamp(1.4rem, 3.8vw, 4.3rem)',
                         fontWeight: 400,
                         lineHeight: 0.87,
                         letterSpacing: '0.06em',
@@ -665,6 +654,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       gap: 10,
                       fontFamily: "'Bebas Neue', sans-serif",
                       fontSize: '1rem',
+                      fontWeight: 700,
                       letterSpacing: '0.18em',
                       padding: '12px 32px',
                       borderRadius: 10,
@@ -730,16 +720,16 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             ] as { v: string; l: string }[]).map((s, idx, arr) => (
               <div key={s.l} className="hero-stat-cell" style={{
                 display: 'flex', alignItems: 'center',
-                padding: '1.25rem clamp(8px,1.2vw,16px)',
+                padding: '8px clamp(8px,1.2vw,16px)',
                 borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 flexShrink: 0,
               }}>
                 <div style={{ textAlign: 'center' }}>
                   <div className="hero-stat-number" style={{
                     fontFamily: "'Bebas Neue', sans-serif",
-                    fontSize: '1.8rem',
+                    fontSize: '1.1rem',
                     letterSpacing: '0.08em',
-                    lineHeight: 1.1,
+                    lineHeight: 1,
                     color: '#ffffff',
                     textShadow: '0 0 20px rgba(255,255,255,0.3)',
                   }}>
@@ -747,12 +737,12 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   </div>
                   <div className="hero-stat-label" style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: 11,
+                    fontSize: 8,
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     color: 'rgba(91,194,231,0.85)',
                     fontWeight: 600,
-                    marginTop: 6,
+                    marginTop: 2,
                     whiteSpace: 'nowrap',
                   }}>
                     {s.l}

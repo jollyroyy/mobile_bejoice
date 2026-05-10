@@ -162,7 +162,7 @@ export default function Nav({ onQuoteClick }) {
             <button
               onClick={openCalPopup}
               className="btn-gold nav-book-call"
-              style={{ padding: 'clamp(9px,1.5vw,12px) clamp(12px,2.5vw,22px)', whiteSpace: 'nowrap', fontSize: 'clamp(0.75rem,1.1vw,0.95rem)', opacity: pastHero ? 0 : 1, pointerEvents: pastHero ? 'none' : 'auto', transition: 'opacity 0.4s ease' }}
+              style={{ padding: 'clamp(9px,1.5vw,12px) clamp(12px,2.5vw,22px)', whiteSpace: 'nowrap', fontSize: 'clamp(0.45rem,0.8vw,0.65rem)', fontWeight: 700, opacity: pastHero ? 0 : 1, pointerEvents: pastHero ? 'none' : 'auto', transition: 'opacity 0.4s ease' }}
             >
               <div className="btn-shine-overlay" />
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -214,7 +214,7 @@ export default function Nav({ onQuoteClick }) {
             >
 <span style={{
                 fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 'clamp(13px,1.3vw,15px)',
+                fontSize: 'clamp(11px,1.1vw,13px)',
                 letterSpacing: '0.3em',
                 textTransform: 'uppercase',
                 color: menuOpen ? '#5BC2E7' : '#ffffff',

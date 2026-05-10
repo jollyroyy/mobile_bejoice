@@ -535,7 +535,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
           {/* Headline — same font style as SMART FREIGHT scrollytelling headline */}
           <h2 className="no-reveal" style={{
             fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : 'var(--font-bebas, "Impact"), sans-serif',
-            fontSize: 'clamp(1.6rem, 4vw, 4.5rem)',
+            fontSize: 'clamp(1.0rem, 3.4vw, 3.9rem)',
             fontWeight: 400,
             lineHeight: isAr ? 1.3 : 0.87,
             letterSpacing: isAr ? '0' : '0.06em',
@@ -543,8 +543,8 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
             textAlign: 'center',
           }}>
             {isAr ? ar.globe.headline : <>
-              <div style={{ color: '#ffffff', textShadow: '0 1px 12px rgba(0,0,0,0.9)' }}>BEJOICE CONNECTS</div>
-              <div style={{ color: 'var(--gold)', textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)' }}>SAUDI TO THE WORLD</div>
+              <div style={{ color: '#ffffff', textShadow: '0 1px 12px rgba(0,0,0,0.9)', whiteSpace: 'nowrap' }}>BEJOICE CONNECTS</div>
+              <div style={{ color: 'var(--gold)', textShadow: '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)', whiteSpace: 'nowrap' }}>SAUDI TO THE WORLD</div>
             </>}
           </h2>
 

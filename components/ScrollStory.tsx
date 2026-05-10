@@ -131,7 +131,7 @@ const STATS = [
 ] as const;
 
 // ── Track Shipment card ───────────────────────────────────────────────────
-function TrackCard({ isAr }: { isAr: boolean }) {
+function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () => void }) {
   const cairoFont = "var(--font-cairo,'Cairo'),sans-serif";
   return (
     <div style={{
@@ -154,10 +154,7 @@ function TrackCard({ isAr }: { isAr: boolean }) {
         {isAr ? ar.hero.trackBtn : 'Track Shipment'}
       </button>
       <button
-        onClick={() => {
-          const el = document.getElementById('tools');
-          if (el) el.scrollIntoView({ behavior: 'instant' });
-        }}
+        onClick={() => onToolsClick?.()}
         className="btn-gold hero-card-btn"
         style={{
           padding: '12px 28px', fontSize: '1rem', borderRadius: 10,
@@ -180,9 +177,11 @@ interface ScrollStoryProps {
   chapterOffsets: React.MutableRefObject<number[]>;
   /** Optional — forwarded from page to open the quick quote modal */
   onQuoteClick?: () => void;
+  /** Optional — forwarded from page to open the load calculator modal */
+  onToolsClick?: () => void;
 }
 
-export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQuoteClick }: ScrollStoryProps) {
+export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQuoteClick, onToolsClick }: ScrollStoryProps) {
   const { lang } = useLang();
   const isAr = lang === 'ar';
   const cairoFont = "var(--font-cairo,'Cairo'),sans-serif";
@@ -473,6 +472,9 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
       id="scroll-story"
       style={{ height: `${SCROLL_HEIGHT}vh`, position: 'relative' }}
     >
+      {/* Anchor for Bejoice Wings nav link — sits at frame 178 (globe segment centre) */}
+      {/* p = (178/799)*0.94 = 0.2093 → top = 0.2093*(1600-1)*vh ≈ 335vh               */}
+      <div id="globe-mid" style={{ position: 'absolute', top: '335vh', left: 0, width: 1, height: 1, pointerEvents: 'none' }} />
       {/* ── Sticky viewport ─────────────────────────────────────────── */}
       <div
         className="hero-sticky-viewport"
@@ -743,7 +745,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
         >
           {/* Track shipment card */}
           <div className="hero-track-wrap" style={{ flex: '0 1 auto', minWidth: 0, display: 'flex', alignItems: 'stretch' }}>
-            <TrackCard isAr={isAr} />
+            <TrackCard isAr={isAr} onToolsClick={onToolsClick} />
           </div>
 
           {/* Stats bar */}

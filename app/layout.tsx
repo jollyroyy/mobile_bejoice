@@ -89,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="cal-modal" strategy="afterInteractive">{`
           (function(){
             var overlay=null,box=null,iframeEn=null,iframeAr=null,closeBtn=null;
-            var visible=false,initialized=false,built=false;
+            var visible=false,initialized=false,built=false,needsReset=false;
             var CAL_BASE='https://cal.com/bejoice/freight-expert-consultation?embed=true&theme=dark&layout=month_view&brandColor=%235BC2E7&hideEventTypeDetails=false';
 
             function buildModal(){
@@ -128,7 +128,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
               window.addEventListener('message',function(e){
                 if(e.origin!=='https://cal.com'&&e.origin!=='https://app.cal.com') return;
-                if(e.data&&(e.data.type==='cal:close'||e.data.type==='close')) hideModal();
+                var t=e.data&&e.data.type;
+                if(t==='cal:close'||t==='close') hideModal();
+                if(t==='bookingSuccessful'||t==='CAL_BOOKING_SUCCESSFUL'||t==='cal:booking:confirmed') needsReset=true;
               });
             }
 
@@ -136,6 +138,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
             function showModal(){
               buildModal();
+              if(needsReset){
+                needsReset=false;
+                iframeEn.src=CAL_BASE+'&locale=en';
+                iframeAr.src='';
+              }
               var isAr=getLang()==='ar';
               if(isAr){
                 if(!iframeAr.src) iframeAr.src=CAL_BASE+'&locale=ar';

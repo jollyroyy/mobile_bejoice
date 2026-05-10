@@ -15,7 +15,7 @@ const links = [
 ]
 
 
-export default function Nav({ onQuoteClick }) {
+export default function Nav({ onQuoteClick, onWhyClick, onServicesClick }) {
   const { openCalPopup } = useCalBooking()
   const { lang, setLang } = useLang()
   const isAr = lang === 'ar'
@@ -74,12 +74,13 @@ export default function Nav({ onQuoteClick }) {
 
   const scrollTo = (id) => {
     setMenuOpen(false)
-    // globe jumps with zero delay — no transition at all
-    const delay = id === 'globe' ? 0 : 400
+    // globe links jump instantly — no drawer-close delay
+    const delay = (id === 'globe' || id === 'globe-mid') ? 0 : 400
     setTimeout(() => {
       const el = document.getElementById(id)
       if (el) {
-        if (window.__lenis) window.__lenis.scrollTo(el, { offset: -80, immediate: true })
+        const offset = id === 'globe-mid' ? 0 : -80
+        if (window.__lenis) window.__lenis.scrollTo(el, { offset, immediate: true })
         else el.scrollIntoView({ behavior: 'instant' })
       }
     }, delay)
@@ -306,7 +307,12 @@ export default function Nav({ onQuoteClick }) {
           {links.map(link => (
             <button
               key={link.id}
-              onClick={() => link.id === 'heavy-cargo' ? (setMenuOpen(false), setHeavyOpen(true)) : scrollTo(link.id)}
+              onClick={() => {
+                if (link.id === 'heavy-cargo') { setMenuOpen(false); setHeavyOpen(true); }
+                else if (link.id === 'why-us') { setMenuOpen(false); setTimeout(() => onWhyClick?.(), 350); }
+                else if (link.id === 'services') { setMenuOpen(false); setTimeout(() => onServicesClick?.(), 350); }
+                else scrollTo(link.id);
+              }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '0.6rem', width: '100%', textAlign: 'left',
                 fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(1rem,2.5vw,1.15rem)', fontWeight: 400,

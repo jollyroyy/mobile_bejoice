@@ -13,97 +13,283 @@ const footerLinks = {
 
 const POLICIES = {
   'Privacy Policy': {
-    updated: 'March 2026',
+    updated: 'May 2026',
     sections: [
       {
-        title: '1. Information We Collect',
-        body: `We collect information you provide directly, such as name, company name, email address, phone number, and shipment details when you submit a quote request, contact form, or booking. We also automatically collect usage data including IP address, browser type, pages visited, and referring URLs via cookies and analytics tools.`,
+        title: '1. Who We Are',
+        body: `Bejoice Global Logistics LLC ("Bejoice", "we", "our", or "us") is a freight forwarding and logistics company headquartered in Dammam, Kingdom of Saudi Arabia, with offices in Dubai (UAE), India, and China. We are the data controller for personal information collected through this website and our services.\n\nRegistered address: Block A, Al Raja Avenue, 1st Floor, Office No. 2, Dammam 32234, Kingdom of Saudi Arabia.\nEmail: info@bejoiceshipping-ksa.com | Phone: +966 13 823 3461`,
       },
       {
-        title: '2. How We Use Your Information',
-        body: `We use your information to provide freight forwarding and logistics services, respond to inquiries, generate quotes, send service updates and marketing communications (with your consent), improve our website and services, and comply with applicable Saudi Arabian and international laws.`,
+        title: '2. Information We Collect',
+        body: `We collect the following categories of personal data:\n\nIdentity & Contact Data: Full name, job title, company name, email address, phone number, and postal address — provided when you submit a quote request, contact form, booking, or newsletter sign-up.\n\nShipment & Commercial Data: Origin/destination details, cargo descriptions, weights, dimensions, incoterms, commercial invoice values, and related documentation necessary to provide logistics services.\n\nTechnical Data: IP address, browser type and version, device identifiers, operating system, pages visited, time spent on pages, referring URLs, and click-stream data — collected automatically via cookies and analytics tools.\n\nCommunication Data: Records of emails, calls, and messages you exchange with us, including support enquiries.\n\nFinancial Data: Bank account or payment details where required to process transactions — handled securely and never stored beyond the period necessary for the transaction.`,
       },
       {
-        title: '3. Data Sharing',
-        body: `We do not sell your personal data. We may share it with trusted third-party partners (carriers, customs brokers, port agents) solely to fulfil your logistics requirements, and with service providers who assist us in operating our website under strict confidentiality agreements.`,
+        title: '3. Legal Basis for Processing',
+        body: `We process your personal data on the following legal grounds under the Saudi Personal Data Protection Law (PDPL) and, where applicable, equivalent international frameworks:\n\n• Contractual Necessity: To perform a contract with you or to take steps at your request before entering a contract (e.g., processing a shipment, providing a quote).\n• Legitimate Interests: To operate, improve, and secure our website and services, and to conduct direct marketing to existing customers, provided your interests and fundamental rights do not override ours.\n• Legal Obligation: To comply with applicable laws, regulations, customs requirements, and court orders.\n• Consent: For marketing communications and non-essential cookies, where we have obtained your prior consent, which you may withdraw at any time.`,
       },
       {
-        title: '4. Data Retention',
-        body: `We retain personal data for as long as necessary to provide our services and meet legal obligations under Saudi Arabian law (PDPL), typically no longer than 7 years for transactional records.`,
+        title: '4. How We Use Your Information',
+        body: `We use your personal data to:\n\n• Provide, manage, and deliver freight forwarding, customs clearance, warehousing, heavy lift, and related logistics services.\n• Generate quotes and respond to enquiries in a timely manner.\n• Process bookings and coordinate with carriers, customs authorities, and port agents on your behalf.\n• Send transactional communications (booking confirmations, shipment updates, invoices).\n• Send marketing communications about our services, industry insights, and promotions — only where you have provided consent or we have a legitimate interest and you have not opted out.\n• Conduct analytics to understand website usage, improve functionality, and personalise your experience.\n• Detect, investigate, and prevent fraud, security incidents, and other illegal activities.\n• Comply with legal, regulatory, and customs obligations in Saudi Arabia and internationally.`,
       },
       {
-        title: '5. Your Rights',
-        body: `Under the Saudi Personal Data Protection Law (PDPL), you have the right to access, correct, or delete your personal data. To exercise these rights, contact us at info@bejoiceshipping-ksa.com.`,
+        title: '5. Data Sharing & Disclosure',
+        body: `We do not sell, rent, or trade your personal data. We may share it with:\n\n• Service Partners: Shipping lines, airlines, road carriers, customs brokers, port agents, freight handlers, and warehousing providers — strictly to fulfil your logistics requirements.\n• Technology Providers: Website hosting, cloud services, CRM, email delivery, analytics, and customer support platforms — under strict data processing agreements with confidentiality and security obligations.\n• Professional Advisors: Lawyers, auditors, and insurers where necessary for legal compliance or dispute resolution.\n• Regulatory & Government Authorities: Saudi Customs (ZATCA), Saudi Ports Authority (Mawani), the National Data Management Office (NDMO), or other authorities when required by applicable law or court order.\n• Business Transfers: In the event of a merger, acquisition, or sale of assets, your data may be transferred as part of that transaction, subject to equivalent privacy protections.\n\nAll third parties are required to process your data securely and only for the specified purpose.`,
       },
       {
-        title: '6. Security',
-        body: `We implement industry-standard technical and organisational measures to protect your data, including TLS encryption, access controls, and regular security reviews.`,
+        title: '6. International Data Transfers',
+        body: `As a global logistics operator, your data may be transferred to and processed in countries outside Saudi Arabia, including the UAE, India, and China, where our offices or service partners are located. We ensure that any such transfer is subject to appropriate safeguards — including contractual clauses, adequacy decisions, or equivalent protections — in line with PDPL requirements and international best practices.`,
       },
       {
-        title: '7. Contact',
-        body: `Bejoice Global Logistics LLC\nBlock A, Al Raja Avenue, 1st floor, Office No. 2, Dammam 32234, Saudi Arabia\nEmail: info@bejoiceshipping-ksa.com\nPhone: +966 13 823 3461`,
+        title: '7. Data Retention',
+        body: `We retain personal data only for as long as necessary for the purposes set out in this policy:\n\n• Shipment and transactional records: 7 years, as required by Saudi commercial and customs law.\n• Enquiry and marketing data: 3 years from last interaction, or until you withdraw consent.\n• Technical/log data: Up to 12 months.\n• Financial records: 10 years in line with Saudi tax and accounting regulations.\n\nAfter the applicable retention period, data is securely deleted or anonymised.`,
+      },
+      {
+        title: '8. Your Rights',
+        body: `Under the Saudi Personal Data Protection Law (PDPL) and applicable regulations, you have the right to:\n\n• Access: Request a copy of the personal data we hold about you.\n• Correction: Request correction of inaccurate or incomplete data.\n• Deletion: Request deletion of your data where it is no longer necessary for the purpose it was collected, subject to legal retention requirements.\n• Restriction: Request that we restrict processing of your data in certain circumstances.\n• Data Portability: Receive your data in a structured, machine-readable format where technically feasible.\n• Object: Object to processing based on legitimate interests or for direct marketing at any time.\n• Withdraw Consent: Where processing is based on consent, withdraw it at any time without affecting the lawfulness of prior processing.\n\nTo exercise any of these rights, please contact us at info@bejoiceshipping-ksa.com. We will respond within 30 days. You also have the right to lodge a complaint with the Saudi National Data Management Office (NDMO).`,
+      },
+      {
+        title: '9. Security',
+        body: `We implement appropriate technical and organisational security measures to protect your personal data against unauthorised access, loss, alteration, or disclosure. These include:\n\n• TLS/SSL encryption for all data in transit.\n• Role-based access controls limiting data access to authorised personnel only.\n• Regular security assessments and vulnerability testing.\n• Secure data storage with encrypted backups.\n• Employee training on data protection and information security.\n\nIn the event of a data breach that poses a risk to your rights and freedoms, we will notify you and the relevant authorities as required by applicable law.`,
+      },
+      {
+        title: '10. Children\'s Privacy',
+        body: `Our website and services are not directed to individuals under the age of 18. We do not knowingly collect personal data from children. If you believe we have inadvertently collected such data, please contact us immediately and we will delete it promptly.`,
+      },
+      {
+        title: '11. Changes to This Policy',
+        body: `We may update this Privacy Policy from time to time to reflect changes in our practices, technology, or legal requirements. The updated version will be published on this page with a revised "Last Updated" date. We encourage you to review this policy periodically. Continued use of our website after changes constitutes acceptance of the updated policy.`,
+      },
+      {
+        title: '12. Contact Us',
+        body: `For any privacy-related questions, requests, or complaints:\n\nBejoice Global Logistics LLC\nBlock A, Al Raja Avenue, 1st Floor, Office No. 2\nDammam 32234, Kingdom of Saudi Arabia\nEmail: info@bejoiceshipping-ksa.com\nPhone: +966 13 823 3461`,
       },
     ],
   },
   'Terms of Service': {
-    updated: 'March 2026',
+    updated: 'May 2026',
     sections: [
       {
-        title: '1. Acceptance of Terms',
-        body: `By accessing or using the Bejoice website and services, you agree to be bound by these Terms of Service. If you do not agree, please do not use our services.`,
+        title: 'I. Definitions',
+        body: `1. Authority – Any legally established governmental or administrative body exercising jurisdiction or authority in any country, state, city, port, or airport.
+
+2. Company – The legal entity entering into an agreement with the Customer to deliver services.
+
+3. Bejoice – The trade name and/or registered trademark "Bejoice," owned by or licensed to the Company for its operations.
+
+4. Country – The nation where the Company is formally incorporated and registered.
+
+5. Currency – The official legal tender of the Country.
+
+6. Customer – Any individual or organization for whom, or at whose request or benefit, the Company performs services, whether directly or indirectly. This includes agents, contractors, importers, exporters, shippers, consignees, carriers, notify parties, secured parties, warehouse operators, buyers, sellers, shipping agents, insurers, underwriters, break-bulk agents, holders, or assignees of any transport or storage document, and all other related parties. The Customer must ensure these Terms are communicated to all such parties.
+
+7. Documentation – Any information or data provided by the Customer, in paper or electronic format.
+
+8. Government – Any public body, court, tribunal, or agency acting under national, regional, or local law.
+
+9. IMDG Code – The International Maritime Dangerous Goods Code.
+
+10. Laws – All applicable statutes, regulations, decrees, codes, ordinances, judicial decisions, and international conventions in force in the Country.
+
+11. MSDS – Material Safety Data Sheet.
+
+12. Person – Any individual, partnership, trust, association, corporation, governmental entity, or other legal entity.
+
+13. Services – All physical, administrative, agency, and/or logistical work performed by the Company for the Customer, including loading, unloading, packing, unpacking, stuffing, de-stuffing, transportation, warehousing, storage, or related activities, either directly or through third parties.
+
+14. Storage Document – Any warehouse receipt, storage contract, or similar document confirming receipt of goods for storage or distribution.
+
+15. Third Party – Any independent carrier, trucker, forwarder, NVOCC, customs broker, warehouse operator, or any other party entrusted with handling or transporting the goods.
+
+16. Transport Document – Any bill of lading, waybill, forwarder's cargo receipt, or similar document issued by the Company as evidence of carriage.
+
+17. Interpretation – Words such as "includes" or "including" are not restrictive. References to documents apply equally in both paper and electronic format. Headings are for convenience only. If there is a conflict between these Terms and any Transport or Storage Document, the latter shall govern. If any provision is held invalid, the remaining Terms shall remain fully enforceable.`,
       },
       {
-        title: '2. Services',
-        body: `Bejoice provides freight forwarding, customs clearance, warehousing, heavy lift, and related logistics services. All services are subject to a separate service agreement or accepted quotation.`,
+        title: 'II. Company\'s Role',
+        body: `1. Unless otherwise agreed in writing, the Customer recognizes that the Company operates solely as the Customer's agent.
+
+2. The Company retains full discretion regarding the choice of methods, routes, and procedures for handling goods and may appoint third parties where necessary. These third parties are considered agents of the Customer, who remains responsible for their charges unless the Company has agreed to assume them in writing.
+
+3. The Company's communication of a chosen service provider does not imply any guarantee of performance or assumption of cost unless explicitly agreed beforehand.`,
       },
       {
-        title: '3. Quotations',
-        body: `All quotes are estimates only and subject to change based on actual cargo dimensions, weight, regulatory requirements, and carrier tariffs. Confirmed rates are binding only when agreed in writing.`,
+        title: 'III. Quotations',
+        body: `1. All quotations are provided for reference purposes only and are not binding offers. They may be revised or withdrawn without notice.
+
+2. A binding agreement arises only when the Company expressly confirms handling of goods at specified rates and payment terms.
+
+3. Quotations, including all rates and service descriptions, are confidential and may not be shared with third parties without prior written approval.
+
+4. Unless otherwise stated, quotations are valid for 30 days and override any earlier communication.
+
+5. The Company reserves the right to select the carrier unless the Customer specifies otherwise.
+
+11. Quoted rates expressly excludes insurance coverage. Procuring insurance is solely the responsibility of the Shipper, Consignee, or Customer. The Company shall bear no liability of any kind, under any circumstances, for the Customer's failure or decision not to obtain insurance coverage.
+
+A Customer who wishes to insure their cargo must arrange such insurance independently and at their own cost and expense, or inform the Company in prior for insurance arrangements on their behalf.`,
       },
       {
-        title: '4. Liability',
-        body: `Bejoice's liability for loss or damage to cargo is limited to the lesser of the actual value or the limits prescribed by applicable international conventions (CMR, Montreal Convention, Hague-Visby Rules). We strongly recommend adequate cargo insurance for all shipments.`,
+        title: 'IV. Customer\'s Obligations',
+        body: `1. The Customer must provide all required documentation and data, including licenses, permits, invoices, customs information, weights, measures, classification, and country of origin details.
+
+2. Any errors or omissions must be promptly corrected by the Customer.
+
+3. The Customer is responsible for reviewing and verifying all filings and declarations made on their behalf.
+
+4. Record-keeping is the Customer's duty unless the Company is specifically engaged to do so.
+
+5. The Customer warrants that all information is accurate and complete and complies with all laws, trade restrictions, and sanctions.
+
+6. All goods must be properly packed, labelled, and addressed for safe handling and transportation.`,
       },
       {
-        title: '5. Prohibited Goods',
-        body: `You must not ship goods that are prohibited by Saudi Arabian law, destination country regulations, or international conventions, including but not limited to weapons, narcotics, and items on SASO or customs restricted lists.`,
+        title: 'V. Shipment, Customs Clearance & Payment',
+        body: `1. Carriers may stow goods as they deem appropriate, provided they comply with legal requirements.
+
+2. Goods shipped on deck are at the Customer's risk.
+
+3. The Customer or consignee must arrange funds for customs duties and port/delivery order charges in advance to prevent clearance delays.
+
+4. All freight and surcharges must be paid immediately upon receipt of invoice, without deduction or offset.
+
+5. Duties and other official fees must be prepaid.
+
+6. The Customer must immediately settle additional charges, penalties, or costs caused by detention, container damage, or storage fees resulting from their actions.
+
+7. All payments are due in advance unless credit terms have been approved in writing. Credit arrangements may be withdrawn at any time.
+
+8. The Customer is responsible for all legal and collection expenses incurred to enforce payment.`,
       },
       {
-        title: '6. Intellectual Property',
-        body: `All content on this website — including text, graphics, logos, and software — is the property of Bejoice Global Logistics LLC and protected by Saudi and international intellectual property law.`,
+        title: 'VI. Insurance',
+        body: `1. The Company is not required to insure goods unless a written agreement exists.
+
+2. If insurance is requested, the Company reserves the right to select the insurer.
+
+3. The Customer is liable for all insurance premiums and administrative fees.`,
       },
       {
-        title: '7. Governing Law',
-        body: `These Terms are governed by the laws of the Kingdom of Saudi Arabia. Any disputes shall be subject to the exclusive jurisdiction of the courts of Riyadh.`,
+        title: 'VII. Limitation of Liability',
+        body: `1. The Company's liability is strictly limited to the extent described in these Terms or in any Transport/Storage Document issued.
+
+2. No liability applies unless negligence is proven and the goods are in the Company's direct physical custody.
+
+3. The Company is not liable for loss or damage resulting from:
+   • Customer error, negligence, or incorrect declarations.
+   • Force Majeure events, including strikes, natural disasters, fires, or government action.
+   • General Average events declared by vessel owners.
+
+4. Liability is limited as follows:
+   • Customs brokerage claims: the lesser of USD 30 per entry or the brokerage fee charged.
+   • Loss/damage to goods: the lesser of goods' value or USD 8/kg gross weight, capped at USD 2,000 per shipment (value whichever is lesser).
+   • If no value applies: the lesser of USD 50 per shipment or invoice value.
+   • The Company is not liable for indirect, incidental, consequential, or punitive damages, including loss of profits.
+   • When goods are handled by third parties, their liability limits apply.
+   • Application of Limited Liability: The limitations of liability set out herein shall apply only where loss, damage, or delay is directly attributable to the Company's proven negligence, fault, or mishandling of the shipment or services. No liability shall arise where loss or damage is caused by events beyond the Company's reasonable control, including but not limited to force majeure, acts of public authorities, inherent defects in goods, or the Customer's own acts or omissions.`,
+      },
+      {
+        title: 'VIII. Limitation of Actions',
+        body: `1. Any claims must be reported in writing within 12 hours of discovery of the loss of any kind, with proofs to check with the handling parties involved.`,
+      },
+      {
+        title: 'IX. Indemnification',
+        body: `1. The Customer shall indemnify and hold harmless the Company against all claims, losses, costs, fines, penalties, and expenses (including legal fees) arising from:
+   • Breach of these Terms by the Customer.
+   • Failure to pay charges or fulfill obligations.
+   • General Average contributions.
+   • Violations of law, sanctions, or provision of incorrect data.
+   • Third-party claims, regardless of Customer negligence.
+
+2. The Company may appoint legal counsel at the Customer's expense to handle any indemnified matter.`,
+      },
+      {
+        title: 'X. Sale of Perishable Goods',
+        body: `1. Perishable goods or live animals with no handling instructions may be sold or disposed of without prior notice.
+
+2. The Customer remains liable for all related charges even if the goods are refused, unclaimed, or returned.`,
+      },
+      {
+        title: 'XI. General Lien',
+        body: `1. The Company has a general lien on all goods in its custody as security for unpaid amounts.
+
+2. If debts remain unsettled, the Company may sell the goods after giving reasonable notice. Surplus funds, if any, will be returned to the Customer, who remains responsible for any balance due.`,
+      },
+      {
+        title: 'XII. Intellectual Property',
+        body: `1. All Company intellectual property, including software, databases, trademarks, patents, and proprietary know-how, is confidential and may not be copied, disclosed, reverse-engineered, or used without prior written authorization.`,
+      },
+      {
+        title: 'XIII. Data Privacy',
+        body: `1. The Customer confirms compliance with all applicable data protection regulations and assures that valid consent has been obtained for data sharing.
+
+2. The Company may process and share data for compliance, billing, debt recovery, and administrative purposes.`,
+      },
+      {
+        title: 'XIV. Force Majeure',
+        body: `1. The Company will not be responsible for failure or delay in performance caused by events beyond its control, including natural disasters, war, piracy, terrorism, embargoes, riots, strikes, labor disputes, or government actions.
+
+2. Failure to pay invoices is not considered a Force Majeure event.`,
+      },
+      {
+        title: 'XV. Severability',
+        body: `1. If any clause is held unenforceable, the remaining provisions shall continue to be effective.`,
+      },
+      {
+        title: 'XVI. Governing Law & Jurisdiction',
+        body: `1. These Terms are governed by the laws of the Country of registration.
+
+2. All disputes shall be resolved exclusively in the courts of that Country.`,
+      },
+      {
+        title: 'XVII. Miscellaneous',
+        body: `1. A waiver of one breach does not constitute a waiver of any future breach.
+
+2. These Terms, together with any Transport Document, Booking Confirmation, or Quotation, represent the full and final agreement between the parties.
+
+3. Any amendments must be made in writing and signed by the Company.
+
+4. Notices must be provided in writing and delivered by hand, email, or registered post to the parties' designated addresses.`,
       },
     ],
   },
   'Cookie Policy': {
-    updated: 'March 2026',
+    updated: 'May 2026',
     sections: [
       {
-        title: '1. What Are Cookies',
-        body: `Cookies are small text files placed on your device by our website. They help us provide a personalised and efficient browsing experience.`,
+        title: '1. What Are Cookies?',
+        body: `Cookies are small text files placed on your device (computer, tablet, or mobile phone) when you visit a website. They are widely used to make websites work efficiently, improve user experience, and provide information to the website owner.\n\nSimilar technologies — such as web beacons, pixels, and local storage — may also be used for the same purposes and are covered by this policy.`,
       },
       {
-        title: '2. Cookies We Use',
-        body: `Essential Cookies: Required for the website to function (session management, security). These cannot be disabled.\n\nAnalytics Cookies: We use Google Analytics to understand how visitors use our site. All data is anonymised.\n\nFunctional Cookies: Remember your preferences such as language selection.\n\nMarketing Cookies: Used to show relevant advertisements and track campaign effectiveness (only with your consent).`,
+        title: '2. Why We Use Cookies',
+        body: `Bejoice uses cookies and similar technologies to:\n\n• Ensure our website functions correctly and securely.\n• Remember your preferences (such as language) across visits.\n• Understand how visitors interact with our website so we can improve it.\n• Measure the effectiveness of our marketing campaigns.\n• Personalise content and advertisements relevant to your interests (only with your consent).`,
       },
       {
-        title: '3. Managing Cookies',
-        body: `You can control and/or delete cookies through your browser settings. Disabling essential cookies may affect website functionality. For more information on managing cookies, visit www.allaboutcookies.org.`,
+        title: '3. Categories of Cookies We Use',
+        body: `Strictly Necessary Cookies\nThese cookies are essential for the website to operate. They enable core features such as page navigation, security, and form submissions. You cannot opt out of these cookies as the website cannot function without them.\n\nPerformance & Analytics Cookies\nThese cookies collect anonymised information about how visitors use our website — such as which pages are visited most often and error messages encountered. We use Google Analytics and similar tools for this purpose. All data is aggregated and does not identify individual users.\n\nFunctional Cookies\nThese cookies allow the website to remember choices you make (such as language preference, region, or currency) to provide a more personalised experience. Disabling them may affect some features.\n\nMarketing & Targeting Cookies\nThese cookies are used to deliver advertisements relevant to you and your interests, and to measure the effectiveness of our campaigns. They may be set by us or by third-party advertising networks. They track your browsing activity across websites. We only deploy these cookies with your prior consent.\n\nSession vs. Persistent Cookies\nSession cookies expire when you close your browser. Persistent cookies remain on your device for a set period (ranging from days to years) or until you delete them.`,
       },
       {
-        title: '4. Third-Party Cookies',
-        body: `Our website may include content from third-party services (Cal.com booking, embedded maps). These services may set their own cookies subject to their own privacy policies.`,
+        title: '4. Specific Cookies & Third-Party Services',
+        body: `The following third-party services may place cookies on your device when you use our website:\n\n• Google Analytics (analytics.google.com): Collects anonymised usage statistics. Data is retained for 14 months. You can opt out via Google Analytics Opt-out Browser Add-on.\n• Cal.com (cal.com): Used for our booking and scheduling system. May set session cookies to maintain your booking session.\n• Google Maps / Mapbox: Embedded maps may set cookies for functionality and analytics.\n• EmailJS: Used to process contact form submissions. Does not set persistent tracking cookies.\n\nEach third-party service is governed by its own privacy and cookie policy. We encourage you to review those policies directly.`,
       },
       {
-        title: '5. Updates',
-        body: `We may update this Cookie Policy periodically. Continued use of our website after changes constitutes acceptance of the updated policy.`,
+        title: '5. Your Cookie Choices & Controls',
+        body: `You have the following options to manage cookies:\n\nBrowser Settings: Most browsers allow you to block, delete, or receive alerts about cookies through their settings menus. Common browser instructions:\n• Google Chrome: Settings → Privacy and Security → Cookies and other site data\n• Safari: Preferences → Privacy → Manage Website Data\n• Firefox: Options → Privacy & Security → Cookies and Site Data\n• Microsoft Edge: Settings → Cookies and site permissions\n\nOpt-Out Tools:\n• Google Analytics: tools.google.com/dlpage/gaoptout\n• Network Advertising Initiative: optout.networkadvertising.org\n• Digital Advertising Alliance: optout.aboutads.info\n\nPlease note: blocking all cookies may impair the functionality of our website and prevent you from using certain features such as booking or form submissions.`,
       },
       {
-        title: '6. Contact',
-        body: `If you have questions about our use of cookies, contact us at info@bejoiceshipping-ksa.com.`,
+        title: '6. Do Not Track',
+        body: `Some browsers transmit "Do Not Track" (DNT) signals to websites. As there is currently no universally accepted standard for responding to DNT signals, our website does not alter its data collection practices based on DNT browser settings. We continue to apply the same cookie controls described in this policy regardless of DNT status.`,
+      },
+      {
+        title: '7. Cross-Border Data Transfers',
+        body: `Some third-party services we use (such as Google Analytics) may process and store cookie data on servers located outside Saudi Arabia, including in the United States and European Union. Such transfers are subject to appropriate safeguards in accordance with applicable data protection law.`,
+      },
+      {
+        title: '8. Updates to This Policy',
+        body: `We may update this Cookie Policy from time to time to reflect changes in technology, regulation, or our business practices. The "Last Updated" date at the top of this policy will be revised accordingly. We encourage you to review this page periodically. Continued use of our website following any changes constitutes acceptance of the updated Cookie Policy.`,
+      },
+      {
+        title: '9. Contact Us',
+        body: `If you have questions about our use of cookies or this policy, please contact us:\n\nBejoice Global Logistics LLC\nBlock A, Al Raja Avenue, 1st Floor, Office No. 2\nDammam 32234, Kingdom of Saudi Arabia\nEmail: info@bejoiceshipping-ksa.com\nPhone: +966 13 823 3461`,
       },
     ],
   },
@@ -501,14 +687,28 @@ function CareersModal({ onClose }) {
 
 function PolicyModal({ title, onClose }) {
   const policy = POLICIES[title]
+  const { lang } = useLang()
+  const isAr = lang === 'ar'
+  const backdropRef = useRef(null)
+
+  // Escape key to close
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
   return (
     <div
-      onClick={onClose}
+      ref={backdropRef}
+      data-lenis-prevent
+      onClick={e => { if (e.target === backdropRef.current) onClose() }}
       style={{
         position: 'fixed', inset: 0, zIndex: 99999,
-        background: 'rgba(7,16,28,0.92)', backdropFilter: 'blur(12px)',
+        background: 'rgba(7,16,28,0.92)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
         display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
-        overflowY: 'auto', padding: 'clamp(16px,4vw,48px) clamp(12px,3vw,24px)',
+        overflowY: 'auto', WebkitOverflowScrolling: 'touch',
+        padding: 'max(16px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))',
       }}
     >
       <div
@@ -572,7 +772,7 @@ function PolicyModal({ title, onClose }) {
   )
 }
 
-export default function Footer() {
+export default function Footer({ onWhyClick }) {
   const { lang } = useLang()
   const isAr = lang === 'ar'
   const [openPolicy, setOpenPolicy] = useState(null)
@@ -632,24 +832,33 @@ export default function Footer() {
                       >
                         {isAr ? (ar.footer.links?.['Careers'] || 'Careers') : 'Careers'}
                       </button>
+                    ) : item === 'Why Bejoice' ? (
+                      <button
+                        onClick={() => onWhyClick?.()}
+                        style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }}
+                        onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
+                        onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
+                      >
+                        {isAr ? ar.nav.whyBejoice : 'Why Bejoice'}
+                      </button>
                     ) : (
                     <a
-                      href={item === 'Track Shipment' ? 'https://www.track-trace.com/' : (item === 'Get a Quote' || item === 'Contact Us') ? '#contact' : item === 'Why Bejoice' ? '#why-us' : item === 'Certifications' ? '#certifications' : item === 'Our Offices' ? '#globe' : item === 'About Bejoice' ? '#hero' : '#'}
+                      href={item === 'Track Shipment' ? 'https://www.track-trace.com/' : (item === 'Get a Quote' || item === 'Contact Us') ? '#contact' : item === 'Certifications' ? '#certifications' : item === 'Our Offices' ? '#globe-mid' : item === 'About Bejoice' ? '#scroll-story' : '#'}
                       onClick={(e) => {
-                        const targets = {
+                        const scrollTargets = {
                           'Get a Quote': 'contact',
                           'Contact Us': 'contact',
                           'Certifications': 'certifications',
-                          'Why Bejoice': 'why-us',
-                          'Our Offices': 'globe',
-                          'About Bejoice': 'hero',
+                          'Our Offices': 'globe-mid',
+                          'About Bejoice': 'scroll-story',
                         }
-                        const targetId = targets[item]
+                        const targetId = scrollTargets[item]
                         if (targetId) {
                           e.preventDefault()
                           const el = document.getElementById(targetId)
                           if (el) {
-                            if (window.__lenis) window.__lenis.scrollTo(el, { offset: -80, immediate: true })
+                            const offset = targetId === 'globe-mid' ? 0 : -80
+                            if (window.__lenis) window.__lenis.scrollTo(el, { offset, immediate: true })
                             else el.scrollIntoView({ behavior: 'instant' })
                           }
                         }

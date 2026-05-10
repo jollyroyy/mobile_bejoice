@@ -654,7 +654,7 @@ function calcFabBottom() {
   return `${px}px`;
 }
 
-export default function FloatingBookCTA() {
+export default function FloatingBookCTA({ onQuoteClick }) {
   const { openCalPopup } = useCalBooking();
   const { lang } = useLang();
   const isAr = lang === 'ar';
@@ -787,6 +787,9 @@ export default function FloatingBookCTA() {
   const handleCTA = (action) => {
     if (action === "call") {
       openCalPopup();
+    } else if (action === "quote") {
+      setOpen(false);
+      setTimeout(() => onQuoteClick?.(), 200);
     } else {
       const el = document.getElementById("contact");
       if (el) {

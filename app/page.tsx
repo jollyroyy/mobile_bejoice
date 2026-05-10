@@ -34,8 +34,14 @@ import {
 
 export default function Page() {
   const [quoteOpen, setQuoteOpen] = useState(false);
+  const [whyOpen, setWhyOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const whyModalRef      = useRef<HTMLDivElement>(null);
+  const servicesModalRef = useRef<HTMLDivElement>(null);
+  const toolsModalRef    = useRef<HTMLDivElement>(null);
 
   // Scroll restoration
   useEffect(() => {
@@ -85,6 +91,31 @@ export default function Page() {
     return () => cleanup?.();
   }, []);
 
+  // Body scroll lock + Lenis pause + Escape key for section modals
+  useEffect(() => {
+    type LenisInstance = { stop: () => void; start: () => void };
+    const lenis = (window as Window & { __lenis?: LenisInstance }).__lenis;
+    if (whyOpen || servicesOpen || toolsOpen) {
+      document.body.style.overflow = 'hidden';
+      lenis?.stop();
+    } else {
+      document.body.style.overflow = '';
+      lenis?.start();
+    }
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      if (whyOpen) startTransition(() => setWhyOpen(false));
+      if (servicesOpen) startTransition(() => setServicesOpen(false));
+      if (toolsOpen) startTransition(() => setToolsOpen(false));
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = '';
+      lenis?.start();
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [whyOpen, servicesOpen, toolsOpen]);
+
   // Cal.com booking notification
   useEffect(() => {
     function handleCalMessage(e: MessageEvent) {
@@ -129,7 +160,11 @@ export default function Page() {
         <ScrollReveal />
 
         {/* Full-featured Nav from Bejoice_backup: language toggle, drawer, Cal.com CTA */}
-        <Nav onQuoteClick={() => setQuoteOpen(true)} />
+        <Nav
+          onQuoteClick={() => setQuoteOpen(true)}
+          onWhyClick={() => setWhyOpen(true)}
+          onServicesClick={() => setServicesOpen(true)}
+        />
 
         <main id="main-content" role="main">
           <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>
@@ -142,22 +177,128 @@ export default function Page() {
             onLoaded={() => {}}
             chapterOffsets={chapterOffsets}
             onQuoteClick={() => setQuoteOpen(true)}
+            onToolsClick={() => setToolsOpen(true)}
           />
 
-          <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
-          <Suspense fallback={<ServicesSkeleton />}><Services /></Suspense>
-          <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools /></Suspense>
           <Suspense fallback={<ContactSkeleton />}><Contact /></Suspense>
           <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
         </main>
 
-        <Suspense fallback={<FooterSkeleton />}><Footer /></Suspense>
-        <Suspense fallback={null}><FloatingBookCTA /></Suspense>
+        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} /></Suspense>
+        <Suspense fallback={null}><FloatingBookCTA onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
 
         {quoteOpen && (
           <QuickQuoteModal onClose={() => {
             startTransition(() => setQuoteOpen(false));
           }} />
+        )}
+
+        {/* Why Bejoice modal overlay */}
+        {whyOpen && (
+          <div
+            ref={whyModalRef}
+            data-lenis-prevent
+            onClick={e => { if (e.target === whyModalRef.current) startTransition(() => setWhyOpen(false)); }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 99990,
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+              display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+              padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            } as React.CSSProperties}
+          >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+              <button
+                onClick={() => startTransition(() => setWhyOpen(false))}
+                style={{
+                  position: 'absolute', top: 12, right: 12, zIndex: 30,
+                  width: 44, height: 44,
+                  background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                  borderRadius: '50%', color: '#fff', fontSize: 22,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
+                }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
+            </div>
+          </div>
+        )}
+
+        {/* Services modal overlay */}
+        {servicesOpen && (
+          <div
+            ref={servicesModalRef}
+            data-lenis-prevent
+            onClick={e => { if (e.target === servicesModalRef.current) startTransition(() => setServicesOpen(false)); }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 99990,
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+              display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+              padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            } as React.CSSProperties}
+          >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+              <button
+                onClick={() => startTransition(() => setServicesOpen(false))}
+                style={{
+                  position: 'absolute', top: 12, right: 12, zIndex: 30,
+                  width: 44, height: 44,
+                  background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                  borderRadius: '50%', color: '#fff', fontSize: 22,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
+                }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <Suspense fallback={<ServicesSkeleton />}><Services /></Suspense>
+            </div>
+          </div>
+        )}
+
+        {/* Load Calculator / Logistics Tools modal overlay */}
+        {toolsOpen && (
+          <div
+            ref={toolsModalRef}
+            data-lenis-prevent
+            onClick={e => { if (e.target === toolsModalRef.current) startTransition(() => setToolsOpen(false)); }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 99990,
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+              display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+              padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            } as React.CSSProperties}
+          >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+              <button
+                onClick={() => startTransition(() => setToolsOpen(false))}
+                style={{
+                  position: 'absolute', top: 12, right: 12, zIndex: 30,
+                  width: 44, height: 44,
+                  background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                  borderRadius: '50%', color: '#fff', fontSize: 22,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
+                }}
+                aria-label="Close"
+              >
+                ×
+              </button>
+              <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools /></Suspense>
+            </div>
+          </div>
         )}
       </div>
     </LangProvider>

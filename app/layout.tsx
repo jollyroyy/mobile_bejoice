@@ -49,6 +49,13 @@ export const metadata: Metadata = {
   title: "Bejoice — Saudi Arabia's Leading AI-Powered Smart Freight Forwarding",
   description: 'Award-winning freight forwarder delivering seamless end-to-end logistics with reliability and global reach.',
   keywords: 'freight forwarding, logistics, Saudi Arabia, KSA, air freight, sea freight, customs clearance',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/favicon-192.png',
+  },
   openGraph: {
     title: "Bejoice — Smart Freight Forwarding",
     description: 'Award-winning freight forwarder delivering seamless end-to-end logistics.',
@@ -72,15 +79,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <head>
         {/* Preconnect for performance */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="apple-touch-icon" href="/favicon-192.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cal.com" />
         <link rel="preconnect" href="https://app.cal.com" />
         <link rel="preconnect" href="https://flagcdn.com" />
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/favicon-192.png" />
       </head>
       <body>
         {children}

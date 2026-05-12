@@ -518,7 +518,7 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(12px, 1.4vw, 14px);
   letter-spacing: 0.2em; text-transform: uppercase;
-  border-radius: 10px;
+  border-radius: 4px;
   cursor: pointer; overflow: hidden;
   box-shadow:
     0 10px 40px rgba(91,194,231,0.35),
@@ -1603,3 +1603,20 @@ section {
 }
 
 @keyframes qqToastIn { from { opacity: 0; transform: translateX(-50%) translateY(-16px) scale(0.95); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+
+/* ── CONTENT-VISIBILITY: defers paint/layout for off-screen sections ──
+   Browser skips rendering until the section enters the viewport.
+   contain-intrinsic-size reserves layout space so scroll positions
+   and GSAP ScrollTrigger calculations remain accurate.
+   Applied only to static/non-canvas sections below the fold.        */
+.cv-section {
+  content-visibility: auto;
+}
+.cv-contact    { contain-intrinsic-size: 0 800px; }
+.cv-certs      { contain-intrinsic-size: 0 560px; }
+.cv-footer     { contain-intrinsic-size: 0 420px; }
+
+/* ── FOOTER: responsive column shift ── */
+.footer-col-shift { transform: translateX(-120px); }
+@media (max-width: 1024px) { .footer-col-shift { transform: translateX(-40px); } }
+@media (max-width: 767px)  { .footer-col-shift { transform: none; } }

@@ -839,7 +839,7 @@ export default function LogisticsTools() {
                   : <>LOAD <span style={{ color:'#5BC2E7' }}>CALCULATION</span></>}
               </h2>
               <p style={{
-                fontFamily:"var(--font-dm-sans), sans-serif", fontSize: isAr ? 'clamp(19px, 2.3vw, 23px)' : 'clamp(15px, 1.9vw, 19px)',
+                fontFamily:"var(--font-dm-sans), sans-serif", fontSize: isAr ? 'clamp(21px, 2.3vw, 25px)' : 'clamp(15px, 1.9vw, 19px)',
                 color:'#ffffff', maxWidth:700, margin:'0 auto', lineHeight:1.8,
                 fontWeight:500, textShadow:'0 0 24px rgba(255,255,255,0.25)', opacity:0.95,
               }}>

@@ -64,7 +64,7 @@ export default function KeyMarkets() {
               <span style={{ color: '#ffffff' }}>{isAr ? ar.keyMarkets.headLineWhite : 'GLOBAL'}</span><br />
               <span style={{ color: 'rgba(91,194,231,0.78)' }}>{isAr ? ar.keyMarkets.headLineCyan : 'REACH'}</span>
             </h2>
-            <p className="font-body max-w-xs" style={{ color: 'rgba(255,255,255,0.92)', fontSize: isAr ? '21px' : '17px', fontWeight: 500, lineHeight: 1.75, marginTop: '1.2rem', textAlign: isAr ? 'right' : 'left' }}>
+            <p className="font-body max-w-xs" style={{ color: 'rgba(255,255,255,0.92)', fontSize: isAr ? '23px' : '17px', fontWeight: 500, lineHeight: 1.75, marginTop: '1.2rem', textAlign: isAr ? 'right' : 'left' }}>
               {isAr ? ar.keyMarkets.body : "Strategic footprint across the world's most critical trade lanes, with deep roots in Saudi Arabia."}
             </p>
           </div>

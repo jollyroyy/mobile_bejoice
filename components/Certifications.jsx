@@ -164,7 +164,7 @@ export default function Certifications() {
                 <div style={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
                   <div style={{
                     fontFamily: "var(--font-dm-sans), sans-serif",
-                    fontSize: isAr ? 'clamp(15px,1.6vw,18px)' : 'clamp(11px,1.2vw,14px)',
+                    fontSize: isAr ? 'clamp(17px,1.6vw,20px)' : 'clamp(11px,1.2vw,14px)',
                     letterSpacing: '0.35em',
                     textTransform: 'uppercase',
                     color: `${c.color}99`,
@@ -174,7 +174,7 @@ export default function Certifications() {
 
                   <div style={{
                     fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-bebas), sans-serif",
-                    fontSize: isAr ? 'clamp(1.4rem,2.8vw,2.4rem)' : 'clamp(1.6rem,3vw,2.8rem)',
+                    fontSize: isAr ? 'clamp(1.525rem,2.8vw,2.525rem)' : 'clamp(1.6rem,3vw,2.8rem)',
                     letterSpacing: isAr ? '0' : '0.12em',
                     lineHeight: 1,
                     color: '#ffffff',

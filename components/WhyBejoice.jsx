@@ -374,7 +374,7 @@ export default function WhyBejoice() {
                   {/* Name */}
                   <div style={{
                     fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-bebas), sans-serif",
-                    fontSize: isAr ? 'clamp(1rem,1.8vw,1.3rem)' : 'clamp(0.9rem,1.6vw,1.15rem)',
+                    fontSize: isAr ? 'clamp(1.125rem,1.8vw,1.425rem)' : 'clamp(0.9rem,1.6vw,1.15rem)',
                     letterSpacing: isAr ? '0' : '0.12em', lineHeight: 1.15,
                     color: '#ffffff',
                     marginBottom: 3,
@@ -385,7 +385,7 @@ export default function WhyBejoice() {
                   {/* Role */}
                   <div style={{
                     fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-dm-sans), sans-serif",
-                    fontSize: isAr ? 'clamp(12px,1.2vw,14px)' : 'clamp(13px,1.35vw,16px)',
+                    fontSize: isAr ? 'clamp(14px,1.2vw,16px)' : 'clamp(13px,1.35vw,16px)',
                     fontWeight: 600, letterSpacing: isAr ? '0' : '0.12em',
                     textTransform: isAr ? 'none' : 'uppercase',
                     color: 'rgba(91,194,231,0.75)',

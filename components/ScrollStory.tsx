@@ -661,7 +661,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       display: 'inline-flex',
                       alignItems: 'center',
                       fontFamily: isAr ? cairoFont : 'var(--font-dm-sans, system-ui), sans-serif',
-                      fontSize: isAr ? 'clamp(14px, 1.4vw, 18px)' : 'clamp(10px, 1.1vw, 13px)',
+                      fontSize: isAr ? 'clamp(16px, 1.4vw, 20px)' : 'clamp(10px, 1.1vw, 13px)',
                       letterSpacing: isAr ? '0' : '0.2em',
                       textTransform: isAr ? 'none' : 'uppercase',
                       fontWeight: 700,
@@ -685,7 +685,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       key={li}
                       style={{
                         fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: isAr ? 'clamp(1.95rem, 4vw, 4rem)' : 'clamp(1.85rem, 3.8vw, 4.3rem)',
+                        fontSize: isAr ? 'clamp(2.075rem, 4vw, 4.125rem)' : 'clamp(1.85rem, 3.8vw, 4.3rem)',
                         fontWeight: isAr ? 700 : 400,
                         lineHeight: isAr ? 1.2 : 0.87,
                         letterSpacing: isAr ? '0' : '0.06em',
@@ -728,7 +728,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       alignItems: 'center',
                       gap: 10,
                       fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                      fontSize: isAr ? 'clamp(0.625rem, 2.4vw, 1.1rem)' : 'clamp(0.575rem, 2.2vw, 1rem)',
+                      fontSize: isAr ? 'clamp(0.75rem, 2.4vw, 1.225rem)' : 'clamp(0.575rem, 2.2vw, 1rem)',
                       fontWeight: 700,
                       letterSpacing: isAr ? '0' : '0.18em',
                       padding: 'clamp(4px, 1vw, 12px) clamp(8px, 1.5vw, 32px)',
@@ -809,7 +809,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   </div>
                   <div className="hero-stat-label" style={{
                     fontFamily: isAr ? cairoFont : "'Inter', sans-serif",
-                    fontSize: isAr ? '15px' : '11px',
+                    fontSize: isAr ? '17px' : '11px',
                     letterSpacing: isAr ? '0' : '0.14em',
                     textTransform: isAr ? 'none' : 'uppercase',
                     color: 'rgba(91,194,231,0.85)',

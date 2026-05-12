@@ -172,7 +172,7 @@ export default function Contact() {
             }
           `}</style>
           <p style={{
-            fontFamily:"'DM Sans',sans-serif", fontSize: isAr ? 'clamp(19px, 2.3vw, 23px)' : 'clamp(15px, 1.9vw, 19px)',
+            fontFamily:"'DM Sans',sans-serif", fontSize: isAr ? 'clamp(21px, 2.3vw, 25px)' : 'clamp(15px, 1.9vw, 19px)',
             color:'#ffffff', maxWidth:500, margin:'0 auto', lineHeight:1.8,
             fontWeight: 500, textShadow:'0 0 20px rgba(255,255,255,0.12)',
           }}>

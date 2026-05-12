@@ -362,7 +362,7 @@ export default function Services() {
                       )}
                       <h3 style={{
                         fontFamily: isAr ? "var(--font-cairo), sans-serif" : "var(--font-bebas), sans-serif",
-                        fontSize: isAr ? 'clamp(1.1rem,2vw,1.4rem)' : 'clamp(1.3rem,2.2vw,1.7rem)',
+                        fontSize: isAr ? 'clamp(1.225rem,2vw,1.525rem)' : 'clamp(1.3rem,2.2vw,1.7rem)',
                         letterSpacing: isAr ? '0' : '0.08em', lineHeight: 1.1,
                         color: isExpanded ? 'rgba(91,194,231,1)' : isActive ? 'rgba(91,194,231,1)' : '#ffffff',
                         margin: 0,

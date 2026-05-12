@@ -1098,7 +1098,7 @@ export default function Footer({ onWhyClick, onQuoteClick }) {
                           {label}
                         </a>
                       ) : item === 'Our Offices' ? (
-                        <a href="#globe" onClick={(e) => { e.preventDefault(); scrollTo('globe') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                        <a href="#globe-mid" onClick={(e) => { e.preventDefault(); scrollTo('globe-mid') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
                           {label}
                         </a>
                       ) : item === 'Key Markets' ? (

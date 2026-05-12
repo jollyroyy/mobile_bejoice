@@ -1617,6 +1617,10 @@ section {
 .cv-footer     { contain-intrinsic-size: 0 420px; }
 
 /* ── FOOTER: responsive column shift ── */
-.footer-col-shift { transform: translateX(-120px); }
-@media (max-width: 1024px) { .footer-col-shift { transform: translateX(-40px); } }
-@media (max-width: 767px)  { .footer-col-shift { transform: none; } }
+.footer-col-shift    { transform: translateX(-120px); }
+@media (max-width: 1024px) { .footer-col-shift    { transform: translateX(-40px); } }
+@media (max-width: 767px)  { .footer-col-shift    { transform: none; } }
+
+/* Arabic columns — push 30 px to the right */
+.footer-col-ar-shift { transform: translateX(30px); }
+@media (max-width: 767px)  { .footer-col-ar-shift { transform: none; } }

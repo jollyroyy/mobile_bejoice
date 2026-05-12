@@ -1050,14 +1050,14 @@ export default function Footer({ onWhyClick }) {
 
           {/* Links Sections */}
           {Object.entries(footerLinks).map(([category, items]) => (
-            <div key={category} className={isAr ? '' : 'footer-col-shift'} style={isAr ? { paddingLeft: '30px', textAlign: 'right' } : { textAlign: 'left' }}>
-              <div style={{ 
-                fontFamily: "'DM Sans', sans-serif", 
+            <div key={category} className={isAr ? 'footer-col-ar-shift' : 'footer-col-shift'} style={{ textAlign: isAr ? 'right' : 'left', direction: isAr ? 'rtl' : 'ltr' }}>
+              <div style={{
+                fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif",
                 fontSize: 'clamp(11px,1.1vw,14px)',
-                letterSpacing: '0.3em', 
-                textTransform: 'uppercase', 
+                letterSpacing: isAr ? 0 : '0.3em',
+                textTransform: isAr ? 'none' : 'uppercase',
                 color: 'rgba(91,194,231,0.92)',
-                fontWeight: 600, 
+                fontWeight: 600,
                 marginBottom: '20px'
               }}>
                 {isAr ? (ar.footer.categories[category] || category) : category}
@@ -1076,7 +1076,7 @@ export default function Footer({ onWhyClick }) {
                             else el.scrollIntoView({ behavior: 'instant' })
                           }
                         }}
-                        style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', transition: 'color 0.3s' }}
+                        style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', transition: 'color 0.3s' }}
                         onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
                         onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
                       >
@@ -1085,7 +1085,7 @@ export default function Footer({ onWhyClick }) {
                     ) : item === 'Careers' ? (
                       <button
                         onClick={() => setCareersOpen(true)}
-                        style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }}
+                        style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }}
                         onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
                         onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
                       >
@@ -1115,7 +1115,7 @@ export default function Footer({ onWhyClick }) {
                         }}
                         target={item === 'Track Shipment' ? '_blank' : undefined}
                         rel={item === 'Track Shipment' ? 'noopener noreferrer' : undefined}
-                        style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', transition: 'color 0.3s' }}
+                        style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', transition: 'color 0.3s' }}
                         onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
                         onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
                       >
@@ -1129,14 +1129,14 @@ export default function Footer({ onWhyClick }) {
           ))}
 
           {/* Contact Column */}
-          <div className={isAr ? 'footer-contact-col' : 'footer-contact-col footer-col-shift'} style={isAr ? { paddingLeft: '30px', textAlign: 'right' } : { textAlign: 'left' }}>
-            <div style={{ 
-              fontFamily: "'DM Sans', sans-serif", 
+          <div className={isAr ? 'footer-contact-col footer-col-ar-shift' : 'footer-contact-col footer-col-shift'} style={{ textAlign: isAr ? 'right' : 'left', direction: isAr ? 'rtl' : 'ltr' }}>
+            <div style={{
+              fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif",
               fontSize: 'clamp(11px,1.1vw,14px)',
-              letterSpacing: '0.3em', 
-              textTransform: 'uppercase', 
+              letterSpacing: isAr ? 0 : '0.3em',
+              textTransform: isAr ? 'none' : 'uppercase',
               color: 'rgba(91,194,231,0.92)',
-              fontWeight: 600, 
+              fontWeight: 600,
               marginBottom: '20px'
             }}>{isAr ? ar.footer.categories['Contact Us'] : 'Contact Us'}</div>
             <ul className="space-y-4">
@@ -1257,7 +1257,7 @@ export default function Footer({ onWhyClick }) {
 
         {/* Bottom Bar */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-10 border-t border-white/5">
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(13px,1.4vw,16px)', color: 'rgba(255,255,255,0.55)' }}>
+          <div style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(13px,1.4vw,16px)', color: 'rgba(255,255,255,0.55)', direction: isAr ? 'rtl' : 'ltr' }}>
             {isAr ? ar.footer.rights : '© Bejoice Shipping Company'}
           </div>
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
@@ -1266,7 +1266,7 @@ export default function Footer({ onWhyClick }) {
                 key={item}
                 href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
                 onClick={(e) => { e.preventDefault(); setOpenPolicy(item) }}
-                style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(12px,1.3vw,15px)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', cursor: 'pointer', letterSpacing: '0.05em', transition: 'all 0.3s' }}
+                style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(12px,1.3vw,15px)', color: 'rgba(255,255,255,0.55)', textDecoration: 'none', cursor: 'pointer', letterSpacing: isAr ? 0 : '0.05em', transition: 'all 0.3s' }}
                 onMouseEnter={e => e.target.style.color = 'rgba(255,255,255,0.9)'}
                 onMouseLeave={e => e.target.style.color = 'rgba(255,255,255,0.55)'}
               >

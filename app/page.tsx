@@ -184,7 +184,7 @@ export default function Page() {
           <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
         </main>
 
-        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} /></Suspense>
+        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
         <Suspense fallback={null}><FloatingBookCTA onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
 
         {/* Quick Quote modal — identical to Bejoice_backup */}

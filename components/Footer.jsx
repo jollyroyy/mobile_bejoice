@@ -1023,7 +1023,7 @@ function PolicyModal({ title, onClose }) {
   )
 }
 
-export default function Footer({ onWhyClick }) {
+export default function Footer({ onWhyClick, onQuoteClick }) {
   const { isAr } = useLang()
   const [openPolicy, setOpenPolicy] = useState(null)
   const [careersOpen, setCareersOpen] = useState(false)
@@ -1063,67 +1063,60 @@ export default function Footer({ onWhyClick }) {
                 {isAr ? (ar.footer.categories[category] || category) : category}
               </div>
               <ul className="space-y-3">
-                {items.map(item => (
-                  <li key={item}>
-                    {item === 'Key Markets' ? (
-                      <a
-                        href="#globe-mid"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          const el = document.getElementById('globe-mid')
-                          if (el) {
-                            if (window.__lenis) window.__lenis.scrollTo(el, { offset: 0, immediate: true })
-                            else el.scrollIntoView({ behavior: 'instant' })
-                          }
-                        }}
-                        style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', transition: 'color 0.3s' }}
-                        onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                        onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
-                      >
-                        {isAr ? ar.nav.bejoiceWings : 'Bejoice Wings'}
-                      </a>
-                    ) : item === 'Careers' ? (
-                      <button
-                        onClick={() => setCareersOpen(true)}
-                        style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }}
-                        onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                        onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
-                      >
-                        {isAr ? (ar.footer.links?.['Careers'] || 'Careers') : 'Careers'}
-                      </button>
-                    ) : (
-                      <a
-                        href={item === 'Track Shipment' ? 'https://www.track-trace.com/' : (item === 'Get a Quote' || item === 'Contact Us') ? '#contact' : item === 'Why Bejoice' ? '#why-us' : item === 'Certifications' ? '#certifications' : item === 'Our Offices' ? '#globe' : item === 'About Bejoice' ? '#hero' : '#'}
-                        onClick={(e) => {
-                          const targets = {
-                            'Get a Quote': 'contact',
-                            'Contact Us': 'contact',
-                            'Certifications': 'certifications',
-                            'Why Bejoice': 'why-us',
-                            'Our Offices': 'globe',
-                            'About Bejoice': 'hero',
-                          }
-                          const targetId = targets[item]
-                          if (targetId) {
-                            e.preventDefault()
-                            const el = document.getElementById(targetId)
-                            if (el) {
-                              if (window.__lenis) window.__lenis.scrollTo(el, { offset: -80, immediate: true })
-                              else el.scrollIntoView({ behavior: 'instant' })
-                            }
-                          }
-                        }}
-                        target={item === 'Track Shipment' ? '_blank' : undefined}
-                        rel={item === 'Track Shipment' ? 'noopener noreferrer' : undefined}
-                        style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', transition: 'color 0.3s' }}
-                        onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                        onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'}
-                      >
-                        {isAr ? (ar.footer.links[item] || item) : item}
-                      </a>
-                    )}
-                  </li>
-                ))}
+                {items.map(item => {
+                  const linkStyle = { fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'DM Sans', sans-serif", fontSize: 'clamp(14px,1.5vw,17px)', color: 'rgba(255,255,255,0.90)', textDecoration: 'none', background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color 0.3s' }
+                  const label = isAr ? (ar.footer.links[item] || item) : item
+                  const hoverOn  = e => e.currentTarget.style.color = '#ffffff'
+                  const hoverOff = e => e.currentTarget.style.color = 'rgba(255,255,255,0.90)'
+
+                  const scrollTo = (id) => {
+                    const el = document.getElementById(id)
+                    if (!el) return
+                    if (window.__lenis) window.__lenis.scrollTo(el, { offset: -80, immediate: true })
+                    else el.scrollIntoView({ behavior: 'instant' })
+                  }
+
+                  return (
+                    <li key={item}>
+                      {/* Modal triggers — no section exists in page DOM */}
+                      {item === 'Why Bejoice' ? (
+                        <button onClick={onWhyClick} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {label}
+                        </button>
+                      ) : item === 'Get a Quote' || item === 'Contact Us' ? (
+                        <button onClick={onQuoteClick} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {label}
+                        </button>
+                      ) : item === 'Careers' ? (
+                        <button onClick={() => setCareersOpen(true)} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {isAr ? (ar.footer.links?.['Careers'] || 'Careers') : 'Careers'}
+                        </button>
+
+                      ) : /* Scroll anchors — elements exist in page DOM */
+                        item === 'Certifications' ? (
+                        <a href="#certifications" onClick={(e) => { e.preventDefault(); scrollTo('certifications') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {label}
+                        </a>
+                      ) : item === 'Our Offices' ? (
+                        <a href="#globe" onClick={(e) => { e.preventDefault(); scrollTo('globe') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {label}
+                        </a>
+                      ) : item === 'Key Markets' ? (
+                        <a href="#globe-mid" onClick={(e) => { e.preventDefault(); scrollTo('globe-mid') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {isAr ? ar.nav.bejoiceWings : 'Bejoice Wings'}
+                        </a>
+
+                      ) : /* External links */
+                        item === 'Track Shipment' ? (
+                        <a href="https://www.track-trace.com/" target="_blank" rel="noopener noreferrer" style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {label}
+                        </a>
+                      ) : (
+                        <span style={{ ...linkStyle, cursor: 'default' }}>{label}</span>
+                      )}
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           ))}

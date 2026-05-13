@@ -354,6 +354,17 @@ export default function Page() {
         )}
         {/* Certifications modal overlay */}
         {certificationsOpen && (
+          <>
+          <style>{`
+            @keyframes certModalBackdropIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes certModalPanelIn {
+              from { opacity: 0; transform: translateY(18px) scale(0.985); }
+              to { opacity: 1; transform: translateY(0) scale(1); }
+            }
+          `}</style>
           <div
             ref={certificationsModalRef}
             data-lenis-prevent
@@ -367,6 +378,7 @@ export default function Page() {
                overflowY: 'auto',
               overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
+              animation: 'certModalBackdropIn 0.26s ease-out forwards',
             } as React.CSSProperties}
           >
             <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
@@ -385,6 +397,9 @@ export default function Page() {
                 position: 'relative',
                 width: '100%',
                 minHeight: '100%',
+                opacity: 0,
+                transform: 'translateY(18px) scale(0.985)',
+                animation: 'certModalPanelIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards',
               }}
             >
               <button
@@ -405,6 +420,7 @@ export default function Page() {
             </div>
             </motion.div>
           </div>
+          </>
         )}
       </div>
     </LangProvider>

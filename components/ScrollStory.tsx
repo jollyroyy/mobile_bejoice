@@ -40,8 +40,8 @@ const TECH_START = FRAMES8_START + FRAMES8_COUNT;        // 655
 const FRAME_URLS: string[] = [
   // bic zoomout (0–144)
   ...Array.from({ length: BIC_COUNT }, (_, i) => `/bic/${pad(i + 1)}.webp`),
-  // globe bridge (145–210) — repeats last bic frame; serves as transition pause
-  ...Array.from({ length: GLOBE_COUNT }, () => `/bic/0145.webp`),
+  // globe bridge (145–210) — repeats first bejoice frame for seamless transition
+  ...Array.from({ length: GLOBE_COUNT }, () => `/bejoice1/frame_0001.png`),
   // bejoice (211–439) — 73 images spread over 229 slots
   ...Array.from({ length: BEJOICE_COUNT }, (_, i) => {
     const imgIdx = Math.min(Math.floor((i / BEJOICE_COUNT) * 73) + 1, 73);
@@ -315,7 +315,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
     // Globe overlay — visible during globe-bridge segment (frames 145–210)
     const gEl = globeRef.current;
     if (gEl) {
-      const GLOBE_FADE_F = 12;
+      const GLOBE_FADE_F = 6;
       let gOp = 0;
       if (frameIdx >= BIC_COUNT && frameIdx <= BEJOICE_START) {
         const enterDist = frameIdx - BIC_COUNT;

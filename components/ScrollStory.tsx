@@ -649,6 +649,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   padding: 'clamp(14px, 2vw, 22px) clamp(16px, 2.5vw, 28px)',
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
+                  marginLeft: i === 1 ? '-30px' : 0,
                   marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : (
                     i === 1 ? '-135px' : i === 2 ? '-350px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
                   transform: i === 0 ? 'translateY(-60px)' : 'translateY(clamp(-20px, 4vw - 40px, 0px))',

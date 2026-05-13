@@ -143,8 +143,9 @@ export default function QuoteModal({ onClose }) {
       onClick={e => { if (e.target === backdropRef.current) onClose() }}
       style={{
         position: 'fixed', inset: 0, zIndex: 99999,
-        background: 'rgba(3,3,8,0.82)',
-        backdropFilter: 'blur(10px)',
+        background: 'rgba(2,3,10,0.92)',
+        backdropFilter: 'blur(20px)',
+        WebkitBackdropFilter: 'blur(20px)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: '20px',
         animation: 'qm-backdrop-in 0.3s ease forwards',
@@ -154,7 +155,7 @@ export default function QuoteModal({ onClose }) {
         width: '100%', maxWidth: 580,
         maxHeight: '90vh', overflowY: 'auto',
         background: 'linear-gradient(170deg, #0f172a 0%, #091524 100%)',
-        border: '1.5px solid rgba(91,194,231,0.32)',
+        border: '1px solid rgba(91,194,231,0.22)',
         borderRadius: 24,
         boxShadow: submitted ? '0 40px 100px rgba(0,0,0,0.95), 0 0 30px rgba(91,194,231,0.2)' : '0 40px 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(91,194,231,0.12)',
         animation: submitted 
@@ -220,17 +221,15 @@ export default function QuoteModal({ onClose }) {
                 type="button"
                 onClick={onClose}
                 style={{
-                  position: 'absolute', right: 26, top: 26,
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: 'rgba(255,255,255,0.4)',
-                  borderRadius: 10, cursor: 'pointer',
-                  fontSize: 14, padding: '6px 12px',
-                  lineHeight: 1, transition: 'all 0.22s cubic-bezier(0.23, 1, 0.32, 1)',
+                  position: 'absolute', top: 12, right: 12, zIndex: 30,
+                  width: 44, height: 44,
+                  background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                  borderRadius: '50%', color: '#fff', fontSize: 22,
+                  cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; e.currentTarget.style.color = '#fff' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; e.currentTarget.style.color = 'rgba(255,255,255,0.4)' }}
-              >✕</button>
+                aria-label="Close"
+              >×</button>
               
               <div style={{
                 fontFamily: "'DM Sans', sans-serif",
@@ -238,7 +237,7 @@ export default function QuoteModal({ onClose }) {
                 color: '#5BC2E7', textTransform: 'uppercase', marginBottom: 10,
                 fontWeight: 700,
               }}>
-                Bejoice Freight · Quick Booking
+                BEJOICE · PRIVATE QUOTE
               </div>
               <h2 style={{
                 fontFamily: "'Bebas Neue', sans-serif",
@@ -279,14 +278,6 @@ export default function QuoteModal({ onClose }) {
                 <div className="btn-shine-overlay" />
                 Request Quick Quote
               </button>
-
-              <p style={{
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: 11, color: 'rgba(255,255,255,0.28)',
-                textAlign: 'center', margin: 0, lineHeight: 1.5,
-              }}>
-                🔒 Your details are confidential. We respond within 1 hour during business hours.
-              </p>
             </div>
           </form>
         )}

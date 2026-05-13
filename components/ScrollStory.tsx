@@ -68,9 +68,9 @@ const CHAPTERS = [
     headline: ['SMART FREIGHT', 'POWERED BY AI'],
     align: 'left' as const,
   },
-  // bejoice heavy lift: 211–285
+  // bejoice heavy lift: 222–285
   {
-    frameRange: [211, 320] as [number, number],
+    frameRange: [222, 320] as [number, number],
     tag: 'PROJECTS & HEAVY LIFT',
     headline: ['FROM BLUE PRINT TO DELIVERY,', 'WE MOVE IT ALL'],
     align: 'left' as const,
@@ -92,7 +92,7 @@ const CHAPTERS = [
   },
   // port to port: 496–550
   {
-    frameRange: [496, 534] as [number, number],
+    frameRange: [490, 534] as [number, number],
     tag: 'POWERING SAUDI PROJECTS THROUGH EVERY STORM',
     headline: ['FROM PORT TO PORT.', 'WORLD-CLASS LOGISTICS'],
     align: 'left' as const,
@@ -651,7 +651,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                   marginLeft: i === 1 ? '-30px' : 0,
                   marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : (
-                    i === 1 ? '-135px' : i === 2 ? '-280px' : i === 3 ? '-170px' : i === 4 ? '300px' : i === 5 ? '-100px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
+                    i === 1 ? '-135px' : i === 2 ? '-280px' : i === 3 ? '-170px' : i === 4 ? '300px' : i === 5 ? '-100px' : i === 6 ? '-350px' : i === 7 ? '-100px' : i === 8 ? '650px' : 0),
                   transform: i === 0 ? 'translateY(-60px)' : 'translateY(clamp(-20px, 4vw - 40px, 0px))',
                   direction: isAr ? 'rtl' : 'ltr',
                   textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,

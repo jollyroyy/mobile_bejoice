@@ -679,8 +679,8 @@ body {
 }
 
 /* ── FOOTER: responsive column shift ── */
-.footer-col-shift { transform: translateX(-120px); }
-@media (max-width: 1024px) { .footer-col-shift { transform: translateX(-40px); } }
+.footer-col-shift { transform: translateX(-20px); }
+@media (max-width: 1024px) { .footer-col-shift { transform: translateX(60px); } }
 @media (max-width: 767px)  { .footer-col-shift { transform: none; } }
 
 /* ── NAV: logo is square — width:auto, height-only sizing ── */
@@ -1646,8 +1646,8 @@ section {
 .cv-footer     { contain-intrinsic-size: 0 420px; }
 
 /* ── FOOTER: responsive column shift ── */
-.footer-col-shift    { transform: translateX(-120px); }
-@media (max-width: 1024px) { .footer-col-shift    { transform: translateX(-40px); } }
+.footer-col-shift    { transform: translateX(-20px); }
+@media (max-width: 1024px) { .footer-col-shift    { transform: translateX(60px); } }
 @media (max-width: 767px)  { .footer-col-shift    { transform: none; } }
 
 /* Arabic columns — push 30 px to the right */

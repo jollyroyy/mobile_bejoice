@@ -901,7 +901,7 @@ function CareersModal({ onClose }) {
                 </div>
 
                 <button type="submit" className="cm-sub" disabled={submitting}>
-                  {submitting ? 'Submitting…' : 'Submit Application →'}
+                  {submitting ? 'Submitting…' : 'Submit Application'}
                 </button>
               </form>
             </div>

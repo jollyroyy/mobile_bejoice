@@ -221,7 +221,8 @@ export default function Page() {
               backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
-              overflowY: 'auto',
+               overflowY: 'auto',
+              overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
@@ -268,7 +269,8 @@ export default function Page() {
               backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
-              overflowY: 'auto',
+               overflowY: 'auto',
+              overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
@@ -315,7 +317,8 @@ export default function Page() {
               backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
-              overflowY: 'auto',
+               overflowY: 'auto',
+              overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
@@ -361,7 +364,8 @@ export default function Page() {
               backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
-              overflowY: 'auto',
+               overflowY: 'auto',
+              overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >

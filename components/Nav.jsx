@@ -453,7 +453,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
             onClick={e => e.stopPropagation()}
             style={{
               position: 'relative',
-              width: '100%',
+              width: '100%', maxWidth: 960,
               minHeight: '100%',
               background: 'linear-gradient(158deg, #07101e 0%, #0b1928 55%, #060e1a 100%)',
               border: '1px solid rgba(91,194,231,0.22)',

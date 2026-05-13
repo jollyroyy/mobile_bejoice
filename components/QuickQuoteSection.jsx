@@ -335,15 +335,15 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
     onNext()
   }
   return (
-    <div style={{ marginTop: '1.8rem', paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+    <div style={{ marginTop: '1.8rem', paddingTop: '1.2rem', borderTop: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
       {isLast ? (
         <button
           onClick={() => { if (validate && !validate()) return; onSubmit() }}
           disabled={loading}
           className="btn-gold"
           style={{
-            width: '100%', maxWidth: 'calc(100% - 4px)', margin: '0 auto', justifyContent: 'center',
-            padding: '0.6rem 1.5rem', minHeight: '44px',
+            width: 'auto', margin: '0 auto', justifyContent: 'center',
+            padding: '0.6rem 0.5rem', minHeight: '44px',
             opacity: loading ? 0.6 : 1,
             cursor: loading ? 'default' : 'pointer',
             animation: loading ? 'none' : 'qqm-continue-pulse 2s ease-in-out infinite',
@@ -361,8 +361,8 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           onClick={handleContinue}
           className="btn-gold"
           style={{
-            width: '100%', maxWidth: 'calc(100% - 4px)', margin: '0 auto', justifyContent: 'center',
-            padding: '0.6rem 1.5rem', minHeight: '44px',
+            width: 'auto', margin: '0 auto', justifyContent: 'center',
+            padding: '0.6rem 0.5rem', minHeight: '44px',
             animation: 'qqm-continue-pulse 2s ease-in-out infinite',
           }}
         >

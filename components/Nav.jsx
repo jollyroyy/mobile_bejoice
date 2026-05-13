@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { useCalBooking } from '@/hooks/useCalBooking'
 import { useLang } from '@/context/LangContext'
 import ar from '@/i18n/ar'
+import DrawerQuoteModal from './DrawerQuoteModal'
 
 const CAL_LINK = "bejoice/freight-expert-consultation"
 
@@ -26,6 +27,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
   const [pastHero, setPastHero]   = useState(false)
   const [menuOpen, setMenuOpen]   = useState(false)
   const [heavyOpen, setHeavyOpen] = useState(false)
+  const [drawerQuoteOpen, setDrawerQuoteOpen] = useState(false)
   const drawerRef                 = useRef(null)
   const backdropRef               = useRef(null)
 
@@ -57,7 +59,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
   // Lock body scroll when drawer/heavy popup is open
   useEffect(() => {
     const lenis = window.__lenis
-    const lockScroll = menuOpen || heavyOpen
+    const lockScroll = menuOpen || heavyOpen || drawerQuoteOpen
     document.body.style.overflow = lockScroll ? 'hidden' : ''
     if (lockScroll) document.body.classList.add('explore-open')
     else document.body.classList.remove('explore-open')
@@ -68,7 +70,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
       document.body.classList.remove('explore-open')
       lenis?.start?.()
     }
-  }, [menuOpen, heavyOpen])
+    }, [menuOpen, heavyOpen, drawerQuoteOpen])
 
   // GSAP drawer animation
   useEffect(() => {
@@ -302,13 +304,22 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
           zIndex: 999,
           display: 'flex', flexDirection: 'column',
           transform: 'translateX(100%)',
-          overflowY: 'auto',
+          overflow: 'hidden',
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         }}
       >
+        {/* Ambient glow effects — behind all content */}
+        <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+        <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+        {/* Top shimmer line */}
+        <div style={{ position:'absolute', top:0, left:0, right:0, height:1, pointerEvents:'none', zIndex: 1,
+          background:'linear-gradient(90deg, transparent 0%, rgba(91,194,231,0.6) 40%, rgba(91,194,231,0.8) 50%, rgba(91,194,231,0.6) 60%, transparent 100%)' }} />
+        {/* Inner scrollable content */}
+        <div style={{ position:'relative', flex: 1, overflowY: 'auto', zIndex: 1, scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="drawer-scroll-hide">
         {/* Gold top accent */}
         <div style={{ height: '2px', background: 'linear-gradient(90deg, transparent, rgba(91,194,231,0.8), transparent)', flexShrink: 0 }} />
 
@@ -366,7 +377,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
             {toolCard('🧮', isAr ? ar.nav.loadCalculator : 'Load Calculator', isAr ? ar.nav.loadCalculatorSub : 'Open container planning modal', () => { setMenuOpen(false); onToolsClick?.() })}
-            {toolCard('🚢', isAr ? ar.nav.quickQuote : 'Quick Quote', isAr ? 'أسعار شحن فورية' : 'Instant freight rates', handleQuote)}
+            {toolCard('🚢', isAr ? ar.nav.quickQuote : 'Quick Quote', isAr ? 'أسعار شحن فورية' : 'Instant freight rates', () => { setMenuOpen(false); setDrawerQuoteOpen(true) })}
             {toolCard('📡', isAr ? ar.nav.trackShipment : 'Track Shipment', isAr ? 'BL / AWB تتبع مباشر' : 'BL / AWB live tracking', () => { setMenuOpen(false); window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer') })}
             {toolCard('📞', isAr ? ar.nav.bookCallTool : 'Book a Call', isAr ? 'تحدث مع خبير شحن' : 'Talk to a freight expert', () => { setMenuOpen(false); openCalPopup() })}
             {toolCard('✉️', isAr ? ar.nav.emailUs : 'Email Us', 'info@bejoiceshipping-ksa.com', () => { setMenuOpen(false); window.location.href = 'mailto:info@bejoiceshipping-ksa.com' })}
@@ -430,6 +441,10 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
           </div>
         </div>
       </div>
+      </div>
+
+      {/* ── Drawer Quote Modal ── */}
+      {drawerQuoteOpen && <DrawerQuoteModal onClose={() => setDrawerQuoteOpen(false)} />}
 
       {/* ── Heavy Lift Popup ── */}
       {heavyOpen && (

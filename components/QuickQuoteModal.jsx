@@ -54,28 +54,18 @@ export default function QuickQuoteModal({ onClose }) {
         /* Close button */
         .qqm-x-btn {
           position: absolute;
-          top: 16px;
-          right: 16px;
+          top: 12px;
+          right: 12px;
           z-index: 30;
           width: 44px; height: 44px;
           display: flex; align-items: center; justify-content: center;
-          background: rgba(7,16,28,0.9);
-          border: 1.5px solid rgba(91,194,231,0.5);
+          background: rgba(7,16,28,0.97);
+          border: 2px solid rgba(91,194,231,0.85);
           border-radius: 50%;
-          color: rgba(91,194,231,0.9);
-          font-size: 18px;
+          color: #fff;
+          font-size: 22px;
           cursor: pointer;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.7), 0 0 0 0 rgba(91,194,231,0.3);
-          transition: background 0.25s, border-color 0.25s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s, color 0.25s;
-          flex-shrink: 0;
-          backdrop-filter: blur(8px);
-        }
-        .qqm-x-btn:hover {
-          background: rgba(91,194,231,0.15);
-          border-color: #8DD8F0;
-          color: #8DD8F0;
-          transform: rotate(90deg) scale(1.1);
-          box-shadow: 0 6px 28px rgba(91,194,231,0.4), 0 0 0 4px rgba(91,194,231,0.08);
+          box-shadow: 0 2px 16px rgba(0,0,0,0.9);
         }
 
         /* Animated top gradient bar */
@@ -141,46 +131,45 @@ export default function QuickQuoteModal({ onClose }) {
         data-lenis-prevent-touch
         onClick={e => { if (e.target === backdropRef.current) onClose() }}
         style={{
-          position: 'fixed', inset: 0, zIndex: 99999,
+          position: 'fixed', inset: 0, zIndex: 99990,
           background: 'rgba(2,3,10,0.92)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
           padding: 'max(16px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left))',
-          animation: 'qqm-backdrop-in 0.28s ease forwards',
           overflowY: 'auto',
           WebkitOverflowScrolling: 'touch',
         }}
       >
         {/* Panel */}
-        <div
+        <motion.div
           className="qqm-panel"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
           onClick={e => e.stopPropagation()}
           style={{
             position: 'relative',
             width: '100%', maxWidth: 960,
             boxSizing: 'border-box',
-            background: 'linear-gradient(160deg, #0d1425 0%, #080c18 40%, #091524 100%)',
-            border: '1px solid rgba(91,194,231,0.18)',
-            borderRadius: 24,
-            boxShadow: `
-              0 60px 140px rgba(0,0,0,0.95),
-              0 0 0 1px rgba(91,194,231,0.06) inset,
-              0 1px 0 rgba(91,194,231,0.2) inset
-            `,
-            animation: 'qqm-panel-in 0.45s cubic-bezier(0.34,1.2,0.64,1) forwards',
+            background: '#183650',
+            backgroundImage: 'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
+            border: '1px solid rgba(91,194,231,0.35)',
+            borderTop: '1px solid rgba(91,194,231,0.65)',
+            borderRadius: 28,
+            boxShadow: [
+              '0 60px 120px rgba(0,0,0,0.75)',
+              '0 0 0 1px rgba(91,194,231,0.08) inset',
+              'inset 0 1px 0 rgba(91,194,231,0.30)',
+              '0 0 60px rgba(91,194,231,0.10)',
+              '0 0 120px rgba(91,194,231,0.05)',
+            ].join(', '),
+            overflow: 'hidden',
+            zIndex: 1,
           }}
         >
           {/* Animated gold top bar */}
           <div className="qqm-top-bar" />
-
-          {/* Ambient glow behind heading */}
-          <div style={{
-            position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
-            width: '60%', height: '200px',
-            background: 'radial-gradient(ellipse at 50% 0%, rgba(91,194,231,0.12) 0%, transparent 70%)',
-            pointerEvents: 'none', zIndex: 0,
-          }} />
 
           {/* Close button */}
           <button className="qqm-x-btn" onClick={onClose} aria-label="Close">
@@ -272,7 +261,7 @@ export default function QuickQuoteModal({ onClose }) {
           <div style={{ position: 'relative', zIndex: 1 }}>
             <QuickQuoteSection inModal={true} lang={lang} />
           </div>
-        </div>
+        </motion.div>
       </div>
     </>
   )

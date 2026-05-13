@@ -683,10 +683,13 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
 
                 {/* Headline */}
                 <div style={{ userSelect: 'none' }}>
-                  {(displayHeadline as readonly string[]).map((line, li) => (
-                    <div
+                  {(displayHeadline as readonly string[]).map((line, li) => {
+                    const isInline = i === 8;
+                    return (
+                    <span
                       key={li}
                       style={{
+                        display: isInline ? 'inline' : 'block',
                         fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
                         fontSize: isAr ? 'clamp(1.545rem, 2.98vw, 3.185rem)' : 'clamp(1.345rem, 2.8vw, 3.345rem)',
                         fontWeight: isAr ? 700 : 400,
@@ -698,9 +701,10 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                           : '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)',
                       }}
                     >
-                      {line}
-                    </div>
-                  ))}
+                      {line}&nbsp;
+                    </span>
+                    );
+                  })}
                 </div>
 
                 {/* Accent rule */}

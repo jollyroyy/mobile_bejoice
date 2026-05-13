@@ -264,7 +264,7 @@ export default function QuoteModal({ onClose }) {
               {/* ── Submit ── */}
               <button type="submit" className="qm-submit" disabled={!form.name || !form.source || !form.destination || !form.portNumber || !form.phone}>
                 <div className="btn-shine-overlay" />
-                Request Quick Quote →
+                Request Quick Quote
               </button>
 
               <p style={{

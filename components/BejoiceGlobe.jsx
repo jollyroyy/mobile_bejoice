@@ -97,8 +97,10 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
     el.appendChild(renderer.domElement);
 
     const scene  = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(36, W / H, 0.1, 200);
-    camera.position.set(0, 0.15, 2.55);
+    const fov = window.innerWidth < 768 ? 50 : 42;
+    const camera = new THREE.PerspectiveCamera(fov, W / H, 0.1, 200);
+    const dist = window.innerWidth < 768 ? 2.85 : 3.2;
+    camera.position.set(0, 0.15, dist);
     camera.lookAt(0, 0, 0);
 
     const group = new THREE.Group();
@@ -450,7 +452,12 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
 
     const onResize = () => {
       const w = el.clientWidth, h = el.clientHeight;
-      camera.aspect = w / h; camera.updateProjectionMatrix();
+      const isMobile = window.innerWidth < 768;
+      camera.fov = isMobile ? 50 : 42;
+      camera.position.z = isMobile ? 2.85 : 3.2;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
       renderer.setSize(w, h);
     };
     window.addEventListener('resize', onResize);
@@ -471,13 +478,13 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
   }, []);
 
   const inner = (
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 'clamp(1.5rem,4vw,4rem)', padding: '0 clamp(1rem,3vw,2rem)' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center', gap: 'clamp(1.5rem,4vw,4rem)', padding: '0 clamp(1rem,3vw,2rem)' }}>
 
         {/* ── LEFT: Globe ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }} whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }} transition={{ duration: 1.2, ease: [0.16,1,0.3,1] }}
-          style={{ position: 'relative', flexShrink: 0, width: 'clamp(320px, 55vw, 720px)' }}
+          style={{ position: 'relative', flexShrink: 0, width: 'clamp(280px, 75vw, 720px)', maxWidth: '100%' }}
         >
           <div style={{
             position: 'absolute', inset: -40,
@@ -530,7 +537,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
         <motion.div
           initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, ease: [0.16,1,0.3,1] }}
-          style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(1rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(1rem,3vw,3rem)' }}
+          style={{ flex: '1 1 280px', minWidth: 0, maxWidth: '100%', display: 'flex', flexDirection: 'column', gap: 'clamp(1rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(0rem,2vw,3rem)' }}
         >
           {/* Headline — same font style as SMART FREIGHT scrollytelling headline */}
           <h2 className="no-reveal" style={{

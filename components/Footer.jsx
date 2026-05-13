@@ -697,6 +697,9 @@ function CareersModal({ onClose }) {
 
       <div
         ref={backdropRef}
+        data-lenis-prevent
+        data-lenis-prevent-wheel
+        data-lenis-prevent-touch
         onClick={e => { if (e.target === backdropRef.current) onClose() }}
         style={{
           position: 'fixed', inset: 0, zIndex: 99999,
@@ -713,7 +716,6 @@ function CareersModal({ onClose }) {
           onClick={e => e.stopPropagation()}
           style={{
             width: '100%', maxWidth: 580,
-            maxHeight: '90vh', overflowY: 'auto',
             background: 'linear-gradient(170deg,#0f172a 0%,#091524 100%)',
             border: '1.5px solid rgba(91,194,231,0.32)',
             borderRadius: 24,
@@ -721,7 +723,6 @@ function CareersModal({ onClose }) {
               ? '0 40px 100px rgba(0,0,0,0.95),0 0 30px rgba(91,194,231,0.2)'
               : '0 40px 100px rgba(0,0,0,0.9),0 0 0 1px rgba(91,194,231,0.12)',
             animation: 'cm-pan 0.45s cubic-bezier(0.23,1,0.32,1) forwards',
-            scrollbarWidth: 'none',
             position: 'relative',
           }}
         >

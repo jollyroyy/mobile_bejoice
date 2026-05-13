@@ -21,7 +21,7 @@ export default function Certifications() {
   useFadeUpBatch(sectionRef)
 
   return (
-    <section id="certifications" ref={sectionRef} className="relative pt-6 pb-16 md:pt-10 md:pb-24 lg:pt-14 lg:pb-32 px-6 md:px-12 lg:px-24 overflow-hidden cv-section cv-certs" style={{ background: '#183650', minHeight: '100vh' }}>
+    <section id="certifications" ref={sectionRef} className="relative pt-6 pb-16 md:pt-10 md:pb-24 lg:pt-14 lg:pb-32 px-6 md:px-12 lg:px-24 overflow-hidden cv-section cv-certs" style={{ background: 'transparent', minHeight: '100vh' }}>
       <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" />
 
       {/* Ambient */}

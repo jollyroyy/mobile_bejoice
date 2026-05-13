@@ -777,7 +777,7 @@ export default function LogisticsTools() {
   const isAr = lang === 'ar'
   return (
     <section id="tools" style={{
-      background: '#183650',
+      background: 'transparent',
       padding: 'clamp(60px,7vw,110px) clamp(1.5rem,8vw,8rem)',
       minHeight: 'auto',
       position: 'relative',

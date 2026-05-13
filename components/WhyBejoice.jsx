@@ -77,10 +77,22 @@ export default function WhyBejoice() {
     <section
       id="why-us"
       className="relative pt-6 pb-16 md:pt-10 md:pb-24 lg:pt-14 lg:pb-32 px-4 md:px-10 lg:px-20"
-      style={{ background: '#183650', minHeight: '100vh' }}
+      style={{ background: 'transparent', minHeight: '100vh' }}
     >
-      <SparklesCore background="transparent" minSize={0.5} maxSize={1.4} particleDensity={10} particleColor="rgba(91,194,231,0.7)" speed={0.3} className="absolute inset-0 w-full h-full pointer-events-none" />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,194,231,0.06) 0%, transparent 60%)' }} />
+      <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" />
+      {/* Ambient glows — matching Load Calculator */}
+      <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none' }} />
+      <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none' }} />
+
+      {/* Corner accent — top-left */}
+      <div style={{ position:'absolute', top:0, left:0, width:120, height:120, pointerEvents:'none',
+        background:'radial-gradient(circle at 0% 0%, rgba(91,194,231,0.12) 0%, transparent 65%)' }}/>
+      {/* Corner accent — bottom-right */}
+      <div style={{ position:'absolute', bottom:0, right:0, width:200, height:200, pointerEvents:'none',
+        background:'radial-gradient(circle at 100% 100%, rgba(91,194,231,0.07) 0%, transparent 60%)' }}/>
+      {/* Top shimmer line */}
+      <div style={{ position:'absolute', top:0, left:0, right:0, height:1, pointerEvents:'none',
+        background:'linear-gradient(90deg, transparent 0%, rgba(91,194,231,0.6) 40%, rgba(91,194,231,0.8) 50%, rgba(91,194,231,0.6) 60%, transparent 100%)' }}/>
 
       <div className="max-w-5xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
 
@@ -91,20 +103,21 @@ export default function WhyBejoice() {
           viewport={{ once: true, amount: 0.05 }}
           transition={{ duration: 0.6, ease: 'easeOut' }}
           style={{
-            background: 'linear-gradient(160deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 50%, rgba(91,194,231,0.03) 100%)',
-            border: '1px solid rgba(91,194,231,0.28)',
-            borderTop: '1px solid rgba(91,194,231,0.55)',
-            borderRadius: 24,
-            overflow: 'hidden',
-            boxShadow: '0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(91,194,231,0.06) inset, inset 0 1px 0 rgba(91,194,231,0.22), 0 0 50px rgba(91,194,231,0.06)',
-            position: 'relative',
+            width:'100%',
+            background:'#183650',
+            backgroundImage:'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
+            border:'1px solid rgba(91,194,231,0.35)',
+            borderTop:'1px solid rgba(91,194,231,0.65)',
+            borderRadius:28, overflow:'hidden', position:'relative',
+            boxShadow:[
+              '0 60px 120px rgba(0,0,0,0.75)',
+              '0 0 0 1px rgba(91,194,231,0.08) inset',
+              'inset 0 1px 0 rgba(91,194,231,0.30)',
+              '0 0 60px rgba(91,194,231,0.10)',
+              '0 0 120px rgba(91,194,231,0.05)',
+            ].join(', '),
           }}
         >
-          {/* Ambient light layers */}
-          <div style={{ position:'absolute', inset:0, zIndex:0, pointerEvents:'none', overflow:'hidden', borderRadius:24 }}>
-            <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 80% 50% at 50% -5%, rgba(91,194,231,0.08) 0%, transparent 60%)' }}/>
-            <div style={{ position:'absolute', bottom:'-10%', right:'-5%', width:'clamp(300px,50vw,600px)', height:'clamp(300px,50vw,600px)', borderRadius:'50%', background:'radial-gradient(circle, rgba(91,194,231,0.03) 0%, transparent 65%)' }}/>
-          </div>
 
           {/* ── Header Block ── */}
           <div style={{

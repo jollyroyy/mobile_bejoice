@@ -1059,6 +1059,8 @@ body {
   scrollbar-width: none;
 }
 .qq-tabs::-webkit-scrollbar { display: none; }
+
+.drawer-scroll-hide::-webkit-scrollbar { display: none; }
 .qq-tab {
   display: flex;
   flex-direction: column;

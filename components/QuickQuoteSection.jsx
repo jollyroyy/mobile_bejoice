@@ -343,7 +343,7 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           className="btn-gold"
           style={{
             width: 'auto', margin: '0 auto', justifyContent: 'center',
-            padding: '0.6rem 0.6rem', minHeight: '44px',
+            padding: '0.6rem 0.8rem', minHeight: '44px',
             opacity: loading ? 0.6 : 1,
             cursor: loading ? 'default' : 'pointer',
             animation: loading ? 'none' : 'qqm-continue-pulse 2s ease-in-out infinite',
@@ -362,7 +362,7 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           className="btn-gold"
           style={{
             width: 'auto', margin: '0 auto', justifyContent: 'center',
-            padding: '0.6rem 0.6rem', minHeight: '44px',
+            padding: '0.6rem 0.8rem', minHeight: '44px',
             animation: 'qqm-continue-pulse 2s ease-in-out infinite',
           }}
         >

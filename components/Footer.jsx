@@ -771,7 +771,7 @@ function CareersModal({ onClose }) {
             /* ── Form ── */
             <div style={{ padding: 'clamp(28px,4vw,40px)' }}>
               {/* Heading */}
-              <div style={{ marginBottom: 28, paddingRight: 40 }}>
+              <div style={{ marginBottom: 28, textAlign: 'center' }}>
                 <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.75)', fontWeight: 700, margin: '0 0 8px' }}>
                   Bejoice Group
                 </p>

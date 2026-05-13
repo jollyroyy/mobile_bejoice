@@ -36,10 +36,7 @@ export default function Certifications() {
 
         {/* ── Single prestige card: heading + cert plates ── */}
         <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px 0px' }}
-          transition={{ type: 'spring', stiffness: 90, damping: 22 }}
+          initial={{ opacity: 1, y: 0 }}
           style={{
             position: 'relative',
             background: 'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',

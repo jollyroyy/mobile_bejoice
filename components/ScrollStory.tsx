@@ -651,7 +651,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                   marginLeft: i === 1 ? '-30px' : 0,
                   marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : (
-                    i === 1 ? '-135px' : i === 2 ? '-350px' : i === 3 ? '-140px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
+                    i === 1 ? '-135px' : i === 2 ? '-350px' : i === 3 ? '-170px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
                   transform: i === 0 ? 'translateY(-60px)' : 'translateY(clamp(-20px, 4vw - 40px, 0px))',
                   direction: isAr ? 'rtl' : 'ltr',
                   textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,

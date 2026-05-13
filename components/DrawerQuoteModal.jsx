@@ -123,7 +123,7 @@ export default function DrawerQuoteModal({ onClose }) {
           style={{
             position: 'relative',
             width: '100%', maxWidth: 700,
-            background: '#183650',
+            background: '#5BC2E7',
             borderRadius: 28,
             overflow: 'hidden',
             zIndex: 1,

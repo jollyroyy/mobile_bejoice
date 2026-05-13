@@ -574,7 +574,7 @@ function CareersModal({ onClose }) {
   const set = (field, val) => setForm(prev => ({ ...prev, [field]: val }))
 
   const fieldErr = (field) => errors[field]
-    ? <div style={{ color: '#f87171', fontSize: 13, marginTop: 5, fontFamily: "'DM Sans',sans-serif" }}>{errors[field]}</div>
+    ? <div style={{ color: '#f87171', fontSize: 13, marginTop: 5, fontFamily: "var(--font-dm-sans), sans-serif" }}>{errors[field]}</div>
     : null
 
   function validate() {
@@ -652,7 +652,7 @@ function CareersModal({ onClose }) {
 
   // ── Shared input/label styles matching QuoteModal ─────────────────────────
   const lbl = {
-    display: 'block', fontFamily: "'DM Sans',sans-serif",
+    display: 'block', fontFamily: "var(--font-dm-sans), sans-serif",
     fontSize: 12, fontWeight: 700, letterSpacing: '0.18em',
     textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)',
     marginBottom: 6,
@@ -668,7 +668,7 @@ function CareersModal({ onClose }) {
         .cm-inp {
           width:100%; background:rgba(255,255,255,0.03);
           border:1px solid rgba(255,255,255,0.08); border-radius:12px;
-          color:#fff; font-family:'DM Sans',sans-serif;
+          color:#fff; font-family:var(--font-dm-sans), sans-serif;
           font-size:16px; padding:13px 18px; outline:none;
           transition:all 0.3s cubic-bezier(0.23,1,0.32,1); box-sizing:border-box;
         }
@@ -681,7 +681,7 @@ function CareersModal({ onClose }) {
           display:block; width:auto; margin:0 auto; padding:15px 29px;
           background:linear-gradient(135deg,#8DD8F0 0%,#8DD8F0 40%,#5BC2E7 100%);
           color:#091524; border:1px solid rgba(255,255,255,0.25); border-radius:12px;
-          font-family:'DM Sans',sans-serif; font-size:14px; font-weight:900;
+          font-family:var(--font-dm-sans), sans-serif; font-size:14px; font-weight:900;
           letter-spacing:0.2em; text-transform:uppercase; cursor:pointer;
           box-shadow:0 12px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.45);
           transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
@@ -759,10 +759,10 @@ function CareersModal({ onClose }) {
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
               </div>
-              <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2rem,5vw,2.8rem)', letterSpacing: '0.08em', color: '#fff', margin: 0, lineHeight: 1 }}>
+              <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(2rem,5vw,2.8rem)', letterSpacing: '0.08em', color: '#fff', margin: 0, lineHeight: 1 }}>
                 Application <span style={{ color: '#5BC2E7' }}>Received!</span>
               </h2>
-              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, maxWidth: 380, margin: 0 }}>
+              <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, maxWidth: 380, margin: 0 }}>
                 Thank you for your interest. We will notify you once we have an open position in this role.
               </p>
               <button className="cm-sub" onClick={onClose} style={{ marginTop: 8, maxWidth: 200 }}>Close</button>
@@ -772,13 +772,13 @@ function CareersModal({ onClose }) {
             <div style={{ padding: 'clamp(28px,4vw,40px)' }}>
               {/* Heading */}
               <div style={{ marginBottom: 28, paddingRight: 40 }}>
-                <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.75)', fontWeight: 700, margin: '0 0 8px' }}>
+                <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.75)', fontWeight: 700, margin: '0 0 8px' }}>
                   Bejoice Group
                 </p>
-                <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(1.9rem,5vw,2.8rem)', letterSpacing: '0.08em', color: '#fff', margin: '0 0 10px', lineHeight: 1 }}>
+                <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(1.9rem,5vw,2.8rem)', letterSpacing: '0.08em', color: '#fff', margin: '0 0 10px', lineHeight: 1 }}>
                   Join <span style={{ color: '#5BC2E7' }}>Our Team</span>
                 </h2>
-                <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6 }}>
+                <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 14, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6 }}>
                   Express your interest — we'll reach out when a matching role opens.
                 </p>
               </div>
@@ -863,10 +863,10 @@ function CareersModal({ onClose }) {
                       <polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
                     </svg>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13.5, color: cvFile ? '#fff' : 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13.5, color: cvFile ? '#fff' : 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                         {cvFile ? cvFile.name : 'Upload PDF, DOC or DOCX — max 5 MB'}
                       </div>
-                      {cvFile && <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.55)', marginTop: 2 }}>{(cvFile.size / 1024).toFixed(0)} KB</div>}
+                      {cvFile && <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.55)', marginTop: 2 }}>{(cvFile.size / 1024).toFixed(0)} KB</div>}
                     </div>
                     {cvFile && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><polyline points="20 6 9 17 4 12"/></svg>}
                     <input type="file"

@@ -604,7 +604,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
               <button
                 onClick={() => { setHeavyOpen(false); setTimeout(() => openCalPopup(), 300) }}
                 style={{
-                  flex: '1 1 180px', padding: '1rem 1.6rem', minHeight: 52,
+                  flex: '1 1 176px', padding: '1rem 1.6rem', minHeight: 52,
                   background: 'linear-gradient(135deg, #5BC2E7 0%, #8DD8F0 50%, #5BC2E7 100%)',
                   border: 'none', borderRadius: 12, cursor: 'pointer',
                   fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400,
@@ -621,7 +621,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
               <button
                 onClick={() => { setHeavyOpen(false); const el = document.getElementById('heavy-cargo'); if (el) { if (window.__lenis) window.__lenis.scrollTo(el, { offset: -80, immediate: true }); else el.scrollIntoView({ behavior: 'instant' }) } }}
                 style={{
-                  flex: '1 1 160px', padding: '1rem 1.6rem', minHeight: 52,
+                  flex: '1 1 156px', padding: '1rem 1.6rem', minHeight: 52,
                   background: 'transparent',
                   border: '1.5px solid rgba(91,194,231,0.35)', borderRadius: 12, cursor: 'pointer',
                   fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400,

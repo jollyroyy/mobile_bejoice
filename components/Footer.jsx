@@ -678,7 +678,7 @@ function CareersModal({ onClose }) {
         .cm-inp.err { border-color:rgba(248,113,113,0.6); }
         .cm-inp.err:focus { border-color:rgba(248,113,113,0.8); box-shadow:0 0 0 1px rgba(248,113,113,0.3); }
         .cm-sub {
-          width:100%; padding:18px;
+          width:100%; max-width:calc(100% - 4px); margin:0 auto; padding:18px;
           background:linear-gradient(135deg,#8DD8F0 0%,#8DD8F0 40%,#5BC2E7 100%);
           color:#091524; border:1px solid rgba(255,255,255,0.25); border-radius:12px;
           font-family:'DM Sans',sans-serif; font-size:14px; font-weight:900;

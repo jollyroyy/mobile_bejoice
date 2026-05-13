@@ -215,7 +215,8 @@ export default function Page() {
             onClick={e => { if (e.target === whyModalRef.current) startTransition(() => setWhyOpen(false)); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
-              background: '#183650',
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
               overflowY: 'auto',
@@ -250,7 +251,8 @@ export default function Page() {
             onClick={e => { if (e.target === servicesModalRef.current) startTransition(() => setServicesOpen(false)); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
-              background: '#183650',
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
               overflowY: 'auto',
@@ -285,7 +287,8 @@ export default function Page() {
             onClick={e => { if (e.target === toolsModalRef.current) startTransition(() => setToolsOpen(false)); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
-              background: '#183650',
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
               display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
               padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
               overflowY: 'auto',

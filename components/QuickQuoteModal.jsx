@@ -137,6 +137,8 @@ export default function QuickQuoteModal({ onClose }) {
       <div
         ref={backdropRef}
         data-lenis-prevent
+        data-lenis-prevent-wheel
+        data-lenis-prevent-touch
         onClick={e => { if (e.target === backdropRef.current) onClose() }}
         style={{
           position: 'fixed', inset: 0, zIndex: 99999,
@@ -213,7 +215,7 @@ export default function QuickQuoteModal({ onClose }) {
                 flexShrink: 0,
               }} />
               <span style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: 'var(--font-dm-sans), sans-serif',
                 fontSize: 10.5, letterSpacing: isAr ? 0 : '0.32em',
                 textTransform: isAr ? 'none' : 'uppercase',
                 color: 'rgba(91,194,231,0.9)', fontWeight: 700,
@@ -225,7 +227,7 @@ export default function QuickQuoteModal({ onClose }) {
             {/* Main heading */}
             <div style={{ marginBottom: 10 }}>
               <h2 className="qqm-heading-h2" style={{
-                fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "'Bebas Neue',sans-serif",
+                fontFamily: isAr ? 'var(--font-cairo), sans-serif' : 'var(--font-bebas), sans-serif',
                 fontSize: 'clamp(2.2rem,6vw,4rem)',
                 letterSpacing: isAr ? 0 : '0.1em',
                 lineHeight: 1,
@@ -247,7 +249,7 @@ export default function QuickQuoteModal({ onClose }) {
 
             {/* Subtitle */}
             <p className="qqm-subtitle" style={{
-              fontFamily: "'DM Sans',sans-serif",
+              fontFamily: 'var(--font-dm-sans), sans-serif',
               fontSize: 17,
               color: 'rgba(255,255,255,0.88)',
               margin: '0 auto 20px',

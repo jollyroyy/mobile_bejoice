@@ -54,16 +54,21 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Lock body scroll when menu open
+  // Lock body scroll when drawer/heavy popup is open
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : ''
-    if (menuOpen) document.body.classList.add('explore-open')
+    const lenis = window.__lenis
+    const lockScroll = menuOpen || heavyOpen
+    document.body.style.overflow = lockScroll ? 'hidden' : ''
+    if (lockScroll) document.body.classList.add('explore-open')
     else document.body.classList.remove('explore-open')
+    if (lockScroll) lenis?.stop?.()
+    else lenis?.start?.()
     return () => {
       document.body.style.overflow = ''
       document.body.classList.remove('explore-open')
+      lenis?.start?.()
     }
-  }, [menuOpen])
+  }, [menuOpen, heavyOpen])
 
   // GSAP drawer animation
   useEffect(() => {
@@ -102,7 +107,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
 
   const handleQuote = () => {
     setMenuOpen(false)
-    setTimeout(() => onQuoteClick?.(), 350)
+    onQuoteClick?.()
   }
 
   const toolCard = (icon, label, sub, onClick) => (
@@ -286,6 +291,9 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
       <div
         className="drawer-scroll-hide"
         ref={drawerRef}
+        data-lenis-prevent
+        data-lenis-prevent-wheel
+        data-lenis-prevent-touch
         style={{
           position: 'fixed', top: 0, right: 0, bottom: 0,
           width: 'min(400px, 92vw)',
@@ -295,6 +303,8 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
           display: 'flex', flexDirection: 'column',
           transform: 'translateX(100%)',
           overflowY: 'auto',
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         }}
@@ -326,10 +336,10 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
               key={link.id}
               onClick={() => {
                 if (link.id === 'heavy-cargo') { setMenuOpen(false); setHeavyOpen(true); }
-                else if (link.id === 'why-us') { setMenuOpen(false); setTimeout(() => onWhyClick?.(), 350); }
-                else if (link.id === 'load-calculator') { setMenuOpen(false); setTimeout(() => onToolsClick?.(), 350); }
-                else if (link.id === 'certifications') { setMenuOpen(false); setTimeout(() => onCertificationsClick?.(), 350); }
-                else if (link.id === 'services') { setMenuOpen(false); setTimeout(() => onServicesClick?.(), 350); }
+                else if (link.id === 'why-us') { setMenuOpen(false); onWhyClick?.(); }
+                else if (link.id === 'load-calculator') { setMenuOpen(false); onToolsClick?.(); }
+                else if (link.id === 'certifications') { setMenuOpen(false); onCertificationsClick?.(); }
+                else if (link.id === 'services') { setMenuOpen(false); onServicesClick?.(); }
                 else scrollTo(link.id);
               }}
               style={{
@@ -355,10 +365,10 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
             {isAr ? ar.nav.logisticsTools : 'Logistics Tools'}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
-            {toolCard('🧮', isAr ? ar.nav.loadCalculator : 'Load Calculator', isAr ? ar.nav.loadCalculatorSub : 'Open container planning modal', () => { setMenuOpen(false); setTimeout(() => onToolsClick?.(), 350) })}
+            {toolCard('🧮', isAr ? ar.nav.loadCalculator : 'Load Calculator', isAr ? ar.nav.loadCalculatorSub : 'Open container planning modal', () => { setMenuOpen(false); onToolsClick?.() })}
             {toolCard('🚢', isAr ? ar.nav.quickQuote : 'Quick Quote', isAr ? 'أسعار شحن فورية' : 'Instant freight rates', handleQuote)}
             {toolCard('📡', isAr ? ar.nav.trackShipment : 'Track Shipment', isAr ? 'BL / AWB تتبع مباشر' : 'BL / AWB live tracking', () => { setMenuOpen(false); window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer') })}
-            {toolCard('📞', isAr ? ar.nav.bookCallTool : 'Book a Call', isAr ? 'تحدث مع خبير شحن' : 'Talk to a freight expert', () => { setMenuOpen(false); setTimeout(() => openCalPopup(), 350) })}
+            {toolCard('📞', isAr ? ar.nav.bookCallTool : 'Book a Call', isAr ? 'تحدث مع خبير شحن' : 'Talk to a freight expert', () => { setMenuOpen(false); openCalPopup() })}
             {toolCard('✉️', isAr ? ar.nav.emailUs : 'Email Us', 'info@bejoiceshipping-ksa.com', () => { setMenuOpen(false); window.location.href = 'mailto:info@bejoiceshipping-ksa.com' })}
           </div>
 
@@ -424,28 +434,31 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
       {/* ── Heavy Lift Popup ── */}
       {heavyOpen && (
         <div
-          onClick={() => setHeavyOpen(false)}
+          data-lenis-prevent
+          data-lenis-prevent-wheel
+          data-lenis-prevent-touch
+          onClick={e => { if (e.target === e.currentTarget) setHeavyOpen(false) }}
           style={{
             position: 'fixed', inset: 0, zIndex: 99999,
-            background: 'rgba(4,10,20,0.96)', backdropFilter: 'blur(24px)',
-            WebkitBackdropFilter: 'blur(24px)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            padding: 'clamp(12px,3vw,48px) clamp(12px,3vw,24px)',
+            background: 'rgba(2,3,10,0.92)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+            display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+            padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
             overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
           }}
         >
           <div
             onClick={e => e.stopPropagation()}
             style={{
               position: 'relative',
-              width: '100%', maxWidth: 780,
-              maxHeight: 'calc(100svh - 24px)',
-              overflowY: 'auto',
+              width: '100%',
+              minHeight: '100%',
               background: 'linear-gradient(158deg, #07101e 0%, #0b1928 55%, #060e1a 100%)',
-              border: '1px solid rgba(91,194,231,0.28)',
-              borderRadius: 'clamp(18px,3vw,28px)',
-              boxShadow: '0 60px 120px rgba(0,0,0,0.95), 0 0 80px rgba(91,194,231,0.07), 0 0 0 1px rgba(91,194,231,0.07)',
-              overflow: 'hidden',
+              border: '1px solid rgba(91,194,231,0.22)',
+              borderRadius: 'clamp(12px,2vw,18px)',
+              boxShadow: '0 40px 90px rgba(0,0,0,0.85)',
             }}
           >
             {/* Top accent — thicker, brighter */}
@@ -467,8 +480,8 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
                 <div style={{ flex: 1 }}>
                   {/* Headline — centered */}
                   <h2 style={{
-                    fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400,
-                    fontSize: 'clamp(2.4rem,6vw,4rem)', letterSpacing: '0.04em',
+                    fontFamily: "var(--font-bebas), sans-serif", fontWeight: 400,
+                    fontSize: 'clamp(3rem,7vw,6rem)', letterSpacing: '0.03em',
                     color: '#ffffff', lineHeight: 0.95, margin: '0 0 1rem',
                     textAlign: 'center',
                   }}>
@@ -483,15 +496,15 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
                 <button
                   onClick={() => setHeavyOpen(false)}
                   style={{
-                    flexShrink: 0, width: 44, height: 44, minHeight: 44, minWidth: 44,
-                    background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.12)',
-                    borderRadius: '50%', color: 'rgba(255,255,255,0.5)', fontSize: '1rem',
+                    position: 'absolute', top: 12, right: 12, zIndex: 30,
+                    width: 44, height: 44,
+                    background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                    borderRadius: '50%', color: '#fff', fontSize: 22,
                     cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    transition: 'all 0.2s', marginTop: '0.1rem',
+                    boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.35)'; e.currentTarget.style.background = 'rgba(255,255,255,0.1)' }}
-                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.5)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
-                >✕</button>
+                  aria-label="Close"
+                >×</button>
               </div>
 
               {/* Separator */}
@@ -554,24 +567,24 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
                   >
                     {/* Large decorative number */}
                     <div style={{
-                      fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400,
-                      fontSize: 'clamp(1.8rem,3.5vw,2.4rem)', lineHeight: 1,
-                      color: 'rgba(91,194,231,0.22)', letterSpacing: '0.04em',
+                      fontFamily: "var(--font-bebas), sans-serif", fontWeight: 400,
+                      fontSize: 'clamp(1.4rem,2.2vw,1.7rem)', lineHeight: 1,
+                      color: '#5BC2E7', letterSpacing: '0.03em',
                       flexShrink: 0, paddingTop: '0.05rem', minWidth: 'clamp(2.2rem,4.5vw,3rem)',
                     }}>{item.num}</div>
 
                     <div style={{ flex: 1 }}>
                       {/* Service title */}
                       <div style={{
-                        fontFamily: "'Bebas Neue', sans-serif", fontWeight: 400,
-                        fontSize: 'clamp(1.22rem,2.5vw,1.55rem)', letterSpacing: '0.09em',
-                        color: '#deeef8', marginBottom: '0.35rem', lineHeight: 1.2,
+                        fontFamily: "var(--font-bebas), sans-serif", fontWeight: 400,
+                        fontSize: 'clamp(1.4rem,2.2vw,1.7rem)', letterSpacing: '0.03em',
+                        color: '#5BC2E7', marginBottom: '0.35rem', lineHeight: 1.2,
                       }}>{isAr ? arItem.title : item.title}</div>
                       {/* Description */}
                       <div style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: 'clamp(1.09rem,1.9vw,1.19rem)',
-                        color: 'rgba(255,255,255,0.6)', lineHeight: 1.6,
+                        fontFamily: "var(--font-dm-sans), sans-serif",
+                        fontSize: 'clamp(16px,1.6vw,18.5px)',
+                        color: 'rgba(255,255,255,0.78)', lineHeight: 1.6,
                         fontWeight: 400,
                       }}>{isAr ? arItem.desc : item.desc}</div>
                     </div>

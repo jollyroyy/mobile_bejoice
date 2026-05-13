@@ -22,6 +22,7 @@ const Certifications = dynamic(() => import('@/components/Certifications'), { ss
 const Footer        = dynamic(() => import('@/components/Footer'),        { ssr: false });
 const FloatingBookCTA = dynamic(() => import('@/components/FloatingBookCTA'), { ssr: false });
 const QuickQuoteModal  = dynamic(() => import('@/components/QuickQuoteModal'),  { ssr: false });
+const QuoteModal       = dynamic(() => import('@/components/QuoteModal'),       { ssr: false });
 
 // Skeleton fallbacks (these are simple, no browser deps — keep as regular imports)
 import {
@@ -34,6 +35,7 @@ import {
 
 export default function Page() {
   const [quoteOpen, setQuoteOpen] = useState(false);
+  const [classicQuoteOpen, setClassicQuoteOpen] = useState(false);
   const [whyOpen, setWhyOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
@@ -97,7 +99,7 @@ export default function Page() {
   useEffect(() => {
     type LenisInstance = { stop: () => void; start: () => void };
     const lenis = (window as Window & { __lenis?: LenisInstance }).__lenis;
-    if (quoteOpen || whyOpen || servicesOpen || toolsOpen || certificationsOpen) {
+    if (quoteOpen || classicQuoteOpen || whyOpen || servicesOpen || toolsOpen || certificationsOpen) {
       document.body.style.overflow = 'hidden';
       lenis?.stop();
     } else {
@@ -107,6 +109,7 @@ export default function Page() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
       if (quoteOpen) startTransition(() => setQuoteOpen(false));
+      if (classicQuoteOpen) startTransition(() => setClassicQuoteOpen(false));
       if (whyOpen) startTransition(() => setWhyOpen(false));
       if (servicesOpen) startTransition(() => setServicesOpen(false));
       if (toolsOpen) startTransition(() => setToolsOpen(false));
@@ -118,7 +121,7 @@ export default function Page() {
       lenis?.start();
       window.removeEventListener('keydown', onKey);
     };
-  }, [quoteOpen, whyOpen, servicesOpen, toolsOpen, certificationsOpen]);
+  }, [quoteOpen, classicQuoteOpen, whyOpen, servicesOpen, toolsOpen, certificationsOpen]);
 
   // Cal.com booking notification
   useEffect(() => {
@@ -188,13 +191,19 @@ export default function Page() {
 
         </main>
 
-        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} onQuoteClick={() => setQuoteOpen(true)} onCertificationsClick={() => setCertificationsOpen(true)} /></Suspense>
+        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} onQuoteClick={() => setClassicQuoteOpen(true)} onCertificationsClick={() => setCertificationsOpen(true)} /></Suspense>
         <Suspense fallback={null}><FloatingBookCTA onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
 
         {/* Quick Quote modal — identical to Bejoice_backup */}
         {quoteOpen && (
           <Suspense fallback={null}>
             <QuickQuoteModal onClose={() => startTransition(() => setQuoteOpen(false))} />
+          </Suspense>
+        )}
+
+        {classicQuoteOpen && (
+          <Suspense fallback={null}>
+            <QuoteModal onClose={() => startTransition(() => setClassicQuoteOpen(false))} />
           </Suspense>
         )}
 

@@ -99,24 +99,10 @@ if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
   document.head.appendChild(s)
 }
 
-const SERVICES = [
-  { id: 'ocean',   icon: '🚢', label: 'Ocean Freight',  sub: 'FCL / LCL' },
-  { id: 'air',     icon: '✈️', label: 'Air Freight',    sub: 'Express / Standard' },
-  { id: 'heavy',   icon: '🏗️', label: 'Heavy Cargo',   sub: 'Project / OOG' },
-  { id: 'warehouse', icon: '🏭', label: 'Warehousing', sub: '3PL / Storage' },
-]
-
-const ORIGINS = [
-  'China / Asia Pacific', 'Europe', 'USA / North America',
-  'Middle East / GCC', 'South Asia', 'Africa', 'Other',
-]
-
 export default function QuoteModal({ onClose }) {
-  const [service, setService]   = useState(null)
   const [submitted, setSubmitted] = useState(false)
   const [form, setForm]         = useState({
-    name: '', company: '', email: '', phone: '',
-    origin: '', destination: 'Saudi Arabia (KSA)', cargo: '', notes: '',
+    name: '', source: '', destination: '', portNumber: '', phone: '',
   })
   const backdropRef = useRef(null)
 
@@ -135,7 +121,6 @@ export default function QuoteModal({ onClose }) {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (!service) return
     setSubmitted(true)
   }
 
@@ -240,7 +225,7 @@ export default function QuoteModal({ onClose }) {
                 color: '#5BC2E7', textTransform: 'uppercase', marginBottom: 10,
                 fontWeight: 700,
               }}>
-                Bejoice Freight · Premium Booking
+                Bejoice Freight · Quick Booking
               </div>
               <h2 style={{
                 fontFamily: "'Bebas Neue', sans-serif",
@@ -249,95 +234,37 @@ export default function QuoteModal({ onClose }) {
                 lineHeight: 0.9, margin: 0,
                 textShadow: '0 0 30px rgba(255,255,255,0.15)',
               }}>
-                Get a Quick Quote
+                Request a Private Quote
               </h2>
+              <p style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 15,
+                color: 'rgba(255,255,255,0.8)',
+                marginTop: 14,
+                marginBottom: 0,
+              }}>
+                Tailored quote. Instant response.
+              </p>
               <div style={{ width: 60, height: 2, background: '#5BC2E7', marginTop: 16, opacity: 0.6 }} />
             </div>
 
             <div style={{ padding: '24px 32px 32px', display: 'flex', flexDirection: 'column', gap: 24 }}>
 
-              {/* ── Service selection ── */}
               <div>
-                <Label>Select Service <span style={{ color: '#ef4444' }}>*</span></Label>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 10 }}>
-                  {SERVICES.map(s => (
-                    <div
-                      key={s.id}
-                      className={`qm-service-card${service === s.id ? ' active' : ''}`}
-                      onClick={() => setService(s.id)}
-                    >
-                      <span style={{ fontSize: 26, lineHeight: 1 }}>{s.icon}</span>
-                      <span style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: 11.5, fontWeight: 700,
-                        color: service === s.id ? '#8DD8F0' : 'rgba(255,255,255,0.8)',
-                        textAlign: 'center', lineHeight: 1.3,
-                        transition: 'color 0.2s',
-                      }}>{s.label}</span>
-                      <span style={{
-                        fontFamily: "'DM Sans', sans-serif",
-                        fontSize: 10, color: 'rgba(255,255,255,0.35)',
-                        textAlign: 'center',
-                      }}>{s.sub}</span>
-                    </div>
-                  ))}
-                </div>
-                {!service && (
-                  <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.6)', marginTop: 6 }}>
-                    Please select a service to continue
-                  </p>
-                )}
-              </div>
-
-              {/* ── Divider ── */}
-              <div style={{ height: 1, background: 'rgba(91,194,231,0.1)' }} />
-
-              {/* ── Contact details ── */}
-              <div>
-                <Label>Your Details</Label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 10 }}>
+                <Label>Quick Quote Details</Label>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 12, marginTop: 10 }}>
                   <input className="qm-input" placeholder="Full Name" value={form.name} onChange={e => set('name', e.target.value)} required />
-                  <input className="qm-input" placeholder="Company" value={form.company} onChange={e => set('company', e.target.value)} />
-                  <input className="qm-input" type="email" placeholder="Email Address" value={form.email} onChange={e => set('email', e.target.value)} required />
-                  <input className="qm-input" type="tel" placeholder="Phone / WhatsApp" value={form.phone} onChange={e => set('phone', e.target.value)} />
-                </div>
-              </div>
-
-              {/* ── Shipment details ── */}
-              <div>
-                <Label>Shipment Details</Label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 10 }}>
-                  {/* Origin dropdown */}
-                  <div style={{ position: 'relative' }}>
-                    <select className="qm-select" value={form.origin} onChange={e => set('origin', e.target.value)}>
-                      <option value="" disabled>Origin Country / Region</option>
-                      {ORIGINS.map(o => <option key={o} value={o}>{o}</option>)}
-                    </select>
-                    <svg style={{ position: 'absolute', right: 12, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'rgba(91,194,231,0.5)' }} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                  </div>
-                  <input className="qm-input" placeholder="Destination" value={form.destination} onChange={e => set('destination', e.target.value)} />
-                  <input
-                    className="qm-input"
-                    placeholder="Cargo Description"
-                    value={form.cargo}
-                    onChange={e => set('cargo', e.target.value)}
-                    style={{ gridColumn: '1 / -1' }}
-                  />
-                  <textarea
-                    className="qm-input"
-                    placeholder="Additional notes — weight, dimensions, incoterms, urgency..."
-                    value={form.notes}
-                    onChange={e => set('notes', e.target.value)}
-                    rows={3}
-                    style={{ gridColumn: '1 / -1', resize: 'none' }}
-                  />
+                  <input className="qm-input" placeholder="Source" value={form.source} onChange={e => set('source', e.target.value)} required />
+                  <input className="qm-input" placeholder="Destination" value={form.destination} onChange={e => set('destination', e.target.value)} required />
+                  <input className="qm-input" placeholder="Port Number" value={form.portNumber} onChange={e => set('portNumber', e.target.value)} required />
+                  <input className="qm-input" type="tel" placeholder="Phone Number" value={form.phone} onChange={e => set('phone', e.target.value)} required style={{ gridColumn: '1 / -1' }} />
                 </div>
               </div>
 
               {/* ── Submit ── */}
-              <button type="submit" className="qm-submit" disabled={!service || !form.name || !form.email}>
+              <button type="submit" className="qm-submit" disabled={!form.name || !form.source || !form.destination || !form.portNumber || !form.phone}>
                 <div className="btn-shine-overlay" />
-                Get My Free Quote →
+                Request Quick Quote →
               </button>
 
               <p style={{

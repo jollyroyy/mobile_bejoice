@@ -761,7 +761,6 @@ body {
     text-align: center !important;
     max-width: 100% !important;
     width: 100% !important;
-    margin-top: 0 !important;
     transform: none !important;
   }
   .hero-accent-rule { align-self: center !important; }

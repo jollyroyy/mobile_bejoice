@@ -155,7 +155,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 28px', fontSize: '1rem', borderRadius: 10,
+          padding: '12px 28px', fontSize: '0.875rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -167,7 +167,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => onToolsClick?.()}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 28px', fontSize: '1rem', borderRadius: 10,
+          padding: '12px 28px', fontSize: '0.875rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -728,7 +728,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       alignItems: 'center',
                       gap: 10,
                       fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                      fontSize: isAr ? 'clamp(0.75rem, 2.4vw, 1.225rem)' : 'clamp(0.575rem, 2.2vw, 1rem)',
+                      fontSize: isAr ? 'clamp(0.625rem, 2vw, 1rem)' : 'clamp(0.475rem, 1.8vw, 0.875rem)',
                       fontWeight: 700,
                       letterSpacing: isAr ? '0' : '0.18em',
                       padding: 'clamp(4px, 1vw, 12px) clamp(8px, 1.5vw, 32px)',

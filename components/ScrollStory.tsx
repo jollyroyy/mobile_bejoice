@@ -73,7 +73,7 @@ const CHAPTERS = [
     frameRange: [211, 320] as [number, number],
     tag: 'PROJECTS & HEAVY LIFT',
     headline: ['FROM BLUE PRINT TO DELIVERY,', 'WE MOVE IT ALL'],
-    align: 'right' as const,
+    align: 'left' as const,
   },
   // navigating oceans: 385–400 (Ocean Freight segment)
   {
@@ -648,7 +648,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                   marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : (
-                    i === 1 ? '230px' : i === 2 ? '-350px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
+                    i === 1 ? '5px' : i === 2 ? '-350px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
                   transform: i === 0 ? 'translateY(-60px)' : 'translateY(clamp(-20px, 4vw - 40px, 0px))',
                   direction: isAr ? 'rtl' : 'ltr',
                   textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,

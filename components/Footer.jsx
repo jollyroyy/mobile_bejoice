@@ -702,8 +702,10 @@ function CareersModal({ onClose }) {
           position: 'fixed', inset: 0, zIndex: 99999,
           background: 'rgba(3,3,8,0.82)',
           backdropFilter: 'blur(10px)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          padding: '20px',
+          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+          padding: 'max(20px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))',
+          overflowY: 'auto',
+          WebkitOverflowScrolling: 'touch',
           animation: 'cm-in 0.3s ease forwards',
         }}
       >

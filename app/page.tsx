@@ -175,6 +175,7 @@ export default function Page() {
           onWhyClick={() => setWhyOpen(true)}
           onServicesClick={() => setServicesOpen(true)}
           onToolsClick={() => { setToolsKey(k => k + 1); setToolsOpen(true); }}
+          onCertificationsClick={() => setCertificationsOpen(true)}
         />
  
         <main id="main-content" role="main">

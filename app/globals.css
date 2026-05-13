@@ -744,14 +744,14 @@ body {
   .hero-track-wrap {
     flex: 1 1 0 !important;
     min-width: 0 !important;
-    max-width: 62% !important;
+    max-width: 58% !important;
   }
 
-  /* Chapter overlays: center text, reduce top padding so content clears the nav */
+  /* Chapter overlays: center text, clear nav, reset negative offsets */
   .hero-chapter-overlay {
     justify-content: flex-end !important;
     align-items: center !important;
-    padding-top: 0 !important;
+    padding-top: clamp(6rem, 15vh, 8rem) !important;
     padding-bottom: clamp(3rem, 10vh, 6rem) !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
@@ -761,6 +761,8 @@ body {
     text-align: center !important;
     max-width: 100% !important;
     width: 100% !important;
+    margin-top: 0 !important;
+    transform: none !important;
   }
   .hero-accent-rule { align-self: center !important; }
   .hero-intro-cta   { align-self: center !important; }
@@ -1539,6 +1541,19 @@ section {
 
   /* Reduce section headlines on very small screens */
   h1, h2 { word-break: break-word; }
+
+  /* Compact hero bottom bar: fewer stat items visible */
+  .hero-stat-cell:nth-child(n+3) { display: none !important; }
+
+  /* Tighter bottom bar padding */
+  .hero-bottom-bar { padding: 0 0.25rem !important; gap: 2px !important; }
+  .hero-track-wrap { max-width: 52% !important; }
+
+  /* Globe section: prevent overflow */
+  #globe { padding-left: 0.5rem !important; padding-right: 0.5rem !important; overflow: hidden !important; }
+
+  /* Modals: ensure they never overflow viewport */
+  [class*="modal"], [role="dialog"] { max-width: 100vw !important; }
 }
 
 /* ── CONTENT-VISIBILITY: defers paint/layout for off-screen sections ──

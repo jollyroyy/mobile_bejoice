@@ -145,10 +145,10 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
   const cairoFont = "var(--font-cairo,'Cairo'),sans-serif";
   return (
     <div style={{
-      width: '100%', height: '100%', flex: '1 1 auto', position: 'relative', overflow: 'hidden',
+      width: '100%', height: '100%', flex: '1 1 auto', position: 'relative',
       padding: '1rem 1.25rem',
       display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
-      gap: 10,
+      gap: 'clamp(4px,2vw,10px)',
       direction: isAr ? 'rtl' : 'ltr',
     }}>
       <button
@@ -792,7 +792,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             {STATS.map((s, idx, arr) => (
               <div key={s.l} className="hero-stat-cell" style={{
                 display: 'flex', alignItems: 'center',
-                padding: '4px clamp(4px,0.8vw,10px)',
+                padding: '2px clamp(4px,0.8vw,10px)',
                 borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 flexShrink: 0,
               }}>

@@ -154,7 +154,7 @@ export default function QuoteModal({ onClose }) {
       <div style={{
         width: '100%', maxWidth: 580,
         maxHeight: '90vh', overflowY: 'auto',
-        background: 'linear-gradient(170deg, #0f172a 0%, #091524 100%)',
+        background: '#183650',
         border: '1px solid rgba(91,194,231,0.22)',
         borderRadius: 24,
         boxShadow: submitted ? '0 40px 100px rgba(0,0,0,0.95), 0 0 30px rgba(91,194,231,0.2)' : '0 40px 100px rgba(0,0,0,0.9), 0 0 0 1px rgba(91,194,231,0.12)',

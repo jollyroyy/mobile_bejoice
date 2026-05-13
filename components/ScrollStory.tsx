@@ -750,9 +750,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                     <span style={{ pointerEvents: 'none', userSelect: 'none' }}>
                       {isAr ? ar.hero.ctaQuote : 'START SHIPMENT'}
                     </span>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, pointerEvents: 'none', transform: isAr ? 'scaleX(-1)' : undefined }}>
-                      <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
                     <div className="btn-shine-overlay" />
                   </button>
                 )}

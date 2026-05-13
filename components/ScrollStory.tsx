@@ -792,14 +792,14 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             {STATS.map((s, idx, arr) => (
               <div key={s.l} className="hero-stat-cell" style={{
                 display: 'flex', alignItems: 'center',
-                padding: '0.5rem clamp(6px,1vw,12px)',
+                padding: '4px clamp(4px,0.8vw,10px)',
                 borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 flexShrink: 0,
               }}>
                 <div style={{ textAlign: 'center' }}>
                   <div className="hero-stat-number" style={{
                     fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                    fontSize: '0.95rem',
+                    fontSize: '0.8rem',
                     letterSpacing: isAr ? '0.08em' : '0.08em',
                     lineHeight: 0.9,
                     color: '#ffffff',
@@ -809,7 +809,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   </div>
                   <div className="hero-stat-label" style={{
                     fontFamily: isAr ? cairoFont : "'Inter', sans-serif",
-                    fontSize: isAr ? '16px' : '13.5px',
+                    fontSize: isAr ? '13px' : '11px',
                     letterSpacing: isAr ? '0' : '0.14em',
                     textTransform: isAr ? 'none' : 'uppercase',
                     color: 'rgba(91,194,231,0.85)',

@@ -557,6 +557,8 @@ body {
 .btn-gold--static:hover::before { animation: none !important; opacity: 0 !important; }
 .btn-gold--static:active { transform: none !important; }
 .btn-gold span, .btn-gold svg { position: relative; z-index: 1; }
+.hero-card-btn.btn-gold { box-shadow: none !important; }
+.hero-card-btn.btn-gold:hover { box-shadow: none !important; transform: translateY(-1px) scale(1.01) !important; }
 
 .btn-ghost {
   display: inline-flex; align-items: center; gap: 12px;
@@ -766,30 +768,31 @@ body {
 @media (max-width: 1200px) {
   .hero-card-title { font-size: 1.4rem !important; }
   .hero-card-btn   { padding: 10px 18px !important; font-size: 0.88rem !important; }
-  .hero-stat-number { font-size: 1.5rem !important; }
-  .hero-stat-cell  { padding: 1rem clamp(6px,1vw,12px) !important; }
+  .hero-stat-number { font-size: 1.2rem !important; }
+  .hero-stat-label  { font-size: 11.5px !important; }
+  .hero-stat-cell  { padding: 0.8rem clamp(6px,1vw,12px) !important; }
 }
 @media (max-width: 1000px) {
   .hero-card-title { font-size: 1.1rem !important; }
   .hero-card-sub   { font-size: 9.5px !important; }
   .hero-card-btn   { padding: 8px 14px !important; font-size: 0.8rem !important; }
-  .hero-stat-number { font-size: 1.25rem !important; }
-  .hero-stat-label { font-size: 8.5px !important; letter-spacing: 0.09em !important; }
-  .hero-stat-cell  { padding: 0.9rem 6px !important; }
+  .hero-stat-number { font-size: 1rem !important; }
+  .hero-stat-label { font-size: 9.5px !important; letter-spacing: 0.09em !important; }
+  .hero-stat-cell  { padding: 0.7rem 6px !important; }
 }
 @media (max-width: 870px) {
   .hero-card-title { font-size: 0.95rem !important; }
   .hero-card-sub   { display: none !important; }
   .hero-card-btn   { padding: 7px 10px !important; font-size: 0.74rem !important; }
-  .hero-stat-number { font-size: 1.1rem !important; }
-  .hero-stat-label { font-size: 7.5px !important; letter-spacing: 0.06em !important; }
-  .hero-stat-cell  { padding: 0.75rem 5px !important; }
+  .hero-stat-number { font-size: 0.85rem !important; }
+  .hero-stat-label { font-size: 8px !important; letter-spacing: 0.06em !important; }
+  .hero-stat-cell  { padding: 0.55rem 5px !important; }
 }
 /* Mobile phones (≤767px): stat/card sizing — must come after 870px block to win cascade */
 @media (max-width: 767px) {
-  .hero-stat-cell   { padding: 0.5rem 5px !important; }
-  .hero-stat-number { font-size: 0.95rem !important; }
-  .hero-stat-label  { font-size: 6.5px !important; letter-spacing: 0.05em !important; }
+  .hero-stat-cell   { padding: 0.4rem 5px !important; }
+  .hero-stat-number { font-size: 0.75rem !important; }
+  .hero-stat-label  { font-size: 7px !important; letter-spacing: 0.05em !important; }
   .hero-card-title  { font-size: 0.85rem !important; }
   .hero-card-btn    { padding: 6px 8px !important; font-size: 0.68rem !important; letter-spacing: 0.12em !important; }
 }

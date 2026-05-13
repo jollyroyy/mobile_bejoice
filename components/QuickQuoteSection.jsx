@@ -343,10 +343,13 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           className="btn-gold"
           style={{
             width: 'auto', margin: '0 auto', justifyContent: 'center',
-            padding: '0.6rem 0.8rem', minHeight: '44px',
+            fontFamily: "'Bebas Neue',sans-serif",
+            fontSize: 'clamp(0.375rem,1.6vw,0.75rem)', fontWeight: 700,
+            letterSpacing: '0.18em',
+            padding: 'clamp(4px,1vw,12px) clamp(6px,1.5vw,32px)',
+            borderRadius: 10,
             opacity: loading ? 0.6 : 1,
             cursor: loading ? 'default' : 'pointer',
-            animation: loading ? 'none' : 'qqm-continue-pulse 2s ease-in-out infinite',
           }}
         >
           <span>{loading ? (isAr ? arT.quickQuote.sending : 'Sending your request…') : (isAr ? arT.quickQuote.submitQuote : 'Submit Quote Request')}</span>
@@ -362,8 +365,11 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           className="btn-gold"
           style={{
             width: 'auto', margin: '0 auto', justifyContent: 'center',
-            padding: '0.6rem 0.8rem', minHeight: '44px',
-            animation: 'qqm-continue-pulse 2s ease-in-out infinite',
+            fontFamily: "'Bebas Neue',sans-serif",
+            fontSize: 'clamp(0.375rem,1.6vw,0.75rem)', fontWeight: 700,
+            letterSpacing: '0.18em',
+            padding: 'clamp(4px,1vw,12px) clamp(6px,1.5vw,32px)',
+            borderRadius: 10,
           }}
         >
           <span>{isAr ? arT.quickQuote.continue : 'Continue'}</span>

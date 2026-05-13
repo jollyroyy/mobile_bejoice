@@ -720,7 +720,7 @@ function CareersModal({ onClose }) {
               : '0 40px 100px rgba(0,0,0,0.9),0 0 0 1px rgba(91,194,231,0.12)',
             animation: 'cm-pan 0.45s cubic-bezier(0.23,1,0.32,1) forwards',
             scrollbarWidth: 'none',
-            position: 'relative', overflow: 'hidden',
+            position: 'relative',
           }}
         >
           {/* Top bar */}

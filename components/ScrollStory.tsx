@@ -792,7 +792,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             {STATS.map((s, idx, arr) => (
               <div key={s.l} className="hero-stat-cell" style={{
                 display: 'flex', alignItems: 'center',
-                padding: '0px clamp(4px,0.8vw,10px)',
+                padding: '12px clamp(4px,0.8vw,10px)',
                 borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 flexShrink: 0,
               }}>

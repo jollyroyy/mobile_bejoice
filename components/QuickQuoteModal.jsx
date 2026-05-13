@@ -133,9 +133,7 @@ export default function QuickQuoteModal({ onClose }) {
         onClick={e => { if (e.target === backdropRef.current) onClose() }}
         style={{
           position: 'fixed', inset: 0, zIndex: 99990,
-          background: 'rgba(2,3,10,0.92)',
-          backdropFilter: 'blur(20px)',
-          WebkitBackdropFilter: 'blur(20px)',
+          background: '#183650',
           display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
           padding: 'max(16px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left))',
           overflowY: 'auto',

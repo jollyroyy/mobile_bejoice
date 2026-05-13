@@ -5,6 +5,7 @@ import { useLang } from '@/context/LangContext'
 import ar from '@/i18n/ar'
 import emailjs from '@emailjs/browser'
 import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, isValidPhone } from '@/utils/emailService'
+import FooterQuoteModal from './FooterQuoteModal'
 
 const footerLinks = {
   Company: ['Why Bejoice', 'Certifications', 'Key Markets', 'Careers'],
@@ -703,8 +704,7 @@ function CareersModal({ onClose }) {
         onClick={e => { if (e.target === backdropRef.current) onClose() }}
         style={{
           position: 'fixed', inset: 0, zIndex: 99999,
-          background: 'rgba(3,3,8,0.82)',
-          backdropFilter: 'blur(10px)',
+          background: '#183650',
           display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
           padding: 'max(20px,env(safe-area-inset-top)) max(12px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))',
           overflowY: 'auto',
@@ -1030,6 +1030,7 @@ export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick
   const { isAr } = useLang()
   const [openPolicy, setOpenPolicy] = useState(null)
   const [careersOpen, setCareersOpen] = useState(false)
+  const [footerQuoteOpen, setFooterQuoteOpen] = useState(false)
 
   return (
     <footer className="relative border-t pt-10 md:pt-20 pb-10 px-6 md:px-12 lg:px-24 overflow-hidden cv-section cv-footer" style={{ borderColor: 'rgba(255,255,255,0.08)', background: '#183650' }}>
@@ -1086,7 +1087,11 @@ export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick
                         <button onClick={onWhyClick} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
                           {label}
                         </button>
-                      ) : item === 'Get a Quote' || item === 'Contact Us' ? (
+                      ) : item === 'Get a Quote' ? (
+                        <button onClick={() => setFooterQuoteOpen(true)} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                          {label}
+                        </button>
+                      ) : item === 'Contact Us' ? (
                         <button onClick={onQuoteClick} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
                           {label}
                         </button>
@@ -1275,6 +1280,7 @@ export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick
 
       {openPolicy && createPortal(<PolicyModal title={openPolicy} onClose={() => setOpenPolicy(null)} />, document.body)}
       {careersOpen && createPortal(<CareersModal onClose={() => setCareersOpen(false)} />, document.body)}
+      {footerQuoteOpen && createPortal(<FooterQuoteModal onClose={() => setFooterQuoteOpen(false)} />, document.body)}
     </footer>
   )
 }

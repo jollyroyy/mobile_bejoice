@@ -342,7 +342,7 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           disabled={loading}
           className="btn-gold"
           style={{
-            width: '100%', justifyContent: 'center',
+            width: '100%', maxWidth: 'calc(100% - 4px)', margin: '0 auto', justifyContent: 'center',
             padding: '1.1rem 2rem', minHeight: '54px',
             opacity: loading ? 0.6 : 1,
             cursor: loading ? 'default' : 'pointer',
@@ -361,7 +361,7 @@ function NavButtons({ step, totalSteps, onBack, onNext, onSubmit, loading, valid
           onClick={handleContinue}
           className="btn-gold"
           style={{
-            width: '100%', justifyContent: 'center',
+            width: '100%', maxWidth: 'calc(100% - 4px)', margin: '0 auto', justifyContent: 'center',
             padding: '1.1rem 2rem', minHeight: '54px',
             animation: 'qqm-continue-pulse 2s ease-in-out infinite',
           }}

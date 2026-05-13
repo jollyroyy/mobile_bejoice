@@ -122,7 +122,7 @@ const CHAPTERS = [
   {
     frameRange: [752, 799] as [number, number],
     tag: '',
-    headline: ['TECHNICAL ENGINEERING'],
+    headline: ['TECHNICAL', 'ENGINEERING'],
     align: 'center' as const,
     exitFade: false,
   },

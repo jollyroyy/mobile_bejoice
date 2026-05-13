@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
 import QuickQuoteSection from './QuickQuoteSection'
 import { useLang } from '@/context/LangContext'
 import ar from '@/i18n/ar'

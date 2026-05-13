@@ -155,7 +155,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 28px', fontSize: '0.875rem', borderRadius: 10,
+          padding: '12px 25px', fontSize: '0.8rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -167,7 +167,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => onToolsClick?.()}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 28px', fontSize: '0.875rem', borderRadius: 10,
+          padding: '12px 25px', fontSize: '0.8rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -625,7 +625,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                 justifyContent: 'center',
                 alignItems: center ? 'center' : right ? 'flex-end' : 'flex-start',
                 padding: 'clamp(1.2rem, 5vw, 6rem)',
-                paddingTop: 'clamp(10rem, 20vh, 13rem)',
+                paddingTop: i === 1 ? 'clamp(8.8rem, 17vh, 11rem)' : 'clamp(10rem, 20vh, 13rem)',
                 paddingBottom: 'clamp(7rem, 14vh, 12rem)',
                 pointerEvents: 'none',
                 zIndex: i === 0 ? 10 : 1,
@@ -648,7 +648,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   border: '1px solid rgba(255,255,255,0.07)',
                   maxWidth: 'min(calc(100% - 2rem), 580px)',
                   marginTop: i === 0 ? 'clamp(10px, 2.6vw, 20px)' : (
-                    i === 1 ? '5px' : i === 2 ? '-350px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
+                    i === 1 ? '-45px' : i === 2 ? '-350px' : i === 4 ? '450px' : i === 6 ? '-350px' : i === 8 ? '650px' : 0),
                   transform: i === 0 ? 'translateY(-60px)' : 'translateY(clamp(-20px, 4vw - 40px, 0px))',
                   direction: isAr ? 'rtl' : 'ltr',
                   textAlign: isAr ? (center ? 'center' : right ? 'right' : 'right') : undefined,
@@ -685,7 +685,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       key={li}
                       style={{
                         fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: isAr ? 'clamp(2.075rem, 4vw, 4.125rem)' : 'clamp(1.85rem, 3.8vw, 4.3rem)',
+                        fontSize: isAr ? 'clamp(1.67rem, 3.2vw, 3.31rem)' : 'clamp(1.47rem, 3.02vw, 3.47rem)',
                         fontWeight: isAr ? 700 : 400,
                         lineHeight: isAr ? 1.2 : 0.87,
                         letterSpacing: isAr ? '0' : '0.06em',
@@ -726,12 +726,12 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       alignSelf: right ? 'flex-end' : 'flex-start',
                       display: 'inline-flex',
                       alignItems: 'center',
-                      gap: 10,
+                      gap: 0.5,
                       fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                      fontSize: isAr ? 'clamp(0.625rem, 2vw, 1rem)' : 'clamp(0.475rem, 1.8vw, 0.875rem)',
+                      fontSize: isAr ? 'clamp(0.5rem, 2vw, 1rem)' : 'clamp(0.5rem, 1.8vw, 0.875rem)',
                       fontWeight: 700,
                       letterSpacing: isAr ? '0' : '0.18em',
-                      padding: 'clamp(4px, 1vw, 12px) clamp(8px, 1.5vw, 32px)',
+                      padding: 'clamp(4px, 1vw, 12px) clamp(6px, 1.5vw, 32px)',
                       borderRadius: 10,
                       cursor: 'pointer',
                       pointerEvents: 'all',
@@ -792,16 +792,16 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             {STATS.map((s, idx, arr) => (
               <div key={s.l} className="hero-stat-cell" style={{
                 display: 'flex', alignItems: 'center',
-                padding: '1.25rem clamp(8px,1.2vw,16px)',
+                padding: '0.5rem clamp(6px,1vw,12px)',
                 borderRight: idx < arr.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
                 flexShrink: 0,
               }}>
                 <div style={{ textAlign: 'center' }}>
                   <div className="hero-stat-number" style={{
                     fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                    fontSize: '1.8rem',
-                    letterSpacing: isAr ? '0' : '0.08em',
-                    lineHeight: 1.1,
+                    fontSize: '0.95rem',
+                    letterSpacing: isAr ? '0.08em' : '0.08em',
+                    lineHeight: 0.9,
                     color: '#ffffff',
                     textShadow: '0 0 20px rgba(255,255,255,0.3)',
                   }}>
@@ -809,12 +809,12 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   </div>
                   <div className="hero-stat-label" style={{
                     fontFamily: isAr ? cairoFont : "'Inter', sans-serif",
-                    fontSize: isAr ? '17px' : '11px',
+                    fontSize: isAr ? '16px' : '13.5px',
                     letterSpacing: isAr ? '0' : '0.14em',
                     textTransform: isAr ? 'none' : 'uppercase',
                     color: 'rgba(91,194,231,0.85)',
                     fontWeight: 600,
-                    marginTop: 6,
+                    marginTop: 3,
                     whiteSpace: 'nowrap',
                   }}>
                     {isAr ? s.ar : s.l}

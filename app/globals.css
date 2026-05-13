@@ -688,6 +688,9 @@ body {
   width: auto !important;
   height: clamp(110px, 11vw, 155px) !important;
   display: block;
+  image-rendering: auto !important;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 @media (max-width: 900px) {
   .nav-logo-img { height: clamp(95px, 13vw, 130px) !important; }
@@ -793,6 +796,12 @@ body {
 }
 
 /* ── Floating chatbot (Layla): move to bottom-LEFT on mobile so it doesn't block right-side content ── */
+body.explore-open .layla-fab-wrap {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 @media (max-width: 767px) {
   .layla-fab-wrap {
     right: auto !important;

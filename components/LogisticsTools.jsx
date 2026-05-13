@@ -779,6 +779,7 @@ export default function LogisticsTools() {
     <section id="tools" style={{
       background: '#183650',
       padding: 'clamp(80px,10vw,130px) clamp(1.5rem,8vw,8rem)',
+      minHeight: '100vh',
       position: 'relative',
       overflow: 'hidden',
     }}>

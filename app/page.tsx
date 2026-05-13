@@ -37,11 +37,13 @@ export default function Page() {
   const [whyOpen, setWhyOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [certificationsOpen, setCertificationsOpen] = useState(false);
 
   const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const whyModalRef      = useRef<HTMLDivElement>(null);
   const servicesModalRef = useRef<HTMLDivElement>(null);
   const toolsModalRef    = useRef<HTMLDivElement>(null);
+  const certificationsModalRef = useRef<HTMLDivElement>(null);
 
   // Scroll restoration
   useEffect(() => {
@@ -95,7 +97,7 @@ export default function Page() {
   useEffect(() => {
     type LenisInstance = { stop: () => void; start: () => void };
     const lenis = (window as Window & { __lenis?: LenisInstance }).__lenis;
-    if (quoteOpen || whyOpen || servicesOpen || toolsOpen) {
+    if (quoteOpen || whyOpen || servicesOpen || toolsOpen || certificationsOpen) {
       document.body.style.overflow = 'hidden';
       lenis?.stop();
     } else {
@@ -108,6 +110,7 @@ export default function Page() {
       if (whyOpen) startTransition(() => setWhyOpen(false));
       if (servicesOpen) startTransition(() => setServicesOpen(false));
       if (toolsOpen) startTransition(() => setToolsOpen(false));
+      if (certificationsOpen) startTransition(() => setCertificationsOpen(false));
     };
     window.addEventListener('keydown', onKey);
     return () => {
@@ -115,7 +118,7 @@ export default function Page() {
       lenis?.start();
       window.removeEventListener('keydown', onKey);
     };
-  }, [quoteOpen, whyOpen, servicesOpen, toolsOpen]);
+  }, [quoteOpen, whyOpen, servicesOpen, toolsOpen, certificationsOpen]);
 
   // Cal.com booking notification
   useEffect(() => {
@@ -165,6 +168,8 @@ export default function Page() {
           onQuoteClick={() => setQuoteOpen(true)}
           onWhyClick={() => setWhyOpen(true)}
           onServicesClick={() => setServicesOpen(true)}
+          onToolsClick={() => setToolsOpen(true)}
+          onCertificationsClick={() => setCertificationsOpen(true)}
         />
 
         <main id="main-content" role="main">
@@ -181,10 +186,9 @@ export default function Page() {
             onToolsClick={() => setToolsOpen(true)}
           />
 
-          <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
         </main>
 
-        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
+        <Suspense fallback={<FooterSkeleton />}><Footer onWhyClick={() => setWhyOpen(true)} onQuoteClick={() => setQuoteOpen(true)} onCertificationsClick={() => setCertificationsOpen(true)} /></Suspense>
         <Suspense fallback={null}><FloatingBookCTA onQuoteClick={() => setQuoteOpen(true)} /></Suspense>
 
         {/* Quick Quote modal — identical to Bejoice_backup */}
@@ -210,7 +214,7 @@ export default function Page() {
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
-            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
                 onClick={() => startTransition(() => setWhyOpen(false))}
                 style={{
@@ -246,7 +250,7 @@ export default function Page() {
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
-            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
                 onClick={() => startTransition(() => setServicesOpen(false))}
                 style={{
@@ -282,7 +286,7 @@ export default function Page() {
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
-            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', maxWidth: 1024 }}>
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
                 onClick={() => startTransition(() => setToolsOpen(false))}
                 style={{
@@ -300,6 +304,65 @@ export default function Page() {
               <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools /></Suspense>
             </div>
           </div>
+        )}
+
+        {/* Certifications modal overlay */}
+        {certificationsOpen && (
+          <>
+            <style>{`
+              @keyframes certModalBackdropIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
+              @keyframes certModalPanelIn {
+                from { opacity: 0; transform: translateY(18px) scale(0.985); }
+                to { opacity: 1; transform: translateY(0) scale(1); }
+              }
+            `}</style>
+            <div
+              ref={certificationsModalRef}
+              data-lenis-prevent
+              onClick={e => { if (e.target === certificationsModalRef.current) startTransition(() => setCertificationsOpen(false)); }}
+              style={{
+                position: 'fixed', inset: 0, zIndex: 99990,
+                background: 'rgba(2,3,10,0.92)',
+                backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+                display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+                padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                animation: 'certModalBackdropIn 0.26s ease-out forwards',
+              } as React.CSSProperties}
+            >
+              <div
+                onClick={e => e.stopPropagation()}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  minHeight: '100%',
+                  opacity: 0,
+                  transform: 'translateY(18px) scale(0.985)',
+                  animation: 'certModalPanelIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards',
+                }}
+              >
+                <button
+                  onClick={() => startTransition(() => setCertificationsOpen(false))}
+                  style={{
+                    position: 'absolute', top: 12, right: 12, zIndex: 30,
+                    width: 44, height: 44,
+                    background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                    borderRadius: '50%', color: '#fff', fontSize: 22,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
+                  }}
+                  aria-label="Close"
+                >
+                  ×
+                </button>
+                <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
+              </div>
+            </div>
+          </>
         )}
       </div>
     </LangProvider>

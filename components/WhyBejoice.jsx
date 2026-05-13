@@ -77,7 +77,7 @@ export default function WhyBejoice() {
     <section
       id="why-us"
       className="relative pt-6 pb-16 md:pt-10 md:pb-24 lg:pt-14 lg:pb-32 px-4 md:px-10 lg:px-20"
-      style={{ background: '#183650' }}
+      style={{ background: '#183650', minHeight: '100vh' }}
     >
       <SparklesCore background="transparent" minSize={0.5} maxSize={1.4} particleDensity={10} particleColor="rgba(91,194,231,0.7)" speed={0.3} className="absolute inset-0 w-full h-full pointer-events-none" />
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,194,231,0.06) 0%, transparent 60%)' }} />

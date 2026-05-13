@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import gsap from 'gsap'
 import { useCalBooking } from '@/hooks/useCalBooking'
 import { useLang } from '@/context/LangContext'
@@ -9,13 +10,15 @@ const CAL_LINK = "bejoice/freight-expert-consultation"
 
 const links = [
   { label: 'Why Bejoice',                    arLabel: 'لماذا بيجويس',                id: 'why-us',         num: '01', sub: 'Our story & edge',    arSub: 'قصتنا وميزتنا' },
-  { label: 'Services',                       arLabel: 'الخدمات',                     id: 'services',       num: '02', sub: 'Full logistics suite',  arSub: 'حلول لوجستية متكاملة' },
-  { label: 'Heavy Lift & Project Logistics', arLabel: 'رفع ثقيل ولوجستيات المشاريع', id: 'heavy-cargo',    num: '03', sub: '1500+ operations',    arSub: '+1500 عملية' },
-  { label: 'Bejoice Wings',                  arLabel: 'أجنحة بيجويس',                id: 'globe-mid',      num: '04', sub: 'Our global network',   arSub: 'شبكتنا العالمية', isGlobe: true },
+  { label: 'Load Calculator',                arLabel: 'حاسبة الحمولة',               id: 'load-calculator', num: '02', sub: 'Container planning tool', arSub: 'أداة تخطيط الحاويات' },
+  { label: 'Services',                       arLabel: 'الخدمات',                     id: 'services',       num: '03', sub: 'Full logistics suite',  arSub: 'حلول لوجستية متكاملة' },
+  { label: 'Certified to Deliver',           arLabel: 'معتمدون للتسليم',             id: 'certifications', num: '04', sub: 'Industry accreditations', arSub: 'اعتمادات صناعية' },
+  { label: 'Heavy Lift & Project Logistics', arLabel: 'رفع ثقيل ولوجستيات المشاريع', id: 'heavy-cargo',    num: '05', sub: '1500+ operations',    arSub: '+1500 عملية' },
+  { label: 'Bejoice Wings',                  arLabel: 'أجنحة بيجويس',                id: 'globe-mid',      num: '06', sub: 'Our global network',   arSub: 'شبكتنا العالمية', isGlobe: true },
 ]
 
 
-export default function Nav({ onQuoteClick, onWhyClick, onServicesClick }) {
+export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onToolsClick, onCertificationsClick }) {
   const { openCalPopup } = useCalBooking()
   const { lang, setLang } = useLang()
   const isAr = lang === 'ar'
@@ -54,7 +57,12 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick }) {
   // Lock body scroll when menu open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (menuOpen) document.body.classList.add('explore-open')
+    else document.body.classList.remove('explore-open')
+    return () => {
+      document.body.style.overflow = ''
+      document.body.classList.remove('explore-open')
+    }
   }, [menuOpen])
 
   // GSAP drawer animation
@@ -141,17 +149,23 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick }) {
             role="link"
             aria-label={isAr ? 'الصفحة الرئيسية بيجويس' : 'Bejoice Home'}
             style={{ position: 'relative', cursor: 'pointer', display: 'inline-block', flexShrink: 0 }}>
-            <img
+            <Image
               src="/bejoice-logo-group.png"
               alt="Bejoice"
+              width={2048}
+              height={2048}
               className="nav-logo-img"
-              fetchPriority="high"
-              decoding="async"
+              priority
+              unoptimized
+              quality={100}
+              sizes="(max-width: 479px) 105px, (max-width: 900px) 130px, 155px"
               style={{
                 height: 'clamp(110px, 11vw, 155px)',
                 width: 'auto',
                 display: 'block',
-                filter: 'drop-shadow(0 2px 12px rgba(0,0,0,0.7)) drop-shadow(0 0 24px rgba(255,255,255,0.15))',
+                objectFit: 'contain',
+                imageRendering: 'auto',
+                filter: 'none',
               }}
             />
           </div>
@@ -310,12 +324,14 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick }) {
               onClick={() => {
                 if (link.id === 'heavy-cargo') { setMenuOpen(false); setHeavyOpen(true); }
                 else if (link.id === 'why-us') { setMenuOpen(false); setTimeout(() => onWhyClick?.(), 350); }
+                else if (link.id === 'load-calculator') { setMenuOpen(false); setTimeout(() => onToolsClick?.(), 350); }
+                else if (link.id === 'certifications') { setMenuOpen(false); setTimeout(() => onCertificationsClick?.(), 350); }
                 else if (link.id === 'services') { setMenuOpen(false); setTimeout(() => onServicesClick?.(), 350); }
                 else scrollTo(link.id);
               }}
               style={{
                 display: 'flex', alignItems: 'center', gap: '0.6rem', width: '100%', textAlign: 'left',
-                fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(1rem,2.5vw,1.15rem)', fontWeight: 400,
+                fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(0.9rem,2.2vw,1.05rem)', fontWeight: 400,
                 letterSpacing: '0.12em', color: 'rgba(255,255,255,0.65)',
                 background: 'none', border: 'none', cursor: 'pointer',
                 padding: 'clamp(0.65rem,2vw,0.7rem) 0', minHeight: '44px', borderBottom: '1px solid rgba(255,255,255,0.06)',
@@ -348,6 +364,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick }) {
             {isAr ? ar.nav.logisticsTools : 'Logistics Tools'}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
+            {toolCard('🧮', isAr ? ar.nav.loadCalculator : 'Load Calculator', isAr ? ar.nav.loadCalculatorSub : 'Open container planning modal', () => { setMenuOpen(false); setTimeout(() => onToolsClick?.(), 350) })}
             {toolCard('🚢', isAr ? ar.nav.quickQuote : 'Quick Quote', isAr ? 'أسعار شحن فورية' : 'Instant freight rates', handleQuote)}
             {toolCard('📡', isAr ? ar.nav.trackShipment : 'Track Shipment', isAr ? 'BL / AWB تتبع مباشر' : 'BL / AWB live tracking', () => { setMenuOpen(false); window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer') })}
             {toolCard('📞', isAr ? ar.nav.bookCallTool : 'Book a Call', isAr ? 'تحدث مع خبير شحن' : 'Talk to a freight expert', () => { setMenuOpen(false); setTimeout(() => openCalPopup(), 350) })}

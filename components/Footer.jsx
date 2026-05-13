@@ -1023,7 +1023,7 @@ function PolicyModal({ title, onClose }) {
   )
 }
 
-export default function Footer({ onWhyClick, onQuoteClick }) {
+export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick }) {
   const { isAr } = useLang()
   const [openPolicy, setOpenPolicy] = useState(null)
   const [careersOpen, setCareersOpen] = useState(false)
@@ -1092,12 +1092,12 @@ export default function Footer({ onWhyClick, onQuoteClick }) {
                           {isAr ? (ar.footer.links?.['Careers'] || 'Careers') : 'Careers'}
                         </button>
 
-                      ) : /* Scroll anchors — elements exist in page DOM */
-                        item === 'Certifications' ? (
-                        <a href="#certifications" onClick={(e) => { e.preventDefault(); scrollTo('certifications') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                      ) : item === 'Certifications' ? (
+                        <button onClick={onCertificationsClick} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
                           {label}
-                        </a>
-                      ) : item === 'Our Offices' ? (
+                        </button>
+                      ) : /* Scroll anchors — elements exist in page DOM */
+                        item === 'Our Offices' ? (
                         <a href="#globe-mid" onClick={(e) => { e.preventDefault(); scrollTo('globe-mid') }} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
                           {label}
                         </a>

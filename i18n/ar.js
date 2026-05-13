@@ -15,6 +15,8 @@ const ar = {
     heavyLift: 'رفع ثقيل ولوجستيات المشاريع',
     bejoiceWings: 'أجنحة بيجويس',
     logisticsTools: 'أدوات اللوجستيات',
+    loadCalculator: 'حاسبة الحمولة',
+    loadCalculatorSub: 'افتح نافذة تخطيط الحاويات',
     quickQuote: 'عرض سعر سريع',
     trackShipment: 'تتبع الشحنة',
     bookCallTool: 'احجز مكالمة',

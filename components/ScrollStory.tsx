@@ -691,7 +691,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                       style={{
                         display: isInline ? 'inline' : 'block',
                         fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: isAr ? 'clamp(1.545rem, 2.98vw, 3.185rem)' : 'clamp(1.345rem, 2.8vw, 3.345rem)',
+                        fontSize: isAr ? 'clamp(1.3575rem, 2.65vw, 2.9975rem)' : 'clamp(1.345rem, 2.8vw, 3.345rem)',
                         fontWeight: isAr ? 700 : 400,
                         lineHeight: isAr ? 1.2 : 0.87,
                         letterSpacing: isAr ? '0' : '0.06em',

@@ -477,7 +477,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }} whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }} transition={{ duration: 1.2, ease: [0.16,1,0.3,1] }}
-          style={{ position: 'relative', flexShrink: 0, width: 'clamp(317px, 52vw, 717px)' }}
+          style={{ position: 'relative', flexShrink: 0, width: 'clamp(260px, 42vw, 580px)' }}
         >
           <div style={{
             position: 'absolute', inset: -40,

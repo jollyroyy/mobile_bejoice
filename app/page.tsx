@@ -39,6 +39,7 @@ export default function Page() {
   const [whyOpen, setWhyOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [toolsOpen, setToolsOpen] = useState(false);
+  const [toolsKey, setToolsKey] = useState(0);
   const [certificationsOpen, setCertificationsOpen] = useState(false);
 
   const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
@@ -171,10 +172,9 @@ export default function Page() {
           onQuoteClick={() => setQuoteOpen(true)}
           onWhyClick={() => setWhyOpen(true)}
           onServicesClick={() => setServicesOpen(true)}
-          onToolsClick={() => setToolsOpen(true)}
-          onCertificationsClick={() => setCertificationsOpen(true)}
+          onToolsClick={() => { setToolsKey(k => k + 1); setToolsOpen(true); }}
         />
-
+ 
         <main id="main-content" role="main">
           <h1 style={{ position: 'absolute', width: '1px', height: '1px', padding: 0, margin: '-1px', overflow: 'hidden', clip: 'rect(0,0,0,0)', border: 0 }}>
             Bejoice — Saudi Arabia&#39;s Leading AI-Powered Smart Freight Forwarding
@@ -186,7 +186,7 @@ export default function Page() {
             onLoaded={() => {}}
             chapterOffsets={chapterOffsets}
             onQuoteClick={() => setQuoteOpen(true)}
-            onToolsClick={() => setToolsOpen(true)}
+          onToolsClick={() => { setToolsKey(k => k + 1); setToolsOpen(true); }}
           />
 
         </main>
@@ -310,7 +310,7 @@ export default function Page() {
               >
                 ×
               </button>
-              <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools /></Suspense>
+              <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools key={toolsKey} /></Suspense>
             </div>
           </div>
         )}

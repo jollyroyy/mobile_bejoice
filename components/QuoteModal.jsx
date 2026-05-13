@@ -55,7 +55,7 @@ if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
     }
     .qm-select option { background: #0a0e1a; color: #fff; }
     .qm-submit {
-      width: 100%; max-width: calc(100% - 4px); margin: 0 auto; padding: 18px;
+      display:block; width:auto; margin:0 auto; padding:15px 29px;
       background: linear-gradient(135deg, #8DD8F0 0%, #8DD8F0 40%, #5BC2E7 100%);
       color: #091524; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 12px;
       font-family: var(--font-dm-sans), sans-serif;

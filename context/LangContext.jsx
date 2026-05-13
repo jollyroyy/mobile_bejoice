@@ -78,7 +78,7 @@ export function LangProvider({ children }) {
   }, [])
 
   return (
-    <LangContext.Provider value={{ lang, t: LANGS[lang], setLang }}>
+    <LangContext.Provider value={{ lang, t: LANGS[lang], setLang, isAr: lang === 'ar' }}>
       {children}
     </LangContext.Provider>
   )

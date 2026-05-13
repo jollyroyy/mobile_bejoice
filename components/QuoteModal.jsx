@@ -28,7 +28,7 @@ if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
     .qm-input {
       width: 100%; background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px;
-      color: #fff; font-family: 'DM Sans', sans-serif;
+      color: #fff; font-family: var(--font-dm-sans), sans-serif;
       font-size: 13.5px; padding: 13px 18px; outline: none;
       transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
       box-sizing: border-box;
@@ -42,7 +42,7 @@ if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
     .qm-select {
       width: 100%; background: rgba(255,255,255,0.03);
       border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
-      color: #fff; font-family: 'DM Sans', sans-serif;
+      color: #fff; font-family: var(--font-dm-sans), sans-serif;
       font-size: 13.5px; padding: 13px 18px; outline: none;
       cursor: pointer; appearance: none;
       transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
@@ -58,7 +58,7 @@ if (typeof document !== 'undefined' && !document.getElementById(STYLE_ID)) {
       width: 100%; max-width: calc(100% - 4px); margin: 0 auto; padding: 18px;
       background: linear-gradient(135deg, #8DD8F0 0%, #8DD8F0 40%, #5BC2E7 100%);
       color: #091524; border: 1px solid rgba(255, 255, 255, 0.25); border-radius: 12px;
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--font-dm-sans), sans-serif;
       font-size: 14px; font-weight: 900;
       letter-spacing: 0.2em; text-transform: uppercase;
       cursor: pointer; position: relative; overflow: hidden;
@@ -166,14 +166,14 @@ export default function QuoteModal({ onClose }) {
           }}>
             <div style={{ fontSize: 52 }}>✅</div>
             <div style={{
-              fontFamily: "'Bebas Neue', sans-serif",
+              fontFamily: "var(--font-bebas), sans-serif",
               fontSize: 'clamp(1.8rem, 4vw, 2.4rem)',
               letterSpacing: '0.12em', color: '#8DD8F0',
             }}>
               Quote Request Sent!
             </div>
             <p style={{
-              fontFamily: "'DM Sans', sans-serif",
+              fontFamily: "var(--font-dm-sans), sans-serif",
               fontSize: 14, color: 'rgba(255,255,255,0.65)',
               lineHeight: 1.7, maxWidth: 340,
             }}>
@@ -185,7 +185,7 @@ export default function QuoteModal({ onClose }) {
                 marginTop: 12, padding: '14px 44px',
                 background: 'linear-gradient(135deg, #8DD8F0, #8DD8F0, #5BC2E7)',
                 color: '#091524', border: '1px solid rgba(255,255,255,0.3)', borderRadius: 12,
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "var(--font-dm-sans), sans-serif",
                 fontSize: 14, fontWeight: 900, letterSpacing: '0.18em',
                 textTransform: 'uppercase', cursor: 'pointer',
                 position: 'relative', overflow: 'hidden',
@@ -220,7 +220,7 @@ export default function QuoteModal({ onClose }) {
               >✕</button>
               
               <div style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "var(--font-dm-sans), sans-serif",
                 fontSize: 11.5, letterSpacing: '0.28em',
                 color: '#5BC2E7', textTransform: 'uppercase', marginBottom: 10,
                 fontWeight: 700,
@@ -228,7 +228,7 @@ export default function QuoteModal({ onClose }) {
                 Bejoice Freight · Quick Booking
               </div>
               <h2 style={{
-                fontFamily: "'Bebas Neue', sans-serif",
+                fontFamily: "var(--font-bebas), sans-serif",
                 fontSize: 'clamp(2.2rem, 5vw, 3.2rem)',
                 letterSpacing: '0.08em', color: '#fff',
                 lineHeight: 0.9, margin: 0,
@@ -237,7 +237,7 @@ export default function QuoteModal({ onClose }) {
                 Request a Private Quote
               </h2>
               <p style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "var(--font-dm-sans), sans-serif",
                 fontSize: 15,
                 color: 'rgba(255,255,255,0.8)',
                 marginTop: 14,
@@ -268,7 +268,7 @@ export default function QuoteModal({ onClose }) {
               </button>
 
               <p style={{
-                fontFamily: "'DM Sans', sans-serif",
+                fontFamily: "var(--font-dm-sans), sans-serif",
                 fontSize: 11, color: 'rgba(255,255,255,0.28)',
                 textAlign: 'center', margin: 0, lineHeight: 1.5,
               }}>
@@ -285,7 +285,7 @@ export default function QuoteModal({ onClose }) {
 function Label({ children }) {
   return (
     <div style={{
-      fontFamily: "'DM Sans', sans-serif",
+      fontFamily: "var(--font-dm-sans), sans-serif",
       fontSize: 11, fontWeight: 700,
       letterSpacing: '0.18em', textTransform: 'uppercase',
       color: 'rgba(255,255,255,0.45)',

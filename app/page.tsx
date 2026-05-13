@@ -225,7 +225,17 @@ export default function Page() {
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
-            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
+            <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
+            <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+            <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              onClick={e => e.stopPropagation()}
+              style={{ position: 'relative', width: '100%', zIndex: 1 }}
+            >
+            <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
                 onClick={() => startTransition(() => setWhyOpen(false))}
                 style={{
@@ -242,6 +252,7 @@ export default function Page() {
               </button>
               <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
             </div>
+            </motion.div>
           </div>
         )}
 
@@ -308,7 +319,17 @@ export default function Page() {
               WebkitOverflowScrolling: 'touch',
             } as React.CSSProperties}
           >
-            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
+            <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
+            <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+            <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              onClick={e => e.stopPropagation()}
+              style={{ position: 'relative', width: '100%', zIndex: 1 }}
+            >
+            <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
                 onClick={() => startTransition(() => setToolsOpen(false))}
                 style={{
@@ -325,66 +346,61 @@ export default function Page() {
               </button>
               <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools key={toolsKey} /></Suspense>
             </div>
+            </motion.div>
           </div>
         )}
-
         {/* Certifications modal overlay */}
         {certificationsOpen && (
-          <>
-            <style>{`
-              @keyframes certModalBackdropIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-              }
-              @keyframes certModalPanelIn {
-                from { opacity: 0; transform: translateY(18px) scale(0.985); }
-                to { opacity: 1; transform: translateY(0) scale(1); }
-              }
-            `}</style>
-            <div
-              ref={certificationsModalRef}
-              data-lenis-prevent
-              onClick={e => { if (e.target === certificationsModalRef.current) startTransition(() => setCertificationsOpen(false)); }}
-              style={{
-                position: 'fixed', inset: 0, zIndex: 99990,
-                background: 'rgba(2,3,10,0.92)',
-                backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
-                display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
-                padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
-                overflowY: 'auto',
-                WebkitOverflowScrolling: 'touch',
-                animation: 'certModalBackdropIn 0.26s ease-out forwards',
-              } as React.CSSProperties}
+          <div
+            ref={certificationsModalRef}
+            data-lenis-prevent
+            onClick={e => { if (e.target === certificationsModalRef.current) startTransition(() => setCertificationsOpen(false)); }}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 99990,
+              background: 'rgba(2,3,10,0.92)',
+              backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
+              display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
+              padding: 'max(16px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(40px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))',
+              overflowY: 'auto',
+              WebkitOverflowScrolling: 'touch',
+            } as React.CSSProperties}
+          >
+            <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
+            <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+            <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+              onClick={e => e.stopPropagation()}
+              style={{ position: 'relative', width: '100%', zIndex: 1 }}
             >
-              <div
-                onClick={e => e.stopPropagation()}
+            <div
+              onClick={e => e.stopPropagation()}
+              style={{
+                position: 'relative',
+                width: '100%',
+                minHeight: '100%',
+              }}
+            >
+              <button
+                onClick={() => startTransition(() => setCertificationsOpen(false))}
                 style={{
-                  position: 'relative',
-                  width: '100%',
-                  minHeight: '100%',
-                  opacity: 0,
-                  transform: 'translateY(18px) scale(0.985)',
-                  animation: 'certModalPanelIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards',
+                  position: 'absolute', top: 12, right: 12, zIndex: 30,
+                  width: 44, height: 44,
+                  background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
+                  borderRadius: '50%', color: '#fff', fontSize: 22,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
                 }}
+                aria-label="Close"
               >
-                <button
-                  onClick={() => startTransition(() => setCertificationsOpen(false))}
-                  style={{
-                    position: 'absolute', top: 12, right: 12, zIndex: 30,
-                    width: 44, height: 44,
-                    background: 'rgba(7,16,28,0.97)', border: '2px solid rgba(91,194,231,0.85)',
-                    borderRadius: '50%', color: '#fff', fontSize: 22,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', boxShadow: '0 2px 16px rgba(0,0,0,0.9)',
-                  }}
-                  aria-label="Close"
-                >
-                  ×
-                </button>
-                <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
-              </div>
+                ×
+              </button>
+              <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
             </div>
-          </>
+            </motion.div>
+          </div>
         )}
       </div>
     </LangProvider>

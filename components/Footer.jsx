@@ -920,8 +920,13 @@ function PolicyModal({ title, onClose }) {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-    return () => { document.body.style.overflow = '' }
-  }, [])
+    const onKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', onKey)
+    }
+  }, [onClose])
 
   if (!policy) return null
 
@@ -930,11 +935,15 @@ function PolicyModal({ title, onClose }) {
   return (
     <div
       ref={backdropRef}
+      data-lenis-prevent
+      data-lenis-prevent-wheel
+      data-lenis-prevent-touch
       onClick={e => { if (e.target === backdropRef.current) onClose() }}
       style={{
         position: 'fixed', inset: 0, zIndex: 99999,
         background: 'rgba(3,3,8,0.85)', backdropFilter: 'blur(16px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'
+        display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '20px',
+        overflowY: 'auto', WebkitOverflowScrolling: 'touch',
       }}
     >
       <div style={{

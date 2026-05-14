@@ -79,6 +79,14 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
   const autoSpin   = useRef(true);
   const spinTO     = useRef(null);
   const [hovered, setHovered] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const el = mountRef.current;
@@ -471,7 +479,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
   }, []);
 
   const inner = (
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 'clamp(1.5rem,4vw,4rem)', padding: '0 clamp(1rem,3vw,2rem)' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: 'center', gap: 'clamp(1.5rem,4vw,4rem)', padding: '0 clamp(1rem,3vw,2rem)' }}>
 
         {/* ── LEFT: Globe ── */}
         <motion.div
@@ -530,7 +538,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
         <motion.div
           initial={{ opacity: 0, x: 40 }} whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.8, ease: [0.16,1,0.3,1] }}
-          style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(1rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: 'clamp(1rem,3vw,3rem)' }}
+          style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: 'clamp(1rem,2vw,1.6rem)', alignItems: 'center', textAlign: 'center', paddingLeft: isMobile ? 0 : 'clamp(1rem,3vw,3rem)' }}
         >
           {/* Headline — same font style as SMART FREIGHT scrollytelling headline */}
           <h2 className="no-reveal" style={{

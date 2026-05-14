@@ -467,24 +467,29 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
           <div
             onClick={e => e.stopPropagation()}
             style={{
-              position: 'relative',
-              width: '100%', maxWidth: 960,
-              minHeight: '100%',
-              background: 'linear-gradient(158deg, #07101e 0%, #0b1928 55%, #060e1a 100%)',
-              border: '1px solid rgba(91,194,231,0.22)',
-              borderRadius: 'clamp(12px,2vw,18px)',
-              boxShadow: '0 40px 90px rgba(0,0,0,0.85)',
+              position:'relative',
+              width:'100%', maxWidth:960,
+              minHeight:'100%',
+              background:'#183650',
+              backgroundImage:'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
+              border:'1px solid rgba(91,194,231,0.35)',
+              borderTop:'1px solid rgba(91,194,231,0.65)',
+              borderRadius:28,
+              boxShadow:[
+                '0 60px 120px rgba(0,0,0,0.75)',
+                '0 0 0 1px rgba(91,194,231,0.08) inset',
+                'inset 0 1px 0 rgba(91,194,231,0.30)',
+                '0 0 60px rgba(91,194,231,0.10)',
+                '0 0 120px rgba(91,194,231,0.05)',
+              ].join(', '),
             }}
           >
-            {/* Top accent — thicker, brighter */}
-            <div style={{ height: 4, background: 'linear-gradient(90deg, transparent 0%, #5BC2E7 25%, #8DD8F0 50%, #5BC2E7 75%, transparent 100%)', flexShrink: 0 }} />
-
-            {/* Atmospheric top glow */}
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0, height: '55%',
-              background: 'radial-gradient(ellipse at 50% -10%, rgba(91,194,231,0.1) 0%, transparent 68%)',
-              pointerEvents: 'none',
-            }} />
+            {/* Corner accent — top-left */}
+            <div style={{ position:'absolute', top:0, left:0, width:120, height:120, pointerEvents:'none',
+              background:'radial-gradient(circle at 0% 0%, rgba(91,194,231,0.12) 0%, transparent 65%)' }}/>
+            {/* Corner accent — bottom-right */}
+            <div style={{ position:'absolute', bottom:0, right:0, width:200, height:200, pointerEvents:'none',
+              background:'radial-gradient(circle at 100% 100%, rgba(91,194,231,0.07) 0%, transparent 60%)' }}/>
 
             {/* ── Header ── */}
             <div style={{
@@ -496,7 +501,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
                   {/* Headline — centered */}
                   <h2 style={{
                     fontFamily: "var(--font-bebas), sans-serif", fontWeight: 400,
-                    fontSize: 'clamp(3rem,7vw,6rem)', letterSpacing: '0.03em',
+                    fontSize: 'clamp(1rem,5vw,4rem)', letterSpacing: '0.03em',
                     color: '#ffffff', lineHeight: 0.95, margin: '0 0 1rem',
                     textAlign: 'center',
                   }}>

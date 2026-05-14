@@ -231,9 +231,9 @@ export default function Services() {
   return (
     <section ref={sectionRef} id="services" className="relative pt-6 pb-16 md:pt-10 md:pb-24 lg:pt-14 lg:pb-32 px-4 md:px-10 lg:px-20" style={{ background: 'transparent', minHeight: '100vh' }}>
       <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={isMobile ? 30 : 60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" />
-      {/* Ambient background glow */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(91,194,231,0.07) 0%, transparent 60%)' }} />
+      {/* Ambient glows — matching Why Bejoice */}
+      <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none' }} />
+      <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none' }} />
 
       <div className="max-w-5xl mx-auto">
 
@@ -243,17 +243,26 @@ export default function Services() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
           transition={{ type: 'spring', stiffness: 80, damping: 20 }}
           style={{
-            background: 'linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.02) 100%)',
-            backdropFilter: 'blur(32px)',
-            WebkitBackdropFilter: 'blur(32px)',
-            border: '1px solid rgba(91,194,231,0.28)',
-            borderTop: '1px solid rgba(91,194,231,0.55)',
-            borderRadius: 24,
-            overflow: 'hidden',
-            boxShadow: '0 40px 100px rgba(0,0,0,0.6), 0 0 0 1px rgba(91,194,231,0.06) inset, inset 0 1px 0 rgba(91,194,231,0.22), 0 0 50px rgba(91,194,231,0.06)',
-            position: 'relative',
+            background:'#183650',
+            backgroundImage:'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
+            border:'1px solid rgba(91,194,231,0.35)',
+            borderTop:'1px solid rgba(91,194,231,0.65)',
+            borderRadius:28, overflow:'hidden', position:'relative',
+            boxShadow:[
+              '0 60px 120px rgba(0,0,0,0.75)',
+              '0 0 0 1px rgba(91,194,231,0.08) inset',
+              'inset 0 1px 0 rgba(91,194,231,0.30)',
+              '0 0 60px rgba(91,194,231,0.10)',
+              '0 0 120px rgba(91,194,231,0.05)',
+            ].join(', '),
           }}
         >
+          {/* Corner accent — top-left */}
+          <div style={{ position:'absolute', top:0, left:0, width:120, height:120, pointerEvents:'none',
+            background:'radial-gradient(circle at 0% 0%, rgba(91,194,231,0.12) 0%, transparent 65%)' }}/>
+          {/* Corner accent — bottom-right */}
+          <div style={{ position:'absolute', bottom:0, right:0, width:200, height:200, pointerEvents:'none',
+            background:'radial-gradient(circle at 100% 100%, rgba(91,194,231,0.07) 0%, transparent 60%)' }}/>
 
 
           {/* ── Centered heading block ── */}
@@ -276,7 +285,7 @@ export default function Services() {
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
               style={{
                 fontFamily: "var(--font-bebas), sans-serif",
-                fontSize: 'clamp(3rem,7vw,6rem)',
+                fontSize: 'clamp(1rem,5vw,4rem)',
                 letterSpacing: '0.07em', lineHeight: 1,
                 margin: 0,
               color: '#ffffff',

@@ -90,10 +90,6 @@ export default function WhyBejoice() {
       {/* Corner accent — bottom-right */}
       <div style={{ position:'absolute', bottom:0, right:0, width:200, height:200, pointerEvents:'none',
         background:'radial-gradient(circle at 100% 100%, rgba(91,194,231,0.07) 0%, transparent 60%)' }}/>
-      {/* Top shimmer line */}
-      <div style={{ position:'absolute', top:0, left:0, right:0, height:1, pointerEvents:'none',
-        background:'linear-gradient(90deg, transparent 0%, rgba(91,194,231,0.6) 40%, rgba(91,194,231,0.8) 50%, rgba(91,194,231,0.6) 60%, transparent 100%)' }}/>
-
       <div className="max-w-5xl mx-auto" style={{ position: 'relative', zIndex: 1 }}>
 
         {/* ── Outer Glassmorphism Card ── */}
@@ -144,7 +140,7 @@ export default function WhyBejoice() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
               style={{
                 fontFamily: "var(--font-bebas), sans-serif",
-                fontSize: 'clamp(3rem,7vw,6rem)',
+                fontSize: 'clamp(1rem,5vw,4rem)',
                 letterSpacing: '0.07em', lineHeight: 1,
                 margin: 0,
                 color: '#ffffff',

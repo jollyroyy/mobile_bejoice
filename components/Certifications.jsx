@@ -24,13 +24,9 @@ export default function Certifications() {
     <section id="certifications" ref={sectionRef} className="relative pt-6 pb-16 md:pt-10 md:pb-24 lg:pt-14 lg:pb-32 px-6 md:px-12 lg:px-24 overflow-hidden cv-section cv-certs" style={{ background: 'transparent', minHeight: '100vh' }}>
       <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" />
 
-      {/* Ambient */}
-      <div className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 60% 0%, rgba(91,194,231,0.07) 0%, transparent 50%)' }}/>
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(91,194,231,0.02) 80px),repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(91,194,231,0.02) 80px)',
-      }}/>
-
+      {/* Ambient glows — matching Why Bejoice */}
+      <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none' }} />
+      <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none' }} />
 
       <div className="max-w-7xl mx-auto">
 
@@ -39,13 +35,13 @@ export default function Certifications() {
           initial={{ opacity: 1, y: 0 }}
           style={{
             position: 'relative',
-            background: 'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
-            backdropFilter: 'blur(40px)', WebkitBackdropFilter: 'blur(40px)',
-            border: '1px solid rgba(91,194,231,0.35)',
-            borderTop: '1px solid rgba(91,194,231,0.65)',
-            borderRadius: 28,
-            overflow: 'hidden',
-            boxShadow: [
+            background:'#183650',
+            backgroundImage:'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
+            border:'1px solid rgba(91,194,231,0.35)',
+            borderTop:'1px solid rgba(91,194,231,0.65)',
+            borderRadius:28,
+            overflow:'hidden',
+            boxShadow:[
               '0 60px 120px rgba(0,0,0,0.75)',
               '0 0 0 1px rgba(91,194,231,0.08) inset',
               'inset 0 1px 0 rgba(91,194,231,0.30)',
@@ -54,6 +50,12 @@ export default function Certifications() {
             ].join(', '),
           }}
         >
+          {/* Corner accent — top-left */}
+          <div style={{ position:'absolute', top:0, left:0, width:120, height:120, pointerEvents:'none',
+            background:'radial-gradient(circle at 0% 0%, rgba(91,194,231,0.12) 0%, transparent 65%)' }}/>
+          {/* Corner accent — bottom-right */}
+          <div style={{ position:'absolute', bottom:0, right:0, width:200, height:200, pointerEvents:'none',
+            background:'radial-gradient(circle at 100% 100%, rgba(91,194,231,0.07) 0%, transparent 60%)' }}/>
 
           {/* Animated top sweep */}
           <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, pointerEvents: 'none',
@@ -103,7 +105,7 @@ export default function Certifications() {
             </div>
 
             {/* Headline */}
-            <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(3rem,7vw,6rem)', letterSpacing: '0.07em', lineHeight: 0.95, margin: 0 }}>
+            <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(1rem,5vw,4rem)', letterSpacing: '0.07em', lineHeight: 0.95, margin: 0 }}>
               <span style={{ color: '#ffffff', textShadow: '0 0 60px rgba(255,255,255,0.15), 0 2px 40px rgba(0,0,0,0.8)' }}>{lang === 'ar' ? 'معتمدون' : 'CERTIFIED'}</span>
               <br />
               <span style={{ color: '#5BC2E7', textShadow: '0 0 50px rgba(91,194,231,0.4), 0 2px 40px rgba(0,0,0,0.8)' }}>{lang === 'ar' ? 'للتسليم' : 'TO DELIVER'}</span>

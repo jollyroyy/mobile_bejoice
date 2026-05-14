@@ -801,8 +801,8 @@ export default function LogisticsTools() {
         >
           <div style={{
             width:'100%', maxWidth:'1080px',
-            background:'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
-            backdropFilter:'blur(40px)', WebkitBackdropFilter:'blur(40px)',
+            background:'#183650',
+            backgroundImage:'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
             border:'1px solid rgba(91,194,231,0.35)',
             borderTop:'1px solid rgba(91,194,231,0.65)',
             borderRadius:28, overflow:'hidden', position:'relative',
@@ -830,7 +830,7 @@ export default function LogisticsTools() {
             <div style={{ textAlign:'center', marginBottom:'clamp(2rem,4vw,3.5rem)', position:'relative', zIndex:1 }}>
               <h2 style={{
                 fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "var(--font-bebas), sans-serif",
-                fontSize:'clamp(2.4rem,5.5vw,4.8rem)',
+                fontSize:'clamp(1rem,3.5vw,2.8rem)',
                 letterSpacing: isAr ? 0 : '0.07em', lineHeight:1,
                 margin:'0 0 clamp(0.6rem,1.5vw,1rem)',
                 color:'#ffffff',

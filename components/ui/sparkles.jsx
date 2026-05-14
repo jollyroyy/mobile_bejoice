@@ -6,6 +6,11 @@ export const SparklesCore = ({
   particleDensity = 60,
   particleColor = 'rgba(91,194,231,0.9)',
   speed = 0.8,
+  background,
+  minSize,
+  maxSize,
+  style,
+  ...rest
 }) => {
   const canvasRef = useRef(null)
 
@@ -126,7 +131,7 @@ export const SparklesCore = ({
     <canvas
       ref={canvasRef}
       className={className || ''}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', ...style }}
     />
   )
 }

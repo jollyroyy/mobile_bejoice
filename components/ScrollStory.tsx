@@ -660,6 +660,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                 {/* Eyebrow pill — only rendered when tag is non-empty */}
                 {displayTag && (
                   <div
+                    className="hero-eyebrow"
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',

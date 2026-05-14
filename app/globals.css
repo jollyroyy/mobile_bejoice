@@ -765,6 +765,16 @@ body {
   }
   .hero-accent-rule { align-self: center !important; }
   .hero-intro-cta   { align-self: center !important; }
+  /* Fix overlap between glass card content and bottom bar on mobile */
+  .hero-chapter-overlay {
+    padding-bottom: clamp(10rem, 18vh, 14rem) !important;
+  }
+  .hero-glass-card {
+    gap: 6px;
+  }
+  .hero-intro-cta {
+    margin-top: 12px !important;
+  }
 }
 @media (max-width: 1200px) {
   .hero-card-title { font-size: 1.4rem !important; }
@@ -812,6 +822,7 @@ body.explore-open .layla-fab-wrap {
     right: auto !important;
     left: clamp(10px, 3vw, 20px) !important;
     align-items: flex-start !important;  /* panel opens leftward */
+    bottom: 28px !important;
   }
   /* Constrain chat panel height so it never bleeds behind the fixed nav */
   .ca-panel-mobile {
@@ -1543,10 +1554,9 @@ section {
 
   /* Compact hero bottom bar: fewer stat items visible */
   .hero-stat-cell:nth-child(n+3) { display: none !important; }
-
-  /* Tighter bottom bar padding */
   .hero-bottom-bar { padding: 0 0.25rem !important; gap: 2px !important; }
   .hero-track-wrap { max-width: 52% !important; }
+  .hero-card-btn { white-space: normal !important; word-break: keep-all !important; }
 
   /* Globe section: prevent overflow */
   #globe { padding-left: 0.5rem !important; padding-right: 0.5rem !important; overflow: hidden !important; }

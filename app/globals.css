@@ -765,15 +765,26 @@ body {
   }
   .hero-accent-rule { align-self: center !important; }
   .hero-intro-cta   { align-self: center !important; }
+  /* Hero heading row: heading left, button right on mobile */
+  .hero-heading-row {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: clamp(8px, 2vw, 16px) !important;
+  }
+  .hero-heading-text {
+    flex: 1 !important;
+    min-width: 0 !important;
+  }
+  .hero-intro-cta {
+    flex-shrink: 0 !important;
+    margin-top: 0 !important;
+  }
   /* Fix overlap between glass card content and bottom bar on mobile */
   .hero-chapter-overlay {
     padding-bottom: clamp(10rem, 18vh, 14rem) !important;
   }
   .hero-glass-card {
     gap: 6px;
-  }
-  .hero-intro-cta {
-    margin-top: 12px !important;
   }
 }
 @media (max-width: 1200px) {

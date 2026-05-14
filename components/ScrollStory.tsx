@@ -681,33 +681,68 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                   </div>
                 )}
 
-                {/* Headline */}
-                <div style={{ userSelect: 'none' }}>
-                  {(displayHeadline as readonly string[]).map((line, li) => {
-                    const isInline = i === 8;
-                    return (
-                    <span
-                      key={li}
+                {/* Hero heading row — heading + button side by side on mobile */}
+                <div className="hero-heading-row" style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+                  {/* Headline */}
+                  <div className="hero-heading-text" style={{ userSelect: 'none' }}>
+                    {(displayHeadline as readonly string[]).map((line, li) => {
+                      const isInline = i === 8;
+                      return (
+                      <span
+                        key={li}
+                        style={{
+                          display: isInline ? 'inline' : 'block',
+                          fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
+                          fontSize: isAr ? 'clamp(1.3575rem, 2.65vw, 2.9975rem)' : 'clamp(1.345rem, 2.8vw, 3.345rem)',
+                          fontWeight: isAr ? 700 : 400,
+                          lineHeight: isAr ? 1.2 : 0.87,
+                          letterSpacing: isAr ? '0' : '0.06em',
+                          color: li % 2 === 0 ? '#ffffff' : 'var(--gold)',
+                          textShadow: li % 2 === 0
+                            ? '0 1px 12px rgba(0,0,0,0.9)'
+                            : '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)',
+                        }}
+                      >
+                        {line}&nbsp;
+                      </span>
+                      );
+                    })}
+                  </div>
+
+                  {/* START SHIPMENT CTA — first chapter only */}
+                  {i === 0 && (
+                    <button
+                      className="hero-intro-cta btn-gold"
+                      onClick={() => onQuoteClick?.()}
                       style={{
-                        display: isInline ? 'inline' : 'block',
-                        fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
-                        fontSize: isAr ? 'clamp(1.3575rem, 2.65vw, 2.9975rem)' : 'clamp(1.345rem, 2.8vw, 3.345rem)',
-                        fontWeight: isAr ? 700 : 400,
-                        lineHeight: isAr ? 1.2 : 0.87,
-                        letterSpacing: isAr ? '0' : '0.06em',
-                        color: li % 2 === 0 ? '#ffffff' : 'var(--gold)',
-                        textShadow: li % 2 === 0
-                          ? '0 1px 12px rgba(0,0,0,0.9)'
-                          : '0 1px 12px rgba(0,0,0,0.9), 0 0 20px rgba(91,194,231,0.3)',
+                        marginTop: 28,
+                        alignSelf: right ? 'flex-end' : 'flex-start',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 0.5,
+                        fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
+                        fontSize: isAr ? 'clamp(0.375rem, 1.8vw, 0.875rem)' : 'clamp(0.375rem, 1.6vw, 0.75rem)',
+                        fontWeight: 700,
+                        letterSpacing: isAr ? '0' : '0.18em',
+                        padding: 'clamp(4px, 1vw, 12px) clamp(6px, 1.5vw, 32px)',
+                        borderRadius: 10,
+                        cursor: 'pointer',
+                        pointerEvents: 'all',
+                        position: 'relative',
+                        zIndex: 1000,
+                        userSelect: 'none',
                       }}
                     >
-                      {line}&nbsp;
-                    </span>
-                    );
-                  })}
+                      <span style={{ pointerEvents: 'none', userSelect: 'none' }}>
+                        {isAr ? ar.hero.ctaQuote : 'START SHIPMENT'}
+                      </span>
+                      <div className="btn-shine-overlay" />
+                    </button>
+                  )}
                 </div>
 
-                {/* Accent rule */}
+                {/* Accent rule — only show for chapters other than 0 (it's inside hero-heading-row on ch0) */}
+                {i !== 0 && (
                 <div
                   className="hero-accent-rule"
                   style={{
@@ -722,36 +757,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                     alignSelf: center ? 'center' : right ? 'flex-end' : 'flex-start',
                   }}
                 />
-
-                {/* START SHIPMENT CTA — first chapter only */}
-                {i === 0 && (
-                  <button
-                    className="hero-intro-cta btn-gold"
-                    onClick={() => onQuoteClick?.()}
-                    style={{
-                      marginTop: 28,
-                      alignSelf: right ? 'flex-end' : 'flex-start',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: 0.5,
-                      fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                      fontSize: isAr ? 'clamp(0.375rem, 1.8vw, 0.875rem)' : 'clamp(0.375rem, 1.6vw, 0.75rem)',
-                      fontWeight: 700,
-                      letterSpacing: isAr ? '0' : '0.18em',
-                      padding: 'clamp(4px, 1vw, 12px) clamp(6px, 1.5vw, 32px)',
-                      borderRadius: 10,
-                      cursor: 'pointer',
-                      pointerEvents: 'all',
-                      position: 'relative',
-                      zIndex: 1000,
-                      userSelect: 'none',
-                    }}
-                  >
-                    <span style={{ pointerEvents: 'none', userSelect: 'none' }}>
-                      {isAr ? ar.hero.ctaQuote : 'START SHIPMENT'}
-                    </span>
-                    <div className="btn-shine-overlay" />
-                  </button>
                 )}
               </div>
             </div>

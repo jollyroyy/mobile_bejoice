@@ -774,6 +774,7 @@ body {
   .hero-heading-text {
     flex: 1 !important;
     min-width: 0 !important;
+    text-align: left !important;
   }
   .hero-intro-cta {
     flex-shrink: 0 !important;

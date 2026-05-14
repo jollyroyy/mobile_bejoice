@@ -618,7 +618,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             <div
               key={i}
               ref={el => { chapRefs.current[i] = el; }}
-              className="hero-chapter-overlay"
+              className={`hero-chapter-overlay${i === 0 ? ' hero-chapter-first' : ''}`}
               style={{
                 position: 'absolute',
                 inset: 0,

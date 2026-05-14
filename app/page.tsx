@@ -2,9 +2,8 @@
 
 // All sections use browser APIs (window, canvas, GSAP, Lenis, Three.js).
 // Using next/dynamic with ssr:false for all prevents SSR window errors.
-import { useEffect, useState, useRef, startTransition, Suspense } from 'react';
+import { useEffect, useState, useRef, Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { LangProvider } from '@/context/LangContext';
 
@@ -111,12 +110,12 @@ export default function Page() {
     }
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return;
-      if (quoteOpen) startTransition(() => setQuoteOpen(false));
-      if (classicQuoteOpen) startTransition(() => setClassicQuoteOpen(false));
-      if (whyOpen) startTransition(() => setWhyOpen(false));
-      if (servicesOpen) startTransition(() => setServicesOpen(false));
-      if (toolsOpen) startTransition(() => setToolsOpen(false));
-      if (certificationsOpen) startTransition(() => setCertificationsOpen(false));
+      if (quoteOpen) setQuoteOpen(false);
+      if (classicQuoteOpen) setClassicQuoteOpen(false);
+      if (whyOpen) setWhyOpen(false);
+      if (servicesOpen) setServicesOpen(false);
+      if (toolsOpen) setToolsOpen(false);
+      if (certificationsOpen) setCertificationsOpen(false);
     };
     window.addEventListener('keydown', onKey);
     return () => {
@@ -200,13 +199,13 @@ export default function Page() {
         {/* Quick Quote modal — identical to Bejoice_backup */}
         {quoteOpen && (
           <Suspense fallback={null}>
-            <QuickQuoteModal onClose={() => startTransition(() => setQuoteOpen(false))} />
+            <QuickQuoteModal onClose={() => setQuoteOpen(false)} />
           </Suspense>
         )}
 
         {classicQuoteOpen && (
           <Suspense fallback={null}>
-            <QuoteModal onClose={() => startTransition(() => setClassicQuoteOpen(false))} />
+            <QuoteModal onClose={() => setClassicQuoteOpen(false)} />
           </Suspense>
         )}
 
@@ -215,7 +214,7 @@ export default function Page() {
           <div
             ref={whyModalRef}
             data-lenis-prevent
-            onClick={e => { if (e.target === whyModalRef.current) startTransition(() => setWhyOpen(false)); }}
+            onClick={e => { if (e.target === whyModalRef.current) setWhyOpen(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
               background: 'rgba(2,3,10,0.92)',
@@ -230,16 +229,10 @@ export default function Page() {
             <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
             <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
             <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              onClick={e => e.stopPropagation()}
-              style={{ position: 'relative', width: '100%', zIndex: 1 }}
-            >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', zIndex: 1 }}>
             <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
-                onClick={() => startTransition(() => setWhyOpen(false))}
+                onClick={() => setWhyOpen(false)}
                 style={{
                   position: 'absolute', top: 12, right: 12, zIndex: 30,
                   width: 44, height: 44,
@@ -254,7 +247,7 @@ export default function Page() {
               </button>
               <Suspense fallback={<ServicesSkeleton />}><WhyBejoice /></Suspense>
             </div>
-            </motion.div>
+            </div>
           </div>
         )}
 
@@ -263,7 +256,7 @@ export default function Page() {
           <div
             ref={servicesModalRef}
             data-lenis-prevent
-            onClick={e => { if (e.target === servicesModalRef.current) startTransition(() => setServicesOpen(false)); }}
+            onClick={e => { if (e.target === servicesModalRef.current) setServicesOpen(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
               background: 'rgba(2,3,10,0.92)',
@@ -278,16 +271,10 @@ export default function Page() {
             <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
             <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
             <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              onClick={e => e.stopPropagation()}
-              style={{ position: 'relative', width: '100%', zIndex: 1 }}
-            >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', zIndex: 1 }}>
             <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
-                onClick={() => startTransition(() => setServicesOpen(false))}
+                onClick={() => setServicesOpen(false)}
                 style={{
                   position: 'absolute', top: 12, right: 12, zIndex: 30,
                   width: 44, height: 44,
@@ -302,7 +289,7 @@ export default function Page() {
               </button>
               <Suspense fallback={<ServicesSkeleton />}><Services /></Suspense>
             </div>
-            </motion.div>
+            </div>
           </div>
         )}
 
@@ -311,7 +298,7 @@ export default function Page() {
           <div
             ref={toolsModalRef}
             data-lenis-prevent
-            onClick={e => { if (e.target === toolsModalRef.current) startTransition(() => setToolsOpen(false)); }}
+            onClick={e => { if (e.target === toolsModalRef.current) setToolsOpen(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
               background: 'rgba(2,3,10,0.92)',
@@ -326,16 +313,10 @@ export default function Page() {
             <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
             <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
             <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              onClick={e => e.stopPropagation()}
-              style={{ position: 'relative', width: '100%', zIndex: 1 }}
-            >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', zIndex: 1 }}>
             <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
-                onClick={() => startTransition(() => setToolsOpen(false))}
+                onClick={() => setToolsOpen(false)}
                 style={{
                   position: 'absolute', top: 12, right: 12, zIndex: 30,
                   width: 44, height: 44,
@@ -350,26 +331,15 @@ export default function Page() {
               </button>
               <Suspense fallback={<LogisticsToolsSkeleton />}><LogisticsTools key={toolsKey} /></Suspense>
             </div>
-            </motion.div>
+            </div>
           </div>
         )}
         {/* Certifications modal overlay */}
         {certificationsOpen && (
-          <>
-          <style>{`
-            @keyframes certModalBackdropIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes certModalPanelIn {
-              from { opacity: 0; transform: translateY(18px) scale(0.985); }
-              to { opacity: 1; transform: translateY(0) scale(1); }
-            }
-          `}</style>
           <div
             ref={certificationsModalRef}
             data-lenis-prevent
-            onClick={e => { if (e.target === certificationsModalRef.current) startTransition(() => setCertificationsOpen(false)); }}
+            onClick={e => { if (e.target === certificationsModalRef.current) setCertificationsOpen(false); }}
             style={{
               position: 'fixed', inset: 0, zIndex: 99990,
               background: 'rgba(2,3,10,0.92)',
@@ -379,32 +349,15 @@ export default function Page() {
                overflowY: 'auto',
               overflowX: 'hidden',
               WebkitOverflowScrolling: 'touch',
-              animation: 'certModalBackdropIn 0.26s ease-out forwards',
             } as React.CSSProperties}
           >
             <SparklesCore background="transparent" minSize={0.6} maxSize={2} particleDensity={60} particleColor="rgba(91,194,231,0.9)" speed={0.8} className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }} />
             <div style={{ position:'absolute', top:'5%', right:'-10%', width:'600px', height:'600px', borderRadius:'50%', background:'radial-gradient(circle,rgba(91,194,231,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
             <div style={{ position:'absolute', bottom:'5%', left:'-8%', width:'500px', height:'500px', borderRadius:'50%', background:'radial-gradient(circle,rgba(30,60,180,0.05) 0%,transparent 65%)', pointerEvents:'none', zIndex: 0 }} />
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-              onClick={e => e.stopPropagation()}
-              style={{ position: 'relative', width: '100%', zIndex: 1 }}
-            >
-            <div
-              onClick={e => e.stopPropagation()}
-              style={{
-                position: 'relative',
-                width: '100%',
-                minHeight: '100%',
-                opacity: 0,
-                transform: 'translateY(18px) scale(0.985)',
-                animation: 'certModalPanelIn 0.34s cubic-bezier(0.22, 1, 0.36, 1) 0.08s forwards',
-              }}
-            >
+            <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '100%', zIndex: 1 }}>
+            <div style={{ position: 'relative', width: '100%', minHeight: '100%' }}>
               <button
-                onClick={() => startTransition(() => setCertificationsOpen(false))}
+                onClick={() => setCertificationsOpen(false)}
                 style={{
                   position: 'absolute', top: 12, right: 12, zIndex: 30,
                   width: 44, height: 44,
@@ -419,9 +372,8 @@ export default function Page() {
               </button>
               <Suspense fallback={<CertificationsSkeleton />}><Certifications /></Suspense>
             </div>
-            </motion.div>
+            </div>
           </div>
-          </>
         )}
       </div>
     </LangProvider>

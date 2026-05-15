@@ -560,6 +560,7 @@ function CareersModal({ onClose }) {
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
+  const [formKey, setFormKey] = useState(0)
 
   useEffect(() => {
     const onKey = e => { if (e.key === 'Escape') onClose() }
@@ -605,9 +606,9 @@ function CareersModal({ onClose }) {
     const phone    = clampHelper(form.phone, 30)
     const position = form.position === 'Other' ? clampHelper(form.otherPosition, 100) : clampHelper(form.position, 100)
     const message  = clampHelper(form.message, 2000)
-    const cvNote   = cvFile
-      ? `CV file: ${clampHelper(cvFile.name, 200)} (${(cvFile.size / 1024).toFixed(0)} KB) — Please request file from applicant directly.`
-      : 'No CV attached.'
+    const safeName = clampHelper(cvFile?.name || '', 200).replace(/[^a-zA-Z0-9._-]/g, '_')
+
+    const cvAttachment = cvFile ? `CV attached: ${safeName} (${(cvFile.size / 1024).toFixed(0)} KB)` : 'No CV attached.'
 
     const body = [
       '╔══════════════════════════════════════════╗',
@@ -620,28 +621,39 @@ function CareersModal({ onClose }) {
       `Position: ${position}`,
       '',
       '── CV / RESUME ──',
-      cvNote,
+      cvAttachment,
       message ? `\n── COVER NOTE ──\n${message}` : '',
     ].join('\n').trim()
 
     try {
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        {
-          to_email: 'info@bejoiceshipping-ksa.com',
-          reply_to: email,
-          from_name: name,
-          subject: `[Bejoice Careers] ${position} — ${name}`,
-          mode: 'Career Application',
-          client_name: name,
-          company: '—',
-          client_email: email,
-          phone,
-          message: body,
-        },
-        EMAILJS_PUBLIC_KEY,
-      )
+      // Use EmailJS REST API with FormData to support file attachments
+      const formData = new FormData()
+      formData.append('service_id', EMAILJS_SERVICE_ID)
+      formData.append('template_id', EMAILJS_TEMPLATE_ID)
+      formData.append('user_id', EMAILJS_PUBLIC_KEY)
+      formData.append('template_params', JSON.stringify({
+        to_email: 'info@bejoiceshipping-ksa.com',
+        reply_to: email,
+        from_name: name,
+        subject: `[Bejoice Careers - Footer] ${position} — ${name}`,
+        mode: 'Career Application',
+        client_name: name,
+        company: '—',
+        client_email: email,
+        phone,
+        message: body,
+      }))
+      if (cvFile) {
+        formData.append('attachments', cvFile, safeName)
+      }
+      const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        body: formData,
+      })
+      if (!r.ok) {
+        const errText = await r.text().catch(() => 'unknown')
+        throw new Error(`EmailJS ${r.status}: ${errText}`)
+      }
     } catch (err) {
       console.error('Careers email error:', err)
     } finally {
@@ -765,11 +777,14 @@ function CareersModal({ onClose }) {
               <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, maxWidth: 380, margin: 0 }}>
                 Thank you for your interest. We will notify you once we have an open position in this role.
               </p>
-              <button className="cm-sub" onClick={onClose} style={{ marginTop: 8, maxWidth: 200 }}>Close</button>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
+                <button className="cm-sub" onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', position: '', otherPosition: '', message: '' }); setCvFile(null); setErrors({}); setFormKey(k => k + 1) }} style={{ maxWidth: 200 }}>Submit Another</button>
+                <button className="cm-sub" onClick={onClose} style={{ maxWidth: 200 }}>Close</button>
+              </div>
             </div>
           ) : (
             /* ── Form ── */
-            <div style={{ padding: 'clamp(28px,4vw,40px)' }}>
+            <div key={formKey} style={{ padding: 'clamp(28px,4vw,40px)' }}>
               {/* Heading */}
               <div style={{ marginBottom: 28, textAlign: 'center' }}>
                 <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.75)', fontWeight: 700, margin: '0 0 8px' }}>
@@ -872,16 +887,33 @@ function CareersModal({ onClose }) {
                     <input type="file"
                       accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                       style={{ display: 'none' }}
-                      onChange={e => {
+                      onChange={async e => {
                         const f = e.target.files[0]
                         if (!f) return
+                        // Extension + MIME type check
                         const ext = f.name.toLowerCase().slice(f.name.lastIndexOf('.'))
                         if (!ALLOWED_CV_TYPES.includes(f.type) && !ALLOWED_CV_EXTS.includes(ext)) {
                           alert('Only PDF, DOC, or DOCX files are accepted.')
-                          e.target.value = ''
-                          return
+                          e.target.value = ''; return
                         }
+                        // Size check (5 MB)
                         if (f.size > 5 * 1024 * 1024) { alert('File must be under 5 MB'); e.target.value = ''; return }
+                        // Magic byte check — verify actual file content
+                        try {
+                          const header = await f.slice(0, 8).arrayBuffer().then(b => new Uint8Array(b))
+                          const isValid = (
+                            (header[0] === 0x25 && header[1] === 0x50 && header[2] === 0x44 && header[3] === 0x46) || // PDF
+                            (header[0] === 0xD0 && header[1] === 0xCF && header[2] === 0x11 && header[3] === 0xE0) || // DOC (OLE2)
+                            (header[0] === 0x50 && header[1] === 0x4B && header[2] === 0x03 && header[3] === 0x04)    // DOCX (ZIP)
+                          )
+                          if (!isValid) {
+                            alert('File content does not match a valid PDF, DOC, or DOCX format.')
+                            e.target.value = ''; return
+                          }
+                        } catch {
+                          alert('Could not verify file. Please try again.')
+                          e.target.value = ''; return
+                        }
                         setCvFile(f)
                       }}
                     />

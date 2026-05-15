@@ -67,7 +67,7 @@ async function sendViaEmailJS(
       to_email:     toEmail,
       reply_to:     params.email || 'info@bejoiceshipping-ksa.com',
       from_name:    'Bejoice Booking',
-      subject:      `A new event has been scheduled — ${params.name} — ${params.dateStr}`,
+      subject:      `[Bejoice Booking - Cal.com] ${params.name} — ${params.dateStr}`,
       mode:         'Book a Call',
       client_name:  params.name,
       company:      '—',

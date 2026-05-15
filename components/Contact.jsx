@@ -24,6 +24,7 @@ export default function Contact() {
   const [form, setForm]       = useState({ name:'', company:'', email:'', phone:'', origin:'', destination:'', types:[], message:'' })
   const [sent, setSent]       = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  const [formKey, setFormKey] = useState(0)
   const [focused, setFocused] = useState(null)
   const [errors, setErrors]   = useState({})
   const cardRef = useRef(null)
@@ -182,7 +183,7 @@ export default function Contact() {
         </div>
 
         {!sent ? (
-          <>
+          <div key={formKey}>
             {/* ══ GLASS CARD ══ */}
             <div
               ref={cardRef}
@@ -254,7 +255,7 @@ export default function Contact() {
                         to_email:    'info@bejoiceshipping-ksa.com',
                         reply_to:    sanitize(form.email) || 'info@bejoiceshipping-ksa.com',
                         from_name:   sanitize(form.name) || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Contact] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        subject:     `[Bejoice Contact - Main Page] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
                         client_name: sanitize(form.name) || '—',
                         company:     sanitize(form.company) || '—',
                         client_email:sanitize(form.email) || '—',
@@ -404,7 +405,7 @@ export default function Contact() {
               </div>
             </div>
 
-          </>
+          </div>
         ) : (
           /* ── Success ── */
           <div dir={isAr ? 'rtl' : 'ltr'} style={{
@@ -436,7 +437,7 @@ export default function Contact() {
             <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(14px,1.5vw,17px)', color:'#22c55e', fontWeight:600, maxWidth:380, margin:'0 auto 2rem', lineHeight:1.75 }}>
               {isAr ? ar.contact.successTime : 'Our freight expert will reach you in 5 minutes.'}
             </p>
-            <button className="btn-ghost" onClick={() => { setSent(false); setSubmitting(false); setForm({ name:'', company:'', email:'', phone:'', origin:'', destination:'', types:[], message:'' }) }}><span>{isAr ? ar.contact.newEnquiry : 'New Enquiry'}</span></button>
+            <button className="btn-ghost" onClick={() => { setSent(false); setSubmitting(false); setForm({ name:'', company:'', email:'', phone:'', origin:'', destination:'', types:[], message:'' }); setFormKey(k => k + 1); setErrors({}) }}><span>{isAr ? ar.contact.newEnquiry : 'New Enquiry'}</span></button>
           </div>
         )}
 

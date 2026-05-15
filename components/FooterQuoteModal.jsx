@@ -270,7 +270,7 @@ export default function FooterQuoteModal({ onClose }) {
                         to_email:    'info@bejoiceshipping-ksa.com',
                         reply_to:    sanitize(form.email) || 'info@bejoiceshipping-ksa.com',
                         from_name:   sanitize(form.name) || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Contact] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        subject:     `[Bejoice Quote - Footer Modal] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
                         client_name: sanitize(form.name) || '—',
                         company:     sanitize(form.company) || '—',
                         client_email:sanitize(form.email) || '—',

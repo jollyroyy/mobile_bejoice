@@ -19,6 +19,7 @@ export default function DrawerQuoteModal({ onClose }) {
   const [submitting, setSubmitting] = useState(false)
   const [focused, setFocused] = useState(null)
   const [errors, setErrors] = useState({})
+  const [formKey, setFormKey] = useState(0)
 
   useEffect(() => {
     const onKey = e => { if (e.key === 'Escape') onClose() }
@@ -167,7 +168,7 @@ export default function DrawerQuoteModal({ onClose }) {
           {/* Content */}
           <div style={{ position: 'relative', zIndex: 2, padding: 'clamp(1.5rem,4vw,2.5rem) clamp(1.2rem,3vw,2rem)' }}>
             {!sent ? (
-              <>
+              <div key={formKey}>
                 {/* Heading */}
                 <div style={{ textAlign: 'center', marginBottom: 'clamp(1.2rem,2.5vw,2rem)' }}>
                   <div style={{
@@ -234,7 +235,7 @@ export default function DrawerQuoteModal({ onClose }) {
                         to_email:    'info@bejoiceshipping-ksa.com',
                         reply_to:    sanitize(form.email) || 'info@bejoiceshipping-ksa.com',
                         from_name:   sanitize(form.name) || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Contact] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        subject:     `[Bejoice Quote - Nav Drawer] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
                         client_name: sanitize(form.name) || '—',
                         company:     sanitize(form.company) || '—',
                         client_email:sanitize(form.email) || '—',
@@ -388,7 +389,7 @@ export default function DrawerQuoteModal({ onClose }) {
                     </button>
                   </div>
                 </form>
-              </>
+              </div>
             ) : (
               /* ── Success ── */
               <div dir={isAr ? 'rtl' : 'ltr'} style={{
@@ -421,7 +422,7 @@ export default function DrawerQuoteModal({ onClose }) {
                   {isAr ? ar.contact.successTime : 'Our freight expert will reach you in 5 minutes.'}
                 </p>
                 <button
-                  onClick={() => { setSent(false); setSubmitting(false); setForm({ name:'', company:'', email:'', phone:'', origin:'', destination:'', types:[], message:'' }); onClose() }}
+                  onClick={() => { setSent(false); setSubmitting(false); setForm({ name:'', company:'', email:'', phone:'', origin:'', destination:'', types:[], message:'' }); setFormKey(k => k + 1); setErrors({}) }}
                   style={{
                     display: 'inline-flex', alignItems: 'center', gap: 8,
                     padding: '12px 32px', borderRadius: 12, border: '1px solid rgba(91,194,231,0.4)',

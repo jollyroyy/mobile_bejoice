@@ -16,7 +16,7 @@ const ar = {
     bejoiceWings: 'أجنحة بيجويس',
     logisticsTools: 'أدوات اللوجستيات',
     loadCalculator: 'حاسبة الحمولة',
-    loadCalculatorSub: 'افتح نافذة تخطيط الحاويات',
+    loadCalculatorSub: 'أداة تحسين التحميل المتقدمة',
     quickQuote: 'عرض سعر سريع',
     trackShipment: 'تتبع الشحنة',
     bookCallTool: 'احجز مكالمة',

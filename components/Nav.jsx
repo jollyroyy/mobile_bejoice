@@ -11,11 +11,10 @@ const CAL_LINK = "bejoice/freight-expert-consultation"
 
 const links = [
   { label: 'Why Bejoice',                    arLabel: 'لماذا بيجويس',                id: 'why-us',         num: '01', sub: 'Our story & edge',    arSub: 'قصتنا وميزتنا' },
-  { label: 'Load Calculator',                arLabel: 'حاسبة الحمولة',               id: 'load-calculator', num: '02', sub: 'Container planning tool', arSub: 'أداة تخطيط الحاويات' },
   { label: 'Services',                       arLabel: 'الخدمات',                     id: 'services',       num: '03', sub: 'Full logistics suite',  arSub: 'حلول لوجستية متكاملة' },
-  { label: 'Certified to Deliver',           arLabel: 'معتمدون للتسليم',             id: 'certifications', num: '04', sub: 'Industry accreditations', arSub: 'اعتمادات صناعية' },
   { label: 'Heavy Lift & Project Logistics', arLabel: 'رفع ثقيل ولوجستيات المشاريع', id: 'heavy-cargo',    num: '05', sub: '1500+ operations',    arSub: '+1500 عملية' },
   { label: 'Bejoice Wings',                  arLabel: 'أجنحة بيجويس',                id: 'globe-mid',      num: '06', sub: 'Our global network',   arSub: 'شبكتنا العالمية', isGlobe: true },
+  { label: 'Certified to Deliver',           arLabel: 'معتمدون للتسليم',             id: 'certifications', num: '04', sub: 'Industry accreditations', arSub: 'اعتمادات صناعية' },
 ]
 
 
@@ -125,7 +124,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
       onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)' }}
     >
       <span style={{ fontSize: 'clamp(1.3rem,2.5vw,1.6rem)', lineHeight: 1 }}>{icon}</span>
-      <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(0.88rem,2vw,1rem)', letterSpacing: '0.1em', color: '#ffffff', lineHeight: 1.1 }}>{label}</span>
+      <span style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(0.88rem,2vw,1rem)', letterSpacing: '0.1em', color: '#ffffff', lineHeight: 1.1, textTransform: 'uppercase' }}>{label}</span>
       <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 'clamp(0.63rem,1.4vw,0.68rem)', fontWeight: 500, color: 'rgba(91,194,231,0.7)', lineHeight: 1.4, letterSpacing: '0.02em' }}>{sub}</span>
     </button>
   )
@@ -356,7 +355,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
               style={{
                 display: 'flex', alignItems: 'center', gap: '0.6rem', width: '100%', textAlign: 'left',
                 fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(0.84rem,2vw,0.99rem)', fontWeight: 400,
-                letterSpacing: '0.12em', color: 'rgba(255,255,255,0.65)',
+                textTransform: 'uppercase', letterSpacing: '0.12em', color: 'rgba(255,255,255,0.65)',
                 background: 'none', border: 'none', cursor: 'pointer',
                 padding: 'clamp(0.65rem,2vw,0.7rem) 0', minHeight: '44px', borderBottom: '1px solid rgba(255,255,255,0.06)',
                 transition: 'color 0.2s',
@@ -376,7 +375,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
             {isAr ? ar.nav.logisticsTools : 'Logistics Tools'}
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.6rem' }}>
-            {toolCard('🧮', isAr ? ar.nav.loadCalculator : 'Load Calculator', isAr ? ar.nav.loadCalculatorSub : 'Open container planning modal', () => { setMenuOpen(false); onToolsClick?.() })}
+            {toolCard('🧮', isAr ? ar.nav.loadCalculator : 'Load Calculator', isAr ? ar.nav.loadCalculatorSub : 'Advanced Load Optimization Tool', () => { setMenuOpen(false); onToolsClick?.() })}
             {toolCard('🚢', isAr ? ar.nav.quickQuote : 'Quick Quote', isAr ? 'أسعار شحن فورية' : 'Instant freight rates', () => { setMenuOpen(false); setDrawerQuoteOpen(true) })}
             {toolCard('📡', isAr ? ar.nav.trackShipment : 'Track Shipment', isAr ? 'BL / AWB تتبع مباشر' : 'BL / AWB live tracking', () => { setMenuOpen(false); window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer') })}
             {toolCard('📞', isAr ? ar.nav.bookCallTool : 'Book a Call', isAr ? 'تحدث مع خبير شحن' : 'Talk to a freight expert', () => { setMenuOpen(false); openCalPopup() })}

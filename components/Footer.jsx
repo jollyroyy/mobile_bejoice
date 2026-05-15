@@ -1055,7 +1055,7 @@ export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick
                 src="/bejoice-logo-group.png"
                 alt="Bejoice"
                 loading="lazy" decoding="async"
-                style={{ height: '230px', width: 'auto', objectFit: 'contain', display: 'block', opacity: 0.92 }}
+                style={{ height: 'clamp(80px, 15vw, 160px)', width: 'auto', objectFit: 'contain', display: 'block', opacity: 0.92 }}
               />
             </div>
           </div>

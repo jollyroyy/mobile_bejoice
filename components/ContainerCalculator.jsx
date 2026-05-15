@@ -361,7 +361,7 @@ export default function ContainerCalculator() {
         @media (max-width: 640px) {
           .cc-panel { grid-template-columns: 1fr !important; }
           .cc-form-panel { border-right: none !important; border-bottom: 1px solid rgba(91,194,231,0.14) !important; }
-          .cc-form-scroll { max-height: 380px; }
+          .cc-form-scroll { max-height: min(380px, 60svh); }
         }
       `}</style>
     </section>

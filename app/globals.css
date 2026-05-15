@@ -680,7 +680,7 @@ body {
 
 /* ── FOOTER: responsive column shift ── */
 .footer-col-shift { transform: translateX(-20px); }
-@media (max-width: 1024px) { .footer-col-shift { transform: translateX(60px); } }
+@media (max-width: 1024px) { .footer-col-shift { transform: translateX(clamp(20px, 5vw, 60px)); } }
 @media (max-width: 767px)  { .footer-col-shift { transform: none; } }
 
 /* ── NAV: logo is square — width:auto, height-only sizing ── */
@@ -836,10 +836,9 @@ body.explore-open .layla-fab-wrap {
 
 @media (max-width: 767px) {
   .layla-fab-wrap {
-    right: auto !important;
-    left: clamp(10px, 3vw, 20px) !important;
-    align-items: flex-start !important;  /* panel opens leftward */
-    bottom: 28px !important;
+    left: auto !important;
+    right: clamp(8px, 4vw, 20px) !important;
+    align-items: flex-end !important;
   }
   /* Constrain chat panel height so it never bleeds behind the fixed nav */
   .ca-panel-mobile {
@@ -854,9 +853,24 @@ body.explore-open .layla-fab-wrap {
   .ca-msgs-mobile {
     flex: 1 1 auto !important;
     height: auto !important;
-    min-height: 80px !important;
+    min-height: 48px !important;
     overflow-y: scroll !important;
     -webkit-overflow-scrolling: touch !important;
+  }
+  /* Move Start Shipment button left by 160px on mobile */
+  .ca-qr-btn-mobile:first-child {
+    margin-left: -160px !important;
+  }
+  /* Move first screen text content up by 100px */
+  .hero-chapter-overlay.hero-chapter-first {
+    transform: translateY(-100px) !important;
+  }
+  .hero-bottom-bar {
+    transform: translateY(-100px) !important;
+  }
+  /* Move remaining chapter headings (2-8) up by 50px */
+  .hero-chapter-overlay:not(.hero-chapter-first) .hero-glass-card {
+    transform: translateY(-50px) !important;
   }
 }
 
@@ -886,12 +900,11 @@ body.explore-open .layla-fab-wrap {
   /* WhyBejoice founders — 2 cols on tablet/mobile */
   #why-us [style*="repeat(3, 1fr)"] {
     grid-template-columns: repeat(2, 1fr) !important;
-    max-width: 560px !important;
+    max-width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
   }
-  /* Footer logo — smaller on tablet */
-  footer img[alt="Bejoice"] { height: 120px !important; }
+
 }
 
 /* ── SMALL TABLET / LARGE PHONE (481–640px): tighter grids ── */
@@ -907,10 +920,9 @@ body.explore-open .layla-fab-wrap {
   /* WhyBejoice founders — 1 col on small phones */
   #why-us [style*="repeat(3, 1fr)"] {
     grid-template-columns: 1fr !important;
-    max-width: 240px !important;
+    max-width: 100% !important;
   }
-  /* Footer logo mobile */
-  footer img[alt="Bejoice"] { height: 90px !important; }
+
 }
 
 /* ── Hero sticky height: use small viewport height on mobile to avoid browser-chrome clipping ── */

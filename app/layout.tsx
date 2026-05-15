@@ -121,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               closeBtn=document.createElement('button');
               closeBtn.innerHTML='&times;';
               closeBtn.title='Close';
-              closeBtn.style.cssText='position:absolute;top:12px;right:12px;z-index:2147483647;background:rgba(7,16,28,0.97);border:2px solid rgba(91,194,231,0.85);border-radius:50%;width:44px;height:44px;color:#fff;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,0.9),0 0 14px rgba(91,194,231,0.35);transition:all 0.2s ease;pointer-events:all;isolation:isolate;line-height:1;';
+              closeBtn.style.cssText='position:absolute;top:clamp(8px,1.5vw,12px);right:clamp(8px,1.5vw,12px);z-index:2147483647;background:rgba(7,16,28,0.97);border:2px solid rgba(91,194,231,0.85);border-radius:50%;width:clamp(32px,5vw,44px);height:clamp(32px,5vw,44px);color:#fff;font-size:clamp(16px,2.5vw,22px);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 16px rgba(0,0,0,0.9),0 0 14px rgba(91,194,231,0.35);transition:all 0.2s ease;pointer-events:all;isolation:isolate;line-height:1;';
               closeBtn.onmouseenter=function(){closeBtn.style.background='rgba(91,194,231,0.25)';closeBtn.style.borderColor='#5BC2E7';closeBtn.style.boxShadow='0 2px 20px rgba(91,194,231,0.5)';};
               closeBtn.onmouseleave=function(){closeBtn.style.background='rgba(7,16,28,0.97)';closeBtn.style.borderColor='rgba(91,194,231,0.85)';closeBtn.style.boxShadow='0 2px 16px rgba(0,0,0,0.9),0 0 14px rgba(91,194,231,0.35)';};
               closeBtn.onclick=hideModal;

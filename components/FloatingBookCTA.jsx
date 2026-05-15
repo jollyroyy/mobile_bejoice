@@ -650,6 +650,7 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
 function calcFabBottom() {
   if (typeof window === 'undefined') return '166px';
   if (window.innerWidth > 1440) return '166px';
+  if (window.innerWidth <= 767) return '28px';
   const px = Math.min(Math.max(Math.round(window.innerHeight * 0.25), 180), 340);
   return `${px}px`;
 }

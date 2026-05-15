@@ -242,7 +242,7 @@ export default function DrawerQuoteModal({ onClose }) {
                         message:     body,
                       },
                       EMAILJS_PUBLIC_KEY,
-                    ).catch(() => {})
+                    ).catch((err) => console.error('DrawerQuote email send failed:', err))
                   } catch {
                     setSent(true)
                   } finally {

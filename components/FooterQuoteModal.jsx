@@ -278,7 +278,7 @@ export default function FooterQuoteModal({ onClose }) {
                         message:     body,
                       },
                       EMAILJS_PUBLIC_KEY,
-                    ).catch(() => {})
+                    ).catch((err) => console.error('FooterQuote email send failed:', err))
                   } catch {
                     setSent(true)
                   } finally {

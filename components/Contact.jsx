@@ -262,7 +262,7 @@ export default function Contact() {
                         message:     body,
                       },
                       EMAILJS_PUBLIC_KEY,
-                    ).catch(() => {}) // silent — user already sees success
+                    ).catch((err) => console.error('Contact email send failed:', err))
                   } catch {
                     setSent(true)
                   } finally {

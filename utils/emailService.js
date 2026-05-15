@@ -8,6 +8,11 @@ export const EMAILJS_SERVICE_ID  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
 export const EMAILJS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
 export const EMAILJS_PUBLIC_KEY  = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
+// Init EmailJS v4 once
+if (typeof window !== 'undefined' && EMAILJS_PUBLIC_KEY) {
+  emailjs.init(EMAILJS_PUBLIC_KEY)
+}
+
 // ─── Sanitisation ─────────────────────────────────────────────────────────────
 // Strips all HTML tags and trims whitespace.
 // Prevents XSS, HTML injection, and email-header injection.

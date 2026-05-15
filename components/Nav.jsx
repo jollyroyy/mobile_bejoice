@@ -196,6 +196,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
               <span className="sm:hidden">{isAr ? ar.nav.bookCallShort : 'Book a Call'}</span>
             </button>
 
+            <div className="explore-lang-wrap" style={{ display: 'flex', alignItems: 'center', gap: 'clamp(8px,2vw,16px)' }}>
             {/* Explore button — premium glass pill with gradient border */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
@@ -247,7 +248,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
             </button>
 
             {/* Language Toggle */}
-            <div className="lang-toggle-wrap" style={{
+            <div style={{
               display: 'flex', alignItems: 'stretch', flexShrink: 0,
               background: 'rgba(10,10,18,0.6)', border: '1.5px solid rgba(91,194,231,0.45)',
               borderRadius: '10px', overflow: 'hidden', backdropFilter: 'blur(12px)',
@@ -275,6 +276,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
                 <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '11px', fontWeight: 800, letterSpacing: '0.12em', lineHeight: 1, color: lang === 'ar' ? '#8DD8F0' : 'rgba(91,194,231,0.65)', textShadow: lang === 'ar' ? '0 0 12px rgba(232,204,122,0.6)' : 'none' }}>AR</span>
                 {lang === 'ar' && <span style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: '20px', height: '2px', background: 'linear-gradient(90deg, transparent, #5BC2E7, transparent)', borderRadius: '2px 2px 0 0' }} />}
               </button>
+            </div>
             </div>
 
           </div>
@@ -621,7 +623,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
               marginTop: '0.4rem',
             }}>
               <button
-                onClick={() => { setHeavyOpen(false); setTimeout(() => openCalPopup(), 300) }}
+                onClick={() => { setHeavyOpen(false); openCalPopup() }}
                 style={{
                   flex: '1 1 176px', padding: '1rem 1.6rem', minHeight: 52,
                   background: 'linear-gradient(135deg, #5BC2E7 0%, #8DD8F0 50%, #5BC2E7 100%)',

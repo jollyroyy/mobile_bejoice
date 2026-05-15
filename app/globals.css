@@ -834,6 +834,17 @@ body.explore-open .layla-fab-wrap {
   visibility: hidden !important;
 }
 
+
+
+/* ── Explore + Lang toggle stack vertically on mobile ── */
+@media (max-width: 767px) {
+  .explore-lang-wrap { flex-direction: column !important; align-items: flex-end !important; gap: 6px !important; }
+  .explore-lang-wrap > div { position: fixed !important; bottom: 28px !important; left: 10px !important; z-index: 9999 !important; }
+  .explore-lang-wrap > div > button { padding: 4px 8px !important; }
+  .explore-lang-wrap > div > button span { font-size: 8px !important; }
+  .explore-lang-wrap > div > button img { width: 14px !important; height: 10px !important; }
+}
+
 @media (max-width: 767px) {
   .layla-fab-wrap {
     left: auto !important;

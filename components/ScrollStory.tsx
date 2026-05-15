@@ -155,7 +155,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 25px', fontSize: '0.675rem', borderRadius: 10,
+          padding: '12px 25px', fontSize: isAr ? '0.8rem' : '0.675rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -167,7 +167,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => onToolsClick?.()}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 25px', fontSize: '0.675rem', borderRadius: 10,
+          padding: '12px 25px', fontSize: isAr ? '0.8rem' : '0.675rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -641,7 +641,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: center ? 'center' : right ? 'flex-end' : 'flex-start',
+                  alignItems: i === 0 && isAr ? 'flex-end' : center ? 'center' : right ? 'flex-end' : 'flex-start',
                   background: 'rgba(0,0,0,0.52)',
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
@@ -722,7 +722,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                         alignItems: 'center',
                         gap: 0.5,
                         fontFamily: isAr ? cairoFont : "'Bebas Neue', sans-serif",
-                        fontSize: isAr ? 'clamp(0.375rem, 1.8vw, 0.875rem)' : 'clamp(0.375rem, 1.6vw, 0.75rem)',
+                        fontSize: isAr ? 'clamp(0.45rem, 2vw, 1rem)' : 'clamp(0.375rem, 1.6vw, 0.75rem)',
                         fontWeight: 700,
                         letterSpacing: isAr ? '0' : '0.18em',
                         padding: 'clamp(4px, 1vw, 12px) clamp(6px, 1.5vw, 32px)',

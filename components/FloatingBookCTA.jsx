@@ -39,32 +39,32 @@ function currentDateStr() { return `${currentMonth()} ${currentYear()}` }
 
 // ── Knowledge base — keyword → topic mapping ────────────────
 const KB = {
-  greet: ["hi", "hello", "hey", "good morning", "good afternoon", "good evening", "salam", "marhaba", "howdy", "yo", "sup"],
-  quote: ["quote", "price", "rate", "cost", "how much", "pricing", "estimate", "charges", "fee", "tariff rate", "budget"],
-  air: ["air freight", "air cargo", "airfreight", "airline", "aircraft", "fly", "flight", "aviation", "express", "urgent", "overnight", "air shipping", "plane"],
-  sea: ["sea freight", "ocean freight", "vessel", "container", "fcl", "lcl", "port", "shipping line", "maritime", "nautical", "bulk carrier", "ro-ro", "tanker", "ship", "ocean"],
-  heavy: ["heavy lift", "heavy cargo", "oversized", "project cargo", "oog", "out of gauge", "crane", "machinery", "industrial", "breakbulk", "abnormal load", "wide load", "overweight", "transformer", "turbine"],
-  saudi: ["saudi", "ksa", "riyadh", "jeddah", "dammam", "mecca", "medina", "zatca", "vision 2030", "neom", "giga project", "saudi customs", "saudi port", "king abdulaziz port", "jeddah islamic port", "king fahd industrial port", "saso", "sabic"],
-  market: ["red sea", "suez canal", "houthi", "disruption", "delay", "congestion", "freight rate", "market update", "latest", "news", "trend", "supply chain crisis", "shipping crisis", "port congestion", "container shortage", "rate spike", "market"],
-  customs: ["customs", "clearance", "import", "export", "duty", "tariff", "compliance", "documentation", "bill of lading", "invoice", "packing list", "certificate of origin", "hs code", "inspection", "gazt", "aqil"],
-  warehousing: ["warehouse", "storage", "fulfillment", "distribution", "3pl", "inventory", "last mile", "cold chain", "temperature controlled", "bonded warehouse"],
-  tracking: ["track", "tracking", "status", "where is", "shipment status", "locate", "eta", "estimated arrival", "delivery", "update my shipment"],
-  insurance: ["insurance", "cargo insurance", "damage", "claim", "loss", "cover", "liability"],
-  contact: ["contact", "call", "speak", "talk", "human", "agent", "expert", "representative", "phone", "email", "book", "meeting", "consultation"],
-  whoAreYou: ["who are you", "what are you", "are you human", "are you a robot", "are you ai", "are you real", "are you a bot", "tell me about yourself", "introduce yourself", "what can you do"],
-  howAreYou: ["how are you", "how do you do", "are you ok", "how's it going", "what's up", "how r u", "hows it going", "you doing well"],
-  compliment: ["you are beautiful", "you're beautiful", "you look beautiful", "you are pretty", "you're pretty", "you are gorgeous", "you're gorgeous", "you are amazing", "you are lovely", "you are cute", "you're cute", "you are stunning", "so nice", "you are wonderful", "you're wonderful", "you are great", "you are awesome"],
-  romantic: ["date me", "go out with me", "will you marry me", "i love you", "i like you", "do you like me", "be my girlfriend", "be my boyfriend", "do you have feelings", "can we date", "fall in love", "are you single", "relationship with you"],
-  negative: ["you are bad", "you're bad", "you are useless", "you're useless", "you are stupid", "you're stupid", "you are dumb", "you're dumb", "you are terrible", "you're terrible", "hate you", "i hate you", "you are worst", "you are awful", "you are pathetic", "not helpful", "not useful", "so bad", "very bad"],
-  thanks: ["thank you", "thanks", "thank u", "many thanks", "appreciate it", "appreciate you", "helpful", "very helpful", "great job", "good job", "well done", "nicely done"],
-  followUp: ["tell me more", "more info", "go on", "continue", "explain more", "what else", "elaborate", "details", "and?", "more details", "keep going"],
-  goodbye: ["bye", "goodbye", "see you", "later", "take care", "gotta go", "gtg", "cya", "good night"],
-  joke: ["joke", "funny", "make me laugh", "tell me something funny", "humor"],
-  weather: ["weather", "temperature", "rain", "sunny", "hot", "cold"],
-  time: ["what time", "what day", "what date", "today"],
-  food: ["food", "eat", "restaurant", "hungry", "lunch", "dinner", "breakfast", "coffee"],
-  help: ["help", "assist", "support", "guide", "how does this work", "what do you offer"],
-  bejoice: ["bejoice", "your company", "about you", "about bejoice", "who is bejoice"],
+  greet: ["hi", "hello", "hey", "good morning", "good afternoon", "good evening", "salam", "marhaba", "howdy", "yo", "sup", "مرحبا", "اهلا", "السلام عليكم", "صباح الخير"],
+  quote: ["quote", "price", "rate", "cost", "how much", "pricing", "estimate", "charges", "fee", "tariff rate", "budget", "سعر", "عرض سعر", "تكلفة", "كم السعر", "تقدير", "رسوم"],
+  air: ["air freight", "air cargo", "airfreight", "airline", "aircraft", "fly", "flight", "aviation", "express", "urgent", "overnight", "air shipping", "plane", "شحن جوي", "طائرة", "مطار", "جوي"],
+  sea: ["sea freight", "ocean freight", "vessel", "container", "fcl", "lcl", "port", "shipping line", "maritime", "nautical", "bulk carrier", "ro-ro", "tanker", "ship", "ocean", "شحن بحري", "حاوية", "ميناء", "بحر", "سفينة"],
+  heavy: ["heavy lift", "heavy cargo", "oversized", "project cargo", "oog", "out of gauge", "crane", "machinery", "industrial", "breakbulk", "abnormal load", "wide load", "overweight", "transformer", "turbine", "رفع ثقيل", "مشاريع", "آلات", "معدات ثقيلة"],
+  saudi: ["saudi", "ksa", "riyadh", "jeddah", "dammam", "mecca", "medina", "zatca", "vision 2030", "neom", "giga project", "saudi customs", "saudi port", "king abdulaziz port", "jeddah islamic port", "king fahd industrial port", "saso", "sabic", "السعودية", "الرياض", "جدة", "الدمام", "رؤية 2030", "نيوم"],
+  market: ["red sea", "suez canal", "houthi", "disruption", "delay", "congestion", "freight rate", "market update", "latest", "news", "trend", "supply chain crisis", "shipping crisis", "port congestion", "container shortage", "rate spike", "market", "البحر الأحمر", "قناة السويس", "سوق", "أسعار", "تحديث"],
+  customs: ["customs", "clearance", "import", "export", "duty", "tariff", "compliance", "documentation", "bill of lading", "invoice", "packing list", "certificate of origin", "hs code", "inspection", "gazt", "aqil", "جمارك", "تخليص", "استيراد", "تصدير", "رسوم جمركية"],
+  warehousing: ["warehouse", "storage", "fulfillment", "distribution", "3pl", "inventory", "last mile", "cold chain", "temperature controlled", "bonded warehouse", "تخزين", "مستودع", "مخازن"],
+  tracking: ["track", "tracking", "status", "where is", "shipment status", "locate", "eta", "estimated arrival", "delivery", "update my shipment", "تتبع", "حالة الشحنة", "أين شحنتي"],
+  insurance: ["insurance", "cargo insurance", "damage", "claim", "loss", "cover", "liability", "تأمين", "تأمين البضاعة", "تعويض"],
+  contact: ["contact", "call", "speak", "talk", "human", "agent", "expert", "representative", "phone", "email", "book", "meeting", "consultation", "اتصال", "مكالمة", "تحدث", "خبير", "وكيل"],
+  whoAreYou: ["who are you", "what are you", "are you human", "are you a robot", "are you ai", "are you real", "are you a bot", "tell me about yourself", "introduce yourself", "what can you do", "من أنت", "ما أنت", "هل أنت بشر", "هل أنت روبوت", "عرف عن نفسك"],
+  howAreYou: ["how are you", "how do you do", "are you ok", "how's it going", "what's up", "how r u", "hows it going", "you doing well", "كيف حالك", "كيفك", "هل أنت بخير"],
+  compliment: ["you are beautiful", "you're beautiful", "you look beautiful", "you are pretty", "you're pretty", "you are gorgeous", "you're gorgeous", "you are amazing", "you are lovely", "you are cute", "you're cute", "you are stunning", "so nice", "you are wonderful", "you're wonderful", "you are great", "you are awesome", "جميل", "رائع", "لطيف", "مذهل"],
+  romantic: ["date me", "go out with me", "will you marry me", "i love you", "i like you", "do you like me", "be my girlfriend", "be my boyfriend", "do you have feelings", "can we date", "fall in love", "are you single", "relationship with you", "أحبك", "حب", "أعجب بك", "مواعدة", "زواج"],
+  negative: ["you are bad", "you're bad", "you are useless", "you're useless", "you are stupid", "you're stupid", "you are dumb", "you're dumb", "you are terrible", "you're terrible", "hate you", "i hate you", "you are worst", "you are awful", "you are pathetic", "not helpful", "not useful", "so bad", "very bad", "سيء", "غير مفيد", "غبي", "سيئ", "أكرهك"],
+  thanks: ["thank you", "thanks", "thank u", "many thanks", "appreciate it", "appreciate you", "helpful", "very helpful", "great job", "good job", "well done", "nicely done", "شكرا", "شكراً", "جزاك الله خير", "مفيد"],
+  followUp: ["tell me more", "more info", "go on", "continue", "explain more", "what else", "elaborate", "details", "and?", "more details", "keep going", "المزيد", "أخبرني أكثر", "استمر", "شرح أكثر", "تفاصيل"],
+  goodbye: ["bye", "goodbye", "see you", "later", "take care", "gotta go", "gtg", "cya", "good night", "مع السلامة", "وداعاً", "أراك لاحقاً", "تصبح على خير"],
+  joke: ["joke", "funny", "make me laugh", "tell me something funny", "humor", "نكتة", "مضحك", "فكاهة", "اضحكني"],
+  weather: ["weather", "temperature", "rain", "sunny", "hot", "cold", "طقس", "درجة الحرارة", "مطر", "حار", "بارد"],
+  time: ["what time", "what day", "what date", "today", "الوقت", "كم الساعة", "اليوم", "التاريخ"],
+  food: ["food", "eat", "restaurant", "hungry", "lunch", "dinner", "breakfast", "coffee", "طعام", "أكل", "جائع", "مطعم"],
+  help: ["help", "assist", "support", "guide", "how does this work", "what do you offer", "مساعدة", "دعم", "كيف يعمل هذا", "ماذا تقدم"],
+  bejoice: ["bejoice", "your company", "about you", "about bejoice", "who is bejoice", "بيجويس", "شركتك", "عن بيجويس"],
 };
 
 // ── Dynamic response pools (multiple variants per topic) ─────
@@ -199,8 +199,8 @@ const _memory = {
 function updateMemory(rawInput) {
   const t = rawInput.toLowerCase()
 
-  // Name: "my name is X" / "I'm X" / "call me X"
-  const nameMatch = rawInput.match(/(?:my name is|i am|i'm|call me)\s+([A-Za-z][a-z]*(?: [A-Za-z][a-z]*)?)/i)
+  // Name: "my name is X" / "I'm X" / "call me X" / "اسمي X"
+  const nameMatch = rawInput.match(/(?:my name is|i am|i'm|call me|اسمي|انا|أنا)\s+([A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF]*(?: [A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF]*)?)/i)
   if (nameMatch) _memory.name = nameMatch[1].trim().replace(/\b\w/g, c => c.toUpperCase())
 
   // Company: "from [company]" / "I work at X" / "our company X"
@@ -208,21 +208,21 @@ function updateMemory(rawInput) {
   if (companyMatch) _memory.company = companyMatch[1].trim()
 
   // Origin country/city
-  const originMatch = rawInput.match(/(?:from|shipping from|origin[:\s]+|out of|departing from)\s+([A-Za-z][a-z ]*(?: [A-Za-z][a-z]*)*?)(?:\s+to\b|\s*,|$)/i)
+  const originMatch = rawInput.match(/(?:from|shipping from|origin[:\s]+|out of|departing from|من|الشحن من)\s+([A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF ]*(?: [A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF]*)*?)(?:\s+to\b|\s*,|$|\s+إلى)/i)
   if (originMatch && originMatch[1].length > 1) _memory.origin = originMatch[1].trim()
 
   // Destination country/city
-  const destMatch = rawInput.match(/(?:\bto\b|shipping to|going to|destination[:\s]+|deliver(?:ing)? to|arrive(?:s)? in)\s+([A-Za-z][a-z]*(?: [A-Za-z][a-z]*)*?)(?:\s*,|\s+via\b|$)/i)
+  const destMatch = rawInput.match(/(?:\bto\b|shipping to|going to|destination[:\s]+|deliver(?:ing)? to|arrive(?:s)? in|إلى|الشحن إلى|الوصول إلى)\s+([A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF]*(?: [A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF]*)*?)(?:\s*,|\s+via\b|$|\s+عبر)/i)
   if (destMatch && destMatch[1].length > 1) _memory.destination = destMatch[1].trim()
 
   // Transport mode
-  if (/\b(sea freight|ocean freight|ship|vessel|container|fcl|lcl|maritime)\b/.test(t)) _memory.mode = 'sea'
-  else if (/\b(air freight|airfreight|plane|aircraft|fly|flight|awb)\b/.test(t)) _memory.mode = 'air'
-  else if (/\b(road|truck|land freight|overland|lorry|trailer)\b/.test(t)) _memory.mode = 'land'
-  else if (/\b(heavy lift|project cargo|oog|out.of.gauge|oversized|odc)\b/.test(t)) _memory.mode = 'heavy'
+  if (/\b(sea freight|ocean freight|ship|vessel|container|fcl|lcl|maritime|بحري|سفينة|حاوية|بحر)\b/.test(t)) _memory.mode = 'sea'
+  else if (/\b(air freight|airfreight|plane|aircraft|fly|flight|awb|جوي|طائرة|مطار|طيران)\b/.test(t)) _memory.mode = 'air'
+  else if (/\b(road|truck|land freight|overland|lorry|trailer|بري|شاحنة|نقل بري)\b/.test(t)) _memory.mode = 'land'
+  else if (/\b(heavy lift|project cargo|oog|out.of.gauge|oversized|odc|رفع ثقيل|مشاريع|ثقيل)\b/.test(t)) _memory.mode = 'heavy'
 
   // Cargo type — capture noun phrase after key verbs
-  const cargoMatch = rawInput.match(/(?:shipping|import(?:ing)?|export(?:ing)?|moving|transporting|sending|cargo(?:\s+is)?|goods(?:\s+are)?)\s+(?:some\s+|a\s+)?([A-Za-z][a-z0-9 -]{2,30}?)(?:\s+from|\s+to|\s+via|[.,]|$)/i)
+  const cargoMatch = rawInput.match(/(?:shipping|import(?:ing)?|export(?:ing)?|moving|transporting|sending|cargo(?:\s+is)?|goods(?:\s+are)?|شحن|استيراد|تصدير|نقل|بضاعة)\s+(?:some\s+|a\s+)?([A-Za-z\u0600-\u06FF][a-z\u0600-\u06FF0-9 -]{2,30}?)(?:\s+from|\s+to|\s+via|[.,]|$|\s+من|\s+إلى)/i)
   if (cargoMatch && cargoMatch[1].length > 2) _memory.cargoType = cargoMatch[1].trim()
 
   // Container type
@@ -254,34 +254,36 @@ function updateMemory(rawInput) {
 }
 
 /** Build a personalized prefix based on what we know about the user */
-function personalizeOpening() {
-  if (_memory.name) return `Hi ${_memory.name}! `
+function personalizeOpening(isAr) {
+  if (_memory.name) return isAr ? `مرحباً ${_memory.name}! ` : `Hi ${_memory.name}! `
   return ''
 }
 
 /** Build a context hint to append to RAG responses */
-function buildContextHint() {
+function buildContextHint(isAr) {
   const parts = []
   if (_memory.origin && _memory.destination) {
-    parts.push(`your **${_memory.origin} → ${_memory.destination}** route`)
+    parts.push(isAr ? `مسار **${_memory.origin} → ${_memory.destination}**` : `your **${_memory.origin} → ${_memory.destination}** route`)
   } else if (_memory.destination) {
-    parts.push(`your shipment **to ${_memory.destination}**`)
+    parts.push(isAr ? `شحنتك **إلى ${_memory.destination}**` : `your shipment **to ${_memory.destination}**`)
   } else if (_memory.origin) {
-    parts.push(`your shipment **from ${_memory.origin}**`)
+    parts.push(isAr ? `شحنتك **من ${_memory.origin}**` : `your shipment **from ${_memory.origin}**`)
   }
-  if (_memory.cargoType) parts.push(`**${_memory.cargoType}** cargo`)
+  if (_memory.cargoType) parts.push(isAr ? `بضاعة **${_memory.cargoType}**` : `**${_memory.cargoType}** cargo`)
   if (_memory.weight) parts.push(`**${_memory.weight}**`)
   if (_memory.volume) parts.push(`**${_memory.volume}**`)
-  if (_memory.mode) parts.push(`via **${_memory.mode} freight**`)
-  if (_memory.containerType) parts.push(`in a **${_memory.containerType}** container`)
-  if (_memory.incoterm) parts.push(`under **${_memory.incoterm}** terms`)
+  if (_memory.mode) parts.push(isAr ? `عبر **${_memory.mode}**` : `via **${_memory.mode} freight**`)
+  if (_memory.containerType) parts.push(isAr ? `في حاوية **${_memory.containerType}**` : `in a **${_memory.containerType}** container`)
+  if (_memory.incoterm) parts.push(isAr ? `بشروط **${_memory.incoterm}**` : `under **${_memory.incoterm}** terms`)
 
   if (parts.length === 0) return null
-  return `*For ${parts.join(', ')} — our team can give you exact figures. Just say the word!*`
+  return isAr ? `*لمسارك ${parts.join('، ')} — فريقنا يمكنه إعطاؤك أرقاماً دقيقة. فقط أخبرنا!*` : `*For ${parts.join(', ')} — our team can give you exact figures. Just say the word!*`
 }
 
-function getBotResponse(input) {
+function getBotResponse(input, isAr) {
   const text = input.toLowerCase().trim()
+  const RP = isAr && ar?.layla?.responses ? ar.layla.responses : RESPONSES
+  const SAUDI_KB_LANG = isAr && ar?.layla?.saudiKB ? ar.layla.saudiKB : SAUDI_KB
 
   // ── Update session memory with anything the user shares ──────
   updateMemory(input)
@@ -289,7 +291,7 @@ function getBotResponse(input) {
   // ── RAG: Always consult Bejoice Sea Freight Orientation PDF first ──────
   // Source: Bejoice Orientation – Sea Freight (PDF) → laylaKnowledgeBase.js
   // Skip RAG only for purely social messages (greetings, thanks, goodbye, personal questions)
-  const isSocial = /^(hi\b|hello\b|hey\b|salam|marhaba|howdy|thank|thanks|bye|goodbye|see you|good night|how are you|how r u|who are you|what are you|are you|tell me about yourself|you are |you're |i love|date me|marry me|joke|weather|what time|what day|food|hungry)/.test(text)
+  const isSocial = isAr ? /^(مرحبا|اهلا|السلام|شكرا|شكراً|مع السلامة|وداعا|كيف حالك|من أنت|ما أنت|أحبك|نكتة|مضحك|طقس|الوقت|طعام|أكل|جائع)/.test(text) : /^(hi\b|hello\b|hey\b|salam|marhaba|howdy|thank|thanks|bye|goodbye|see you|good night|how are you|how r u|who are you|what are you|are you|tell me about yourself|you are |you're |i love|date me|marry me|joke|weather|what time|what day|food|hungry)/.test(text)
 
   if (!isSocial) {
     // Threshold=1, topN=3 — retrieve top 3 most relevant PDF chunks
@@ -299,7 +301,7 @@ function getBotResponse(input) {
       const secondary = ragChunks[1]
       const tertiary = ragChunks[2]
       _lastTopic = 'sea'
-      const greeting = personalizeOpening()
+      const greeting = personalizeOpening(isAr)
       let responseText = greeting + primary.content
       if (secondary && secondary.id !== primary.id) {
         responseText += `\n\n---\n\n${secondary.content}`
@@ -308,21 +310,21 @@ function getBotResponse(input) {
         responseText += `\n\n---\n\n${tertiary.content}`
       }
       // Append personalized context hint based on session memory
-      const ctxHint = buildContextHint()
+      const ctxHint = buildContextHint(isAr)
       if (ctxHint) responseText += `\n\n${ctxHint}`
 
-      const hasCTA = /demurrage|detention|rate|cost|price|quote|charges|how much/.test(text)
+      const hasCTA = isAr ? /demurrage|detention|rate|cost|price|quote|charges|how much|سعر|تكلفة|رسوم|عرض/.test(text) : /demurrage|detention|rate|cost|price|quote|charges|how much/.test(text)
       return {
         text: responseText,
-        cta: hasCTA ? { label: 'Get Accurate Quote', action: 'quote' } : { label: 'Ask a Specialist', action: 'call' },
+        cta: hasCTA ? (isAr ? ar.layla.getAccurateQuote : { label: 'Get Accurate Quote', action: 'quote' }) : (isAr ? ar.layla.askSpecialist : { label: 'Ask a Specialist', action: 'call' }),
       }
     }
   }
 
   // ── Name acknowledgement — if user just shared their name ────
-  if (_memory.name && /(?:my name is|i am|i'm|call me)\s+[a-z]/i.test(input)) {
+  if (_memory.name && /(?:my name is|i am|i'm|call me|اسمي|أنا)\s+[a-z\u0600-\u06FF]/i.test(input)) {
     return {
-      text: `Nice to meet you, **${_memory.name}**! 😊 I'll remember that.\n\nI'm Layla — Bejoice's freight assistant. I'm here to help with sea freight, air cargo, customs clearance, heavy lift, and everything logistics in Saudi Arabia.\n\nWhat can I help you with today?`,
+      text: isAr ? `تشرفت بمعرفتك، **${_memory.name}**! 😊 سأتذكر ذلك.\n\nأنا ليلى — مساعدة الشحن من بيجويس. أنا هنا للمساعدة في الشحن البحري والجوي والتخليص الجمركي والرفع الثقيل.\n\nبماذا يمكنني مساعدتك اليوم؟` : `Nice to meet you, **${_memory.name}**! 😊 I'll remember that.\n\nI'm Layla — Bejoice's freight assistant. I'm here to help with sea freight, air cargo, customs clearance, heavy lift, and everything logistics in Saudi Arabia.\n\nWhat can I help you with today?`,
     }
   }
 
@@ -371,8 +373,8 @@ function getBotResponse(input) {
   let topic = matches.length > 0 ? matches[0].key : null
 
   // Handle follow-up: if user says "tell me more" and we have a last topic
-  if (topic === 'followUp' && _lastTopic && RESPONSES[_lastTopic]) {
-    const pool = RESPONSES[_lastTopic]
+  if (topic === 'followUp' && _lastTopic && RP[_lastTopic]) {
+    const pool = RP[_lastTopic]
     const arr = Array.isArray(pool) ? pool : [pool]
     // Try to give a different variant than last time
     if (arr.length > 1) {
@@ -381,13 +383,13 @@ function getBotResponse(input) {
     }
     // Only one variant — give a helpful follow-up
     return {
-      text: `I've shared what I know on ${_lastTopic} — but our specialists can go much deeper on your specific situation. Want me to connect you?`,
-      cta: { label: "Talk to Specialist", action: "call" }
+      text: isAr ? `لقد شاركت ما أعرفه عن ${_lastTopic} — لكن خبراءنا يمكنهم التعمق أكثر في حالتك الخاصة. تريد مني توصيلك؟` : `I've shared what I know on ${_lastTopic} — but our specialists can go much deeper on your specific situation. Want me to connect you?`,
+      cta: isAr ? ar.layla.specialistCTA : { label: "Talk to Specialist", action: "call" }
     }
   }
 
   // ── SAUDI_KB: check BEFORE generic topic responses so specific entries (zatca, saso, etc.) always win ──
-  for (const [key, entry] of Object.entries(SAUDI_KB)) {
+  for (const [key, entry] of Object.entries(SAUDI_KB_LANG)) {
     if (entry.match.test(text)) {
       _lastTopic = 'saudi_' + key
       return { text: entry.text, cta: entry.cta }
@@ -395,17 +397,17 @@ function getBotResponse(input) {
   }
 
   // If we got a topic match, use it — and personalize with memory
-  if (topic && RESPONSES[topic]) {
+  if (topic && RP[topic]) {
     _lastTopic = topic
     if (!_topicHistory.includes(topic)) _topicHistory.push(topic)
-    const pool = RESPONSES[topic]
+    const pool = RP[topic]
     const arr = Array.isArray(pool) ? pool : [pool]
     const response = pick(arr)
     // Personalize: prepend name if we know it, and append context hint for logistics topics
     const logisticsTopics = ['quote','air','sea','heavy','customs','warehousing','insurance','market','saudi','tracking']
     if (_memory.name || (logisticsTopics.includes(topic) && buildContextHint())) {
-      const greeting = personalizeOpening()
-      const ctxHint = logisticsTopics.includes(topic) ? buildContextHint() : null
+      const greeting = personalizeOpening(isAr)
+      const ctxHint = logisticsTopics.includes(topic) ? buildContextHint(isAr) : null
       const baseText = typeof response.text === 'function' ? response.text() : response.text
       return {
         ...response,
@@ -418,13 +420,13 @@ function getBotResponse(input) {
   // Compound question detection: if multiple logistics topics matched
   if (matches.length >= 2) {
     const t1 = matches[0].key, t2 = matches[1].key
-    const r1 = RESPONSES[t1], r2 = RESPONSES[t2]
+    const r1 = RP[t1], r2 = RP[t2]
     if (r1 && r2) {
       const a1 = Array.isArray(r1) ? pick(r1) : r1
       const a2 = Array.isArray(r2) ? pick(r2) : r2
       _lastTopic = t1
       return {
-        text: `Great question — that touches on a couple of areas! Let me cover both:\n\n${a1.text}\n\n---\n\n${a2.text}`,
+        text: isAr ? `سؤال رائع — هذا يلمس عدة مجالات! دعني أغطي كل شيء:\n\n${a1.text}\n\n---\n\n${a2.text}` : `Great question — that touches on a couple of areas! Let me cover both:\n\n${a1.text}\n\n---\n\n${a2.text}`,
         cta: a1.cta || a2.cta,
       }
     }
@@ -432,41 +434,40 @@ function getBotResponse(input) {
 
   // ── Smart general-question handling ──
   // Detect question patterns and give conversational answers
-  const isQuestion = /\?|^(what|how|why|when|where|which|can|do|does|is|are|will|would|should|could)\b/.test(text)
+  const isQuestion = isAr ? /\؟|^(ما|كيف|لماذا|متى|أين|أي|هل|من)\b/.test(text) : /\?|^(what|how|why|when|where|which|can|do|does|is|are|will|would|should|could)\b/.test(text)
 
   if (isQuestion && !topic) {
     // Route/lane questions
-    if (/from .+ to .+|ship.* to |send.* to |freight.* to /.test(text)) {
-      const route = text.match(/from\s+(.+?)\s+to\s+(.+?)[\s?.!]*$/i) || text.match(/to\s+(.+?)[\s?.!]*$/i)
+    if (isAr ? /من .+ إلى |شحن.*إلى|إرسال.*إلى/.test(text) : /from .+ to .+|ship.* to |send.* to |freight.* to /.test(text)) {
       _lastTopic = 'quote'
       return {
-        text: `Great question! 🗺️ ${route ? `Shipping ${route[0]}` : 'That route'} is definitely something we handle.\n\nTo give you an accurate rate and timeline, I'd need a few details: cargo type, approximate weight/volume, and whether you prefer sea or air.\n\nOr — fastest option — let me open our quote form and our team will get back to you within the hour with exact numbers.`,
-        cta: { label: "Get Route Quote", action: "quote" },
+        text: isAr ? ar.layla.routeQuote.text : `Great question! 🗺️ ${'That route'} is definitely something we handle.\n\nTo give you an accurate rate and timeline, I'd need a few details: cargo type, approximate weight/volume, and whether you prefer sea or air.\n\nOr — fastest option — let me open our quote form and our team will get back to you within the hour with exact numbers.`,
+        cta: isAr ? ar.layla.routeQuote.cta : { label: "Get Route Quote", action: "quote" },
       }
     }
     // Transit time questions
-    if (/how long|transit time|how many days|how fast|delivery time|lead time/.test(text)) {
+    if (isAr ? /كم يوم|وقت العبور|مدة الشحن|كم مدة|مدة التوصيل/.test(text) : /how long|transit time|how many days|how fast|delivery time|lead time/.test(text)) {
       return {
-        text: `Good question! ⏱️ Transit times vary by mode and route. Here's a rough guide:\n\n✈️ **Air:** 1–5 days (Asia→KSA: 1–2 days, Europe: 2–3, USA: 3–4)\n🚢 **Sea:** 15–45 days depending on origin (currently +10–14 days due to Cape routing)\n🚛 **Road (GCC):** 1–5 days within the Gulf region\n\nThese are port-to-port — add 2–5 days for customs + last mile. Want a precise estimate for your specific route?`,
-        cta: { label: "Get Exact Timeline", action: "quote" },
+        text: isAr ? ar.layla.transitTime.text : `Good question! ⏱️ Transit times vary by mode and route. Here's a rough guide:\n\n✈️ **Air:** 1–5 days (Asia→KSA: 1–2 days, Europe: 2–3, USA: 3–4)\n🚢 **Sea:** 15–45 days depending on origin (currently +10–14 days due to Cape routing)\n🚛 **Road (GCC):** 1–5 days within the Gulf region\n\nThese are port-to-port — add 2–5 days for customs + last mile. Want a precise estimate for your specific route?`,
+        cta: isAr ? ar.layla.transitTime.cta : { label: "Get Exact Timeline", action: "quote" },
       }
     }
     // Incoterms questions
     if (/incoterm|fob|cif|exw|ddp|dap|cfr|fas|fca/.test(text)) {
       return {
-        text: `Ah, incoterms — the language of international trade! 📋\n\nHere's the simple version:\n\n• **EXW** — You handle everything from seller's door\n• **FOB** — Seller delivers to port, you take over from there\n• **CIF** — Seller pays freight + insurance to destination port\n• **DDP** — Seller handles EVERYTHING to your door (most convenient)\n\nMost Saudi imports use **FOB** or **CIF**. For first-time importers, I usually recommend **CIF** — simpler for you, and Bejoice handles the freight portion beautifully.\n\nWhich incoterm are you working with?`,
+        text: isAr ? ar.layla.incoterms : `Ah, incoterms — the language of international trade! 📋\n\nHere's the simple version:\n\n• **EXW** — You handle everything from seller's door\n• **FOB** — Seller delivers to port, you take over from there\n• **CIF** — Seller pays freight + insurance to destination port\n• **DDP** — Seller handles EVERYTHING to your door (most convenient)\n\nMost Saudi imports use **FOB** or **CIF**. For first-time importers, I usually recommend **CIF** — simpler for you, and Bejoice handles the freight portion beautifully.\n\nWhich incoterm are you working with?`,
       }
     }
     // Container size questions
     if (/which container|what container|container size|20ft or 40|how many container/.test(text)) {
       return {
-        text: `Let me break down container options simply: 📦\n\n**20ft Standard** — fits ~28 cubic metres (33 m³ capacity)\nBest for: heavy cargo, partial loads, <15 tonnes\n\n**40ft Standard** — fits ~56 cubic metres (67 m³ capacity)\nBest for: volume cargo, lighter goods, most popular size\n\n**40ft High Cube** — fits ~68 cubic metres (76 m³ capacity)\nBest for: tall/bulky items, light but voluminous goods\n\n**Quick rule:** if your cargo is under 25 CBM, go 20ft. Over 25? Go 40ft. Over 60 or tall items? 40HC.\n\nTell me your cargo volume and I'll recommend the best fit!`,
+        text: isAr ? ar.layla.containerSize : `Let me break down container options simply: 📦\n\n**20ft Standard** — fits ~28 cubic metres (33 m³ capacity)\nBest for: heavy cargo, partial loads, <15 tonnes\n\n**40ft Standard** — fits ~56 cubic metres (67 m³ capacity)\nBest for: volume cargo, lighter goods, most popular size\n\n**40ft High Cube** — fits ~68 cubic metres (76 m³ capacity)\nBest for: tall/bulky items, light but voluminous goods\n\n**Quick rule:** if your cargo is under 25 CBM, go 20ft. Over 25? Go 40ft. Over 60 or tall items? 40HC.\n\nTell me your cargo volume and I'll recommend the best fit!`,
       }
     }
     // Document questions
-    if (/document|paperwork|what do i need|requirement|what paper/.test(text)) {
+    if (isAr ? /مستندات|أوراق|ماذا أحتاج|متطلبات|وثائق/.test(text) : /document|paperwork|what do i need|requirement|what paper/.test(text)) {
       return {
-        text: `Here's the paperwork checklist, made simple: 📝\n\n**For all shipments:**\n✅ Commercial Invoice\n✅ Packing List\n✅ Bill of Lading (sea) or Airway Bill (air)\n\n**For Saudi imports, also:**\n✅ Certificate of Origin\n✅ SASO/SABER conformity certificate (most products)\n✅ SFDA approval (food & pharma)\n✅ Import permit (if applicable)\n\nDon't worry — Bejoice prepares and reviews all documents before submission. We catch issues before customs does. 😊\n\nWhat are you importing? I can tell you exactly what you'll need.`,
+        text: isAr ? ar.layla.docs : `Here's the paperwork checklist, made simple: 📝\n\n**For all shipments:**\n✅ Commercial Invoice\n✅ Packing List\n✅ Bill of Lading (sea) or Airway Bill (air)\n\n**For Saudi imports, also:**\n✅ Certificate of Origin\n✅ SASO/SABER conformity certificate (most products)\n✅ SFDA approval (food & pharma)\n✅ Import permit (if applicable)\n\nDon't worry — Bejoice prepares and reviews all documents before submission. We catch issues before customs does. 😊\n\nWhat are you importing? I can tell you exactly what you'll need.`,
         cta: { label: "Get Document Help", action: "call" },
       }
     }
@@ -478,18 +479,18 @@ function getBotResponse(input) {
   _lastTopic = null
 
   // If it looks like a "what is" definition question, give a thoughtful non-answer
-  if (/^(what is|what are|what does|define|explain|meaning of|tell me about)\b/.test(text)) {
-    const subject = text.replace(/^(what is|what are|what does|define|explain|meaning of|tell me about)\s*/i, '').replace(/[?.!]+$/, '').trim()
+  if (isAr ? /^(ما هو|ما هي|ماذا يعني|عرف|اشرح|معنى|أخبرني عن)\b/.test(text) : /^(what is|what are|what does|define|explain|meaning of|tell me about)\b/.test(text)) {
+    const subject = isAr ? text.replace(/^(ما هو|ما هي|ماذا يعني|عرف|اشرح|معنى|أخبرني عن)\s*/i, '').replace(/[؟.?!]+$/, '').trim() : text.replace(/^(what is|what are|what does|define|explain|meaning of|tell me about)\s*/i, '').replace(/[?.!]+$/, '').trim()
     if (subject.length > 1) {
       return {
-        text: `That's a great question about "${subject}"! 🤔\n\nI'm most knowledgeable about freight, logistics, customs, and the Saudi market — so if "${subject}" connects to any of those areas, try asking me in that context.\n\nFor example:\n• "What is ${subject} in shipping?"\n• "How does ${subject} affect logistics?"\n\nOr, I can connect you with a Bejoice specialist who might have the answer. Our team has deep industry expertise and loves a good question! 😊`,
-        cta: { label: "Ask a Specialist", action: "call" },
+        text: isAr ? `سؤال رائع عن "${subject}"! 🤔\n\nخبرتي الأكبر في الشحن واللوجستيات والجمارك والسوق السعودي — لذلك إذا كان "${subject}" مرتبطاً بأي من هذه المجالات، جرب السؤال في هذا السياق.\n\nأو يمكنني توصيلك بأخصائي بيجويس الذي قد يكون لديه الإجابة.` : `That's a great question about "${subject}"! 🤔\n\nI'm most knowledgeable about freight, logistics, customs, and the Saudi market — so if "${subject}" connects to any of those areas, try asking me in that context.\n\nFor example:\n• "What is ${subject} in shipping?"\n• "How does ${subject} affect logistics?"\n\nOr, I can connect you with a Bejoice specialist who might have the answer. Our team has deep industry expertise and loves a good question! 😊`,
+        cta: isAr ? ar.layla.specialistCTA : { label: "Ask a Specialist", action: "call" },
       }
     }
   }
 
   // General fallback with personality
-  const fallbacks = RESPONSES.fallback
+  const fallbacks = RP.fallback
   return pick(Array.isArray(fallbacks) ? fallbacks : [fallbacks])
 }
 
@@ -607,8 +608,8 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
         right: 8px !important;
       }
       .layla-fab-ar {
-        left: 8px !important;
-        right: auto !important;
+        left: auto !important;
+        right: 8px !important;
       }
     }
     /* ── Tablet/mobile (≤1280px): hide label & bubble to reduce footprint ── */
@@ -619,10 +620,10 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
     /* ── Arabic tablet (≤1024px): scale down, stay in bottom-left corner ── */
     @media (max-width: 1024px) {
       .layla-fab-ar {
-        right: auto !important;
-        left: 14px !important;
+        left: auto !important;
+        right: 14px !important;
         transform: scale(0.62);
-        transform-origin: bottom left;
+        transform-origin: bottom right;
       }
     }
     /* ── Mobile (≤767px): scale avatar down; Arabic locked to bottom-left ── */
@@ -632,10 +633,10 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
         transform-origin: bottom right;
       }
       .layla-fab-ar {
-        right: auto !important;
-        left: 8px !important;
+        left: auto !important;
+        right: 8px !important;
         transform: scale(0.55);
-        transform-origin: bottom left;
+        transform-origin: bottom right;
       }
     }
   `;
@@ -671,7 +672,7 @@ export default function FloatingBookCTA({ onQuoteClick }) {
   const [inputVal, setInputVal]         = useState("");
   const [unread, setUnread]             = useState(0);
   const [chatMessages, setChatMessages] = useState([
-    { from: "bot", text: "Hi! I'm Layla, your Bejoice freight assistant 👋\n\nI can help with ocean & air freight rates, Saudi customs, Red Sea disruptions, project cargo, and more. What do you need today?" }
+    { from: "bot", text: isAr ? ar.layla.greeting : "Hi! I'm Layla, your Bejoice freight assistant 👋\n\nI can help with ocean & air freight rates, Saudi customs, Red Sea disruptions, project cargo, and more. What do you need today?" }
   ]);
   const [fabBottom, setFabBottom]       = useState(calcFabBottom);
   const [isGlobeActive, setIsGlobeActive] = useState(false);
@@ -767,7 +768,7 @@ export default function FloatingBookCTA({ onQuoteClick }) {
     const delay = 900 + Math.random() * 600;
     setTimeout(() => {
       setTyping(false);
-      addBotResponse(getBotResponse(text));
+      addBotResponse(getBotResponse(text, isAr));
     }, delay);
   };
 
@@ -777,9 +778,10 @@ export default function FloatingBookCTA({ onQuoteClick }) {
     const delay = 900 + Math.random() * 500;
     setTimeout(() => {
       setTyping(false);
-      const pool = action === "call" ? RESPONSES.contact
-        : RESPONSES[action] ? RESPONSES[action]
-        : RESPONSES.quote;
+      const r = isAr ? ar.layla.responses : RESPONSES;
+      const pool = action === "call" ? r.contact
+        : r[action] ? r[action]
+        : r.quote;
       const arr = Array.isArray(pool) ? pool : [pool];
       addBotResponse(pick(arr));
     }, delay);
@@ -790,7 +792,7 @@ export default function FloatingBookCTA({ onQuoteClick }) {
       openCalPopup();
     } else if (action === "quote") {
       setOpen(false);
-      setTimeout(() => onQuoteClick?.(), 200);
+      onQuoteClick?.();
     } else {
       const el = document.getElementById("contact");
       if (el) {

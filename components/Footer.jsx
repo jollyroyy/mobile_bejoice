@@ -626,12 +626,7 @@ function CareersModal({ onClose }) {
     ].join('\n').trim()
 
     try {
-      // Use EmailJS REST API with FormData to support file attachments
-      const formData = new FormData()
-      formData.append('service_id', EMAILJS_SERVICE_ID)
-      formData.append('template_id', EMAILJS_TEMPLATE_ID)
-      formData.append('user_id', EMAILJS_PUBLIC_KEY)
-      formData.append('template_params', JSON.stringify({
+      const emailParams = {
         to_email: 'info@bejoiceshipping-ksa.com',
         reply_to: email,
         from_name: name,
@@ -642,24 +637,40 @@ function CareersModal({ onClose }) {
         client_email: email,
         phone,
         message: body,
-      }))
-      if (cvFile) {
-        formData.append('attachments', cvFile, safeName)
       }
-      const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-        method: 'POST',
-        body: formData,
-      })
-      if (!r.ok) {
-        const errText = await r.text().catch(() => 'unknown')
-        throw new Error(`EmailJS ${r.status}: ${errText}`)
+      if (cvFile) {
+        // Use REST API with FormData when file is attached
+        const formData = new FormData()
+        formData.append('service_id', EMAILJS_SERVICE_ID)
+        formData.append('template_id', EMAILJS_TEMPLATE_ID)
+        formData.append('user_id', EMAILJS_PUBLIC_KEY)
+        formData.append('template_params', JSON.stringify(emailParams))
+        formData.append('attachments', cvFile, safeName)
+        const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST',
+          body: formData,
+        })
+        if (!r.ok) {
+          const errText = await r.text().catch(() => 'unknown')
+          throw new Error(`EmailJS ${r.status}: ${errText}`)
+        }
+      } else {
+        // No file — use standard EmailJS SDK (works on all plans)
+        await emailjs.send(
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
+          emailParams,
+          EMAILJS_PUBLIC_KEY,
+        )
       }
     } catch (err) {
       console.error('Careers email error:', err)
-    } finally {
+      alert('Failed to send application. Please try again or email us directly at info@bejoiceshipping-ksa.com')
       setSubmitting(false)
-      setSubmitted(true)
+      return
     }
+    setSubmitting(false)
+    setSubmitted(true)
   }
 
   // ── Shared input/label styles matching QuoteModal ─────────────────────────

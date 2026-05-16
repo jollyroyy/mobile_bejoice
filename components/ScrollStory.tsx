@@ -155,7 +155,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => window.open('https://www.track-trace.com/', '_blank', 'noopener,noreferrer')}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 25px', fontSize: isAr ? '0.8rem' : '0.675rem', borderRadius: 10,
+          padding: '12px 25px', fontSize: isAr ? '0.925rem' : '0.675rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -167,7 +167,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
         onClick={() => onToolsClick?.()}
         className="btn-gold hero-card-btn"
         style={{
-          padding: '12px 25px', fontSize: isAr ? '0.8rem' : '0.675rem', borderRadius: 10,
+          padding: '12px 25px', fontSize: isAr ? '0.925rem' : '0.675rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
           flex: '1 1 0',
@@ -641,7 +641,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  alignItems: i === 0 && isAr ? 'flex-end' : center ? 'center' : right ? 'flex-end' : 'flex-start',
+                  alignItems: i === 0 && isAr ? 'flex-start' : center ? 'center' : right ? 'flex-end' : 'flex-start',
                   background: 'rgba(0,0,0,0.52)',
                   backdropFilter: 'blur(8px)',
                   WebkitBackdropFilter: 'blur(8px)',
@@ -660,7 +660,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                 {/* Eyebrow pill — only rendered when tag is non-empty */}
                 {displayTag && (
                   <div
-                    className="hero-eyebrow"
+                    className={`hero-eyebrow${isAr ? ' hero-eyebrow-ar' : ''}`}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
@@ -694,7 +694,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
                         style={{
                           display: isInline ? 'inline' : 'block',
                           fontFamily: isAr ? cairoFont : 'var(--font-bebas, "Impact"), sans-serif',
-                          fontSize: isAr ? 'clamp(1.3575rem, 2.65vw, 2.9975rem)' : 'clamp(1.345rem, 2.8vw, 3.345rem)',
+                          fontSize: isAr ? (i === 0 ? 'clamp(1.3575rem, 2.45vw, 2.7975rem)' : 'clamp(1.3575rem, 2.65vw, 2.9975rem)') : 'clamp(1.345rem, 2.8vw, 3.345rem)',
                           fontWeight: isAr ? 700 : 400,
                           lineHeight: isAr ? 1.2 : 0.87,
                           letterSpacing: isAr ? '0' : '0.06em',

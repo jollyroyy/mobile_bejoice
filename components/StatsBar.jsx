@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react'
+import { useLang } from '@/context/LangContext'
 
 function CountUp({ target, suffix = '', duration = 800 }) {
   const isNumeric = /^\d+(\.\d+)?$/.test(String(target).trim())
@@ -42,6 +43,8 @@ const STATS = [
 ]
 
 export default function StatsBar() {
+  const { lang } = useLang()
+  const isAr = lang === 'ar'
   return (
     <section style={{
       background: 'linear-gradient(90deg, #07090f 0%, #0d1220 50%, #07090f 100%)',
@@ -79,7 +82,7 @@ export default function StatsBar() {
               </div>
               <div style={{
                 fontFamily: "'DM Sans', sans-serif",
-                fontSize: 'clamp(12px, 1.4vw, 15px)',
+                fontSize: isAr ? 'clamp(12px, 1.4vw, 17px)' : 'clamp(12px, 1.4vw, 15px)',
                 letterSpacing: '0.18em', textTransform: 'uppercase',
                 color: 'rgba(255,255,255,1)', fontWeight: 700,
                 marginTop: '6px',

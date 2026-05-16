@@ -781,6 +781,11 @@ body {
     margin-left: 0 !important;
     margin-right: auto !important;
   }
+  .hero-chapter-first .hero-eyebrow-ar {
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+  }
   .hero-chapter-first .hero-intro-cta {
     flex-shrink: 0 !important;
     margin-top: 0 !important;

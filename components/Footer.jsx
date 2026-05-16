@@ -531,8 +531,10 @@ function stripTags(v) {
 }
 function clampHelper(v, max) { return stripTags(v).slice(0, max) }
 function CareersModal({ onClose }) {
+  const { isAr, lang } = useLang()
+  const arT = ar
   const backdropRef = useRef(null)
-  const POSITIONS = [
+  const POSITIONS = isAr ? arT.careers.positions : [
     'Freight Operations Manager',
     'Business Development Manager',
     'Customs Clearance Officer',
@@ -575,14 +577,14 @@ function CareersModal({ onClose }) {
     const name  = (form.name || '').trim()
     const email = (form.email || '').trim()
     const phone = (form.phone || '').trim()
-    if (!name) e.name = 'Name is required'
-    else if (!isValidName(name)) e.name = 'Enter a valid name'
-    if (!email) e.email = 'Email is required'
-    else if (!isValidEmail(email)) e.email = 'Enter a valid email address'
-    if (!phone) e.phone = 'Phone is required'
-    else if (!isValidPhone(phone)) e.phone = 'Enter a valid phone number (e.g. +966 50 123 4567)'
-    if (!form.position) e.position = 'Please select a position'
-    if (form.position === 'Other' && !(form.otherPosition || '').trim()) e.otherPosition = 'Please specify the position'
+    if (!name) e.name = isAr ? arT.careers.errName : 'Name is required'
+    else if (!isValidName(name)) e.name = isAr ? arT.careers.errNameInvalid : 'Enter a valid name'
+    if (!email) e.email = isAr ? arT.careers.errEmail : 'Email is required'
+    else if (!isValidEmail(email)) e.email = isAr ? arT.careers.errEmailInvalid : 'Enter a valid email address'
+    if (!phone) e.phone = isAr ? arT.careers.errPhone : 'Phone is required'
+    else if (!isValidPhone(phone)) e.phone = isAr ? arT.careers.errPhoneInvalid : 'Enter a valid phone number (e.g. +966 50 123 4567)'
+    if (!form.position) e.position = isAr ? arT.careers.errPosition : 'Please select a position'
+    if (form.position === (isAr ? 'أخرى' : 'Other') && !(form.otherPosition || '').trim()) e.otherPosition = isAr ? arT.careers.errOtherPosition : 'Please specify the position'
     return e
   }
 
@@ -596,21 +598,30 @@ function CareersModal({ onClose }) {
     const name     = sanitizeName(form.name)
     const email    = form.email.trim().toLowerCase()
     const phone    = sanitizeText(form.phone)
-    const position = form.position === 'Other' ? sanitizeText(form.otherPosition) : sanitizeText(form.position)
+    const position = form.position === (isAr ? 'أخرى' : 'Other') ? sanitizeText(form.otherPosition) : sanitizeText(form.position)
     const cvText   = sanitizeMessage(form.cvText)
     const message  = sanitizeMessage(form.message)
 
+    const appLabel = isAr ? 'طلب وظيفة — مجموعة بيجويس' : 'JOB APPLICATION — Bejoice Group'
+    const nameLabel = isAr ? 'الاسم' : 'Name'
+    const emailLabel = isAr ? 'البريد الإلكتروني' : 'Email'
+    const phoneLabel = isAr ? 'الهاتف' : 'Phone'
+    const posLabel = isAr ? 'المنصب' : 'Position'
+    const cvLabel = isAr ? 'السيرة الذاتية' : 'CV / RESUME'
+    const notProvided = isAr ? 'غير مقدم' : 'Not provided.'
+    const coverLabel = isAr ? 'رسالة تغطية' : 'COVER NOTE'
+
     const body = [
-      '╔══════════════════════════════════════════╗',
-      '  JOB APPLICATION — Bejoice Group',
-      '╚══════════════════════════════════════════╝',
+      `╔══════════════════════════════════════════╗`,
+      `  ${appLabel}`,
+      `╚══════════════════════════════════════════╝`,
       '',
-      `Name:     ${name}`,
-      `Email:    ${email}`,
-      `Phone:    ${phone}`,
-      `Position: ${position}`,
-      cvText ? `\n── CV / RESUME ──\n${cvText}` : '\n── CV / RESUME ──\nNot provided.',
-      message ? `\n── COVER NOTE ──\n${message}` : '',
+      `${nameLabel}:     ${name}`,
+      `${emailLabel}:    ${email}`,
+      `${phoneLabel}:    ${phone}`,
+      `${posLabel}: ${position}`,
+      cvText ? `\n── ${cvLabel} ──\n${cvText}` : `\n── ${cvLabel} ──\n${notProvided}`,
+      message ? `\n── ${coverLabel} ──\n${message}` : '',
     ].join('\n').trim()
 
     try {
@@ -633,7 +644,7 @@ function CareersModal({ onClose }) {
       )
     } catch (err) {
       console.error('Careers email error:', err)
-      alert('Failed to send application. Please try again or email us directly at info@bejoiceshipping-ksa.com')
+      alert(isAr ? arT.careers.errSendFailed : 'Failed to send application. Please try again or email us directly at info@bejoiceshipping-ksa.com')
       setSubmitting(false)
       return
     }
@@ -643,9 +654,9 @@ function CareersModal({ onClose }) {
 
   // ── Shared input/label styles matching QuoteModal ─────────────────────────
   const lbl = {
-    display: 'block', fontFamily: "var(--font-dm-sans), sans-serif",
-    fontSize: 12, fontWeight: 700, letterSpacing: '0.18em',
-    textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)',
+    display: 'block', fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif",
+    fontSize: 12, fontWeight: 700, letterSpacing: isAr ? 0 : '0.18em',
+    textTransform: isAr ? 'none' : 'uppercase', color: 'rgba(255,255,255,0.5)',
     marginBottom: 6,
   }
   const fw = { marginBottom: 16 }
@@ -659,7 +670,7 @@ function CareersModal({ onClose }) {
         .cm-inp {
           width:100%; background:rgba(255,255,255,0.03);
           border:1px solid rgba(255,255,255,0.08); border-radius:12px;
-          color:#fff; font-family:var(--font-dm-sans), sans-serif;
+          color:#fff; font-family:${isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif"};
           font-size:16px; padding:13px 18px; outline:none;
           transition:all 0.3s cubic-bezier(0.23,1,0.32,1); box-sizing:border-box;
         }
@@ -672,8 +683,8 @@ function CareersModal({ onClose }) {
           display:block; width:auto; margin:0 auto; padding:15px 29px;
           background:linear-gradient(135deg,#8DD8F0 0%,#8DD8F0 40%,#5BC2E7 100%);
           color:#091524; border:1px solid rgba(255,255,255,0.25); border-radius:12px;
-          font-family:var(--font-dm-sans), sans-serif; font-size:14px; font-weight:900;
-          letter-spacing:0.2em; text-transform:uppercase; cursor:pointer;
+          font-family:${isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif"}; font-size:14px; font-weight:900;
+          letter-spacing:${isAr ? 0 : '0.2em'}; text-transform:${isAr ? 'none' : 'uppercase'}; cursor:pointer;
           box-shadow:0 12px 32px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.45);
           transition:all 0.4s cubic-bezier(0.23,1,0.32,1);
         }
@@ -715,6 +726,7 @@ function CareersModal({ onClose }) {
               : '0 40px 100px rgba(0,0,0,0.9),0 0 0 1px rgba(91,194,231,0.12)',
             animation: 'cm-pan 0.45s cubic-bezier(0.23,1,0.32,1) forwards',
             position: 'relative',
+            direction: isAr ? 'rtl' : 'ltr',
           }}
         >
           {/* Top bar */}
@@ -724,7 +736,7 @@ function CareersModal({ onClose }) {
           <button
             onClick={onClose}
             style={{
-              position: 'absolute', top: 16, right: 16, zIndex: 10,
+              position: 'absolute', top: 16, right: isAr ? 'auto' : 16, left: isAr ? 16 : 'auto', zIndex: 10,
               width: 44, height: 44, borderRadius: '50%',
               background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)',
               color: 'rgba(255,255,255,0.6)', fontSize: 18, cursor: 'pointer',
@@ -750,30 +762,30 @@ function CareersModal({ onClose }) {
                   <polyline points="20 6 9 17 4 12"/>
                 </svg>
               </div>
-              <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(2rem,5vw,2.8rem)', letterSpacing: '0.08em', color: '#fff', margin: 0, lineHeight: 1 }}>
-                Application <span style={{ color: '#5BC2E7' }}>Received!</span>
+              <h2 style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-bebas), sans-serif", fontSize: 'clamp(2rem,5vw,2.8rem)', letterSpacing: isAr ? 0 : '0.08em', color: '#fff', margin: 0, lineHeight: 1 }}>
+                {isAr ? arT.careers.successTitle : <>Application <span style={{ color: '#5BC2E7' }}>Received!</span></>}
               </h2>
-              <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, maxWidth: 380, margin: 0 }}>
-                Thank you for your interest. We will notify you once we have an open position in this role.
+              <p style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif", fontSize: 16, color: 'rgba(255,255,255,0.72)', lineHeight: 1.7, maxWidth: 380, margin: 0 }}>
+                {isAr ? arT.careers.successBody : 'Thank you for your interest. We will notify you once we have an open position in this role.'}
               </p>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
-                <button className="cm-sub" onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', position: '', otherPosition: '', cvText: '', message: '' }); setErrors({}); setFormKey(k => k + 1) }} style={{ maxWidth: 200 }}>Submit Another</button>
-                <button className="cm-sub" onClick={onClose} style={{ maxWidth: 200 }}>Close</button>
+                <button className="cm-sub" onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', position: '', otherPosition: '', cvText: '', message: '' }); setErrors({}); setFormKey(k => k + 1) }} style={{ maxWidth: 200 }}>{isAr ? arT.careers.submitAnother : 'Submit Another'}</button>
+                <button className="cm-sub" onClick={onClose} style={{ maxWidth: 200 }}>{isAr ? arT.careers.close : 'Close'}</button>
               </div>
             </div>
           ) : (
             /* ── Form ── */
-            <div key={formKey} style={{ padding: 'clamp(28px,4vw,40px)' }}>
+            <div key={formKey} style={{ padding: 'clamp(28px,4vw,40px)', direction: isAr ? 'rtl' : 'ltr', textAlign: isAr ? 'right' : 'left' }}>
               {/* Heading */}
-              <div style={{ marginBottom: 28, textAlign: 'center' }}>
-                <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.75)', fontWeight: 700, margin: '0 0 8px' }}>
-                  Bejoice Group
+              <div style={{ marginBottom: 28, textAlign: isAr ? 'right' : 'center' }}>
+                <p style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif", fontSize: 11, letterSpacing: isAr ? 0 : '0.3em', textTransform: isAr ? 'none' : 'uppercase', color: 'rgba(91,194,231,0.75)', fontWeight: 700, margin: '0 0 8px' }}>
+                  {isAr ? arT.careers.headingEyebrow : 'Bejoice Group'}
                 </p>
-                <h2 style={{ fontFamily: "var(--font-bebas), sans-serif", fontSize: 'clamp(1.9rem,5vw,2.8rem)', letterSpacing: '0.08em', color: '#fff', margin: '0 0 10px', lineHeight: 1 }}>
-                  Join <span style={{ color: '#5BC2E7' }}>Our Team</span>
+                <h2 style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-bebas), sans-serif", fontSize: 'clamp(1.9rem,5vw,2.8rem)', letterSpacing: isAr ? 0 : '0.08em', color: '#fff', margin: '0 0 10px', lineHeight: 1 }}>
+                  {isAr ? arT.careers.heading : <>Join <span style={{ color: '#5BC2E7' }}>Our Team</span></>}
                 </h2>
-                <p style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 14, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6 }}>
-                  Express your interest — we'll reach out when a matching role opens.
+                <p style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif", fontSize: 14, color: 'rgba(255,255,255,0.55)', margin: 0, lineHeight: 1.6 }}>
+                  {isAr ? arT.careers.subtitle : "Express your interest — we'll reach out when a matching role opens."}
                 </p>
               </div>
 
@@ -781,11 +793,11 @@ function CareersModal({ onClose }) {
 
                 {/* Name */}
                 <div style={fw}>
-                  <label style={lbl}>Full Name <span style={{ color: '#f87171' }}>*</span></label>
+                  <label style={lbl}>{isAr ? arT.careers.labelName : 'Full Name'} <span style={{ color: '#f87171' }}>*</span></label>
                   <input className={`cm-inp${errors.name ? ' err' : ''}`}
                     type="text" value={form.name} maxLength={100}
                     onChange={e => set('name', e.target.value)}
-                    placeholder="Your full name"
+                    placeholder={isAr ? arT.careers.namePlaceholder : 'Your full name'}
                   />
                   {fieldErr('name')}
                 </div>
@@ -793,20 +805,20 @@ function CareersModal({ onClose }) {
                 {/* Email + Phone */}
                 <div className="cm-grid2" style={{ marginBottom: 16 }}>
                   <div>
-                    <label style={lbl}>Email <span style={{ color: '#f87171' }}>*</span></label>
+                    <label style={lbl}>{isAr ? arT.careers.labelEmail : 'Email'} <span style={{ color: '#f87171' }}>*</span></label>
                     <input className={`cm-inp${errors.email ? ' err' : ''}`}
                       type="email" value={form.email} maxLength={200}
                       onChange={e => set('email', e.target.value)}
-                      placeholder="your@email.com"
+                      placeholder={isAr ? arT.careers.emailPlaceholder : 'your@email.com'}
                     />
                     {fieldErr('email')}
                   </div>
                   <div>
-                    <label style={lbl}>Phone <span style={{ color: '#f87171' }}>*</span></label>
+                    <label style={lbl}>{isAr ? arT.careers.labelPhone : 'Phone'} <span style={{ color: '#f87171' }}>*</span></label>
                     <input className={`cm-inp${errors.phone ? ' err' : ''}`}
                       type="tel" value={form.phone} maxLength={30}
                       onChange={e => set('phone', e.target.value)}
-                      placeholder="+966 5X XXX XXXX"
+                      placeholder={isAr ? arT.careers.phonePlaceholder : '+966 5X XXX XXXX'}
                     />
                     {fieldErr('phone')}
                   </div>
@@ -814,28 +826,28 @@ function CareersModal({ onClose }) {
 
                 {/* Position */}
                 <div style={fw}>
-                  <label style={lbl}>Interested Position <span style={{ color: '#f87171' }}>*</span></label>
+                  <label style={lbl}>{isAr ? arT.careers.labelPosition : 'Interested Position'} <span style={{ color: '#f87171' }}>*</span></label>
                   <select className={`cm-inp${errors.position ? ' err' : ''}`}
                     value={form.position}
                     onChange={e => set('position', e.target.value)}
                     style={{ cursor: 'pointer', appearance: 'none',
                       backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235BC2E7' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")",
-                      backgroundRepeat: 'no-repeat', backgroundPosition: 'right 14px center', paddingRight: 40 }}
+                      backgroundRepeat: 'no-repeat', backgroundPosition: isAr ? 'left 14px center' : 'right 14px center', paddingRight: isAr ? 14 : 40, paddingLeft: isAr ? 40 : 14 }}
                   >
-                    <option value="" style={{ background: '#0a0e1a' }}>Select a position…</option>
+                    <option value="" style={{ background: '#0a0e1a' }}>{isAr ? arT.careers.positionPlaceholder : 'Select a position…'}</option>
                     {POSITIONS.map(p => <option key={p} value={p} style={{ background: '#0a0e1a' }}>{p}</option>)}
                   </select>
                   {fieldErr('position')}
                 </div>
 
                 {/* Other */}
-                {form.position === 'Other' && (
+                {form.position === (isAr ? 'أخرى' : 'Other') && (
                   <div style={fw}>
-                    <label style={lbl}>Specify Position <span style={{ color: '#f87171' }}>*</span></label>
+                    <label style={lbl}>{isAr ? arT.careers.labelOtherPosition : 'Specify Position'} <span style={{ color: '#f87171' }}>*</span></label>
                     <input className={`cm-inp${errors.otherPosition ? ' err' : ''}`}
                       type="text" value={form.otherPosition} maxLength={100}
                       onChange={e => set('otherPosition', e.target.value)}
-                      placeholder="e.g. Supply Chain Analyst"
+                      placeholder={isAr ? arT.careers.otherPlaceholder : 'e.g. Supply Chain Analyst'}
                     />
                     {fieldErr('otherPosition')}
                   </div>
@@ -843,35 +855,35 @@ function CareersModal({ onClose }) {
 
                 {/* CV Paste */}
                 <div style={fw}>
-                  <label style={lbl}>CV / Resume <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>(paste your CV text — optional)</span></label>
+                  <label style={lbl}>{isAr ? arT.careers.labelCv : 'CV / Resume'} <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>{isAr ? arT.careers.cvHint : '(paste your CV text — optional)'}</span></label>
                   <textarea className="cm-inp"
                     value={form.cvText}
                     onChange={e => set('cvText', e.target.value)}
-                    placeholder="Open your CV, select all (Ctrl+A), copy (Ctrl+C), then paste here (Ctrl+V)…"
+                    placeholder={isAr ? arT.careers.cvPlaceholder : "Open your CV, select all (Ctrl+A), copy (Ctrl+C), then paste here (Ctrl+V)…"}
                     rows={5} maxLength={5000}
                     style={{ resize: 'vertical', minHeight: 110 }}
                   />
                   {form.cvText && (
-                    <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.6)', marginTop: 4 }}>
-                      {form.cvText.trim().split(/\s+/).length} words pasted
+                    <div style={{ fontFamily: isAr ? "'Cairo','Noto Sans Arabic',sans-serif" : "var(--font-dm-sans), sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.6)', marginTop: 4 }}>
+                      {form.cvText.trim().split(/\s+/).length} {isAr ? arT.careers.wordsPasted : 'words pasted'}
                     </div>
                   )}
                 </div>
 
                 {/* Cover Note */}
                 <div style={fw}>
-                  <label style={lbl}>Cover Note <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>(optional)</span></label>
+                  <label style={lbl}>{isAr ? arT.careers.labelCoverNote : 'Cover Note'} <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>({isAr ? 'اختياري' : 'optional'})</span></label>
                   <textarea className="cm-inp"
                     value={form.message}
                     onChange={e => set('message', e.target.value)}
-                    placeholder="Briefly tell us about your experience and why you'd like to join Bejoice…"
+                    placeholder={isAr ? arT.careers.coverPlaceholder : "Briefly tell us about your experience and why you'd like to join Bejoice…"}
                     rows={3} maxLength={2000}
                     style={{ resize: 'vertical', minHeight: 88 }}
                   />
                 </div>
 
                 <button type="submit" className="cm-sub" disabled={submitting}>
-                  {submitting ? 'Submitting…' : 'Submit Application'}
+                  {submitting ? (isAr ? arT.careers.submittingBtn : 'Submitting…') : (isAr ? arT.careers.submitBtn : 'Submit Application')}
                 </button>
               </form>
             </div>

@@ -97,7 +97,7 @@ async function sendCalendarInvite(params: {
     port: parseInt(process.env.SMTP_PORT || '587'),
     secure: false, // STARTTLS on port 587
     auth: { user: smtpUser, pass: smtpPass },
-    tls: { ciphers: 'SSLv3' },
+    tls: { rejectUnauthorized: false },
   });
 
   const icsContent = buildICS(params);
@@ -196,16 +196,21 @@ async function sendViaEmailJS(
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json() as {
-      name?: string; email?: string;
-      startTime?: string; endTime?: string; uid?: string;
-    };
+    const body = await req.json() as Record<string, unknown>;
 
-    const name       = String(body.name      || 'Unknown').slice(0, 200).trim();
-    const email      = String(body.email     || '').slice(0, 320).trim();
-    const startTime  = String(body.startTime || '').slice(0, 50);
-    const endTime    = String(body.endTime   || '').slice(0, 50);
-    const bookingUid = String(body.uid       || '').slice(0, 200);
+    // Support both postMessage format and Cal.com native webhook format
+    const calPayload = (body.triggerEvent && body.payload)
+      ? (body.payload as Record<string, unknown>)
+      : body;
+
+    const attendees = (calPayload.attendees as Array<{name?:string;email?:string}> | undefined);
+    const firstAttendee = Array.isArray(attendees) ? (attendees[0] ?? {}) : {};
+
+    const name       = String(firstAttendee.name  || (calPayload.name  as string) || 'Unknown').slice(0, 200).trim();
+    const email      = String(firstAttendee.email || (calPayload.email as string) || '').slice(0, 320).trim();
+    const startTime  = String((calPayload.startTime as string) || '').slice(0, 50);
+    const endTime    = String((calPayload.endTime   as string) || '').slice(0, 50);
+    const bookingUid = String((calPayload.uid       as string) || '').slice(0, 200);
 
     const serviceId  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  || '';
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '';

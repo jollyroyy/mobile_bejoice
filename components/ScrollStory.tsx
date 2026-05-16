@@ -158,7 +158,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
           padding: '12px 25px', fontSize: isAr ? '0.925rem' : '0.675rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
-          flex: '1 1 0',
+          flex: '0 0 auto',
         }}
       >
         {isAr ? ar.hero.trackBtn : 'Track Shipment'}
@@ -170,7 +170,7 @@ function TrackCard({ isAr, onToolsClick }: { isAr: boolean; onToolsClick?: () =>
           padding: '12px 25px', fontSize: isAr ? '0.925rem' : '0.675rem', borderRadius: 10,
           whiteSpace: 'nowrap', fontWeight: 700, cursor: 'pointer',
           fontFamily: isAr ? cairoFont : undefined,
-          flex: '1 1 0',
+          flex: '0 0 auto',
         }}
       >
         {isAr ? ar.hero.calcBtn : 'Load Calculator'}
@@ -789,7 +789,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
           </div>
 
           {/* Stats bar */}
-          <div style={{
+          <div className="hero-stats-wrap" style={{
             flex: '0 0 auto', position: 'relative',
             display: 'flex', flexDirection: 'row', flexWrap: 'nowrap', alignItems: 'stretch',
             background: 'rgba(10,10,14,0.55)',

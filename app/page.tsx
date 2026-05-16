@@ -150,12 +150,7 @@ export default function Page() {
         body:    JSON.stringify(payload),
       })
         .then((r: Response) => { if (!r.ok) throw new Error(String(r.status)); })
-        .catch(() => {
-          import('@/utils/emailService').then(({ sendBookingNotification }) => {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (sendBookingNotification as any)(e.data).catch(() => {});
-          });
-        });
+        .catch(() => {});
     }
     window.addEventListener('message', handleCalMessage);
     return () => window.removeEventListener('message', handleCalMessage);

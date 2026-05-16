@@ -106,7 +106,7 @@ async function sendCalendarInvite(params: {
     attachments: [{
       filename:    'invite.ics',
       content:     Buffer.from(icsContent, 'utf-8').toString('base64'),
-      content_type: 'text/calendar; method=REQUEST; charset=UTF-8',
+      contentType: 'text/calendar; method=REQUEST; charset=UTF-8',
     }],
   });
 }

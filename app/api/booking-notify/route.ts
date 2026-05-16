@@ -204,9 +204,11 @@ export async function POST(req: NextRequest) {
 
     const message = buildMessage(name, email, bookingUid, whenStr);
 
-    // 1. Plain confirmation via EmailJS — customer only (organizer gets Cal.com RSVP)
+    // 1. Booking notification via EmailJS — organizer + customer
     if (serviceId && templateId && publicKey) {
       const emailParams = { serviceId, templateId, publicKey, name, email, dateStr, message };
+      await sendViaEmailJS(TEAM_EMAIL, emailParams).catch(() => {});
+
       const hasCustomerEmail = email && email.includes('@') && email !== TEAM_EMAIL;
       if (hasCustomerEmail) {
         await sendViaEmailJS(email, emailParams).catch(() => {});

@@ -502,6 +502,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
       id="scroll-story"
       style={{ height: `${SCROLL_HEIGHT}vh`, position: 'relative' }}
     >
+      <style>{`@media (max-width: 767px) { .hero-glass-card-first { transform: translateY(-30px) !important; } }`}</style>
       {/* Anchor for Bejoice Wings nav link — sits at frame 178 (globe segment centre) */}
       {/* p = (178/799)*0.94 = 0.2093 → top = 0.2093*(1600-1)*vh ≈ 335vh               */}
       <div id="globe-mid" style={{ position: 'absolute', top: '335vh', left: 0, width: 1, height: 1, pointerEvents: 'none' }} />
@@ -637,7 +638,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             >
               {/* Glass card */}
               <div
-                className="hero-glass-card"
+                className={`hero-glass-card${i === 0 ? ' hero-glass-card-first' : ''}`}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',

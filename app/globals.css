@@ -733,21 +733,22 @@ body {
 
 /* ── Hero bottom bar — Track card + Stats (responsive scaling) ── */
 @media (max-width: 767px) {
-  /* Show bottom bar on mobile — compact layout above scroll hint */
+  /* Show bottom bar on mobile — stack vertically */
   .hero-bottom-bar {
-    bottom: clamp(3.2rem, 8vh, 4.5rem) !important;
+    bottom: clamp(4rem, 12vh, 6rem) !important;
     padding: 0 0.4rem !important;
     gap: 6px !important;
-    flex-wrap: wrap !important;
+    flex-direction: column !important;
     align-items: stretch !important;
   }
   .hero-track-wrap {
-    flex: 0 0 100% !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
   }
   .hero-stats-wrap {
-    flex: 0 0 100% !important;
+    flex: 0 0 auto !important;
     width: 100% !important;
     justify-content: center !important;
   }
@@ -886,9 +887,7 @@ body.explore-open .layla-fab-wrap {
   .hero-chapter-overlay.hero-chapter-first {
     transform: translateY(-100px) !important;
   }
-  .hero-bottom-bar {
-    transform: translateY(-50px) !important;
-  }
+  /* bottom already viewport-relative via clamp — no fixed translateY needed */
   /* Move remaining chapter headings (2-8) up by 50px */
   .hero-chapter-overlay:not(.hero-chapter-first) .hero-glass-card {
     transform: translateY(-50px) !important;
@@ -1603,9 +1602,9 @@ section {
   h1, h2 { word-break: break-word; }
 
   /* Compact hero bottom bar on very small screens */
-  .hero-bottom-bar { padding: 0 0.25rem !important; gap: 4px !important; }
-  .hero-track-wrap { flex: 0 0 100% !important; max-width: 100% !important; }
-  .hero-stats-wrap { flex: 0 0 100% !important; width: 100% !important; }
+  .hero-bottom-bar { padding: 0 0.25rem !important; gap: 4px !important; flex-direction: column !important; align-items: stretch !important; }
+  .hero-track-wrap { flex: 0 0 auto !important; width: 100% !important; max-width: 100% !important; }
+  .hero-stats-wrap { flex: 0 0 auto !important; width: 100% !important; }
   .hero-card-btn { white-space: normal !important; word-break: keep-all !important; }
 
   /* Globe section: prevent overflow */

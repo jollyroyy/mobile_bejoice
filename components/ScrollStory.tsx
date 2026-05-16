@@ -775,7 +775,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             right: 0,
             zIndex: 8,
             display: 'flex',
-            flexWrap: 'nowrap',
+            flexDirection: 'row',
             gap: 'clamp(4px, 0.6vw, 10px)',
             alignItems: 'stretch',
             justifyContent: 'center',

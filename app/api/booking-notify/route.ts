@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-
-// POST /api/booking-notify
-// 1. Sends a plain-text notification email via EmailJS (existing flow)
-// 2. Sends a proper .ics calendar invite via SMTP so Outlook shows Accept/Decline
+import { Resend } from 'resend';
 
 const TEAM_EMAIL = 'info@bejoiceshipping-ksa.com';
 
@@ -30,7 +26,6 @@ function fmtClock(iso: string) {
   } catch (_) { return iso; }
 }
 
-/** Convert ISO 8601 → ICS UTC timestamp e.g. 20240516T093000Z */
 function toICSDate(iso: string) {
   return new Date(iso).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
 }
@@ -42,10 +37,10 @@ function buildICS(params: {
   name: string;
   email: string;
 }) {
-  const dtStart  = toICSDate(params.startTime);
-  const dtEnd    = toICSDate(params.endTime);
-  const dtstamp  = toICSDate(new Date().toISOString());
-  const uid      = (params.uid || `${Date.now()}`) + '@bejoiceshipping-ksa.com';
+  const dtStart = toICSDate(params.startTime);
+  const dtEnd   = toICSDate(params.endTime);
+  const dtstamp = toICSDate(new Date().toISOString());
+  const uid     = (params.uid || `${Date.now()}`) + '@bejoiceshipping-ksa.com';
 
   const lines = [
     'BEGIN:VCALENDAR',
@@ -59,9 +54,7 @@ function buildICS(params: {
     `DTSTART:${dtStart}`,
     `DTEND:${dtEnd}`,
     `SUMMARY:Freight Consultation — ${params.name}`,
-    // Booking system is the organiser so the team member appears as attendee → gets Accept/Decline
-    `ORGANIZER;CN=Bejoice Booking:mailto:booking@bejoiceshipping-ksa.com`,
-    // Team email: RSVP=TRUE → Outlook renders Accept/Decline buttons
+    `ORGANIZER;CN=Bejoice Booking:mailto:${TEAM_EMAIL}`,
     `ATTENDEE;CN=Freight Expert;ROLE=CHAIR;RSVP=TRUE:mailto:${TEAM_EMAIL}`,
   ];
 
@@ -79,57 +72,6 @@ function buildICS(params: {
   );
 
   return lines.join('\r\n');
-}
-
-async function sendCalendarInvite(params: {
-  uid: string;
-  startTime: string;
-  endTime: string;
-  name: string;
-  email: string;
-}) {
-  const smtpUser = process.env.SMTP_USER;
-  const smtpPass = process.env.SMTP_PASS;
-  if (!smtpUser || !smtpPass) throw new Error('SMTP credentials not configured');
-
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.office365.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false, // STARTTLS on port 587
-    auth: { user: smtpUser, pass: smtpPass },
-    tls: { rejectUnauthorized: false },
-  });
-
-  const icsContent = buildICS(params);
-  const dateStr    = fmtDate(params.startTime);
-  const startStr   = fmtClock(params.startTime);
-  const endStr     = fmtClock(params.endTime);
-
-  await transporter.sendMail({
-    from:    `"Bejoice Booking" <${smtpUser}>`,
-    to:      TEAM_EMAIL,
-    subject: `[Booking] Freight Consultation — ${params.name} · ${dateStr}`,
-    text: [
-      'A new consultation has been booked.',
-      '',
-      `Who:   ${params.name} (${params.email || '—'})`,
-      `When:  ${dateStr} | ${startStr} – ${endStr} (Asia/Riyadh)`,
-      '',
-      'Accept or decline using the calendar invite attached.',
-      'Manage booking: https://app.cal.com/bookings/upcoming',
-    ].join('\n'),
-    // Embed .ics as alternative MIME part — Outlook renders inline Accept/Decline
-    alternatives: [{
-      contentType: 'text/calendar; method=REQUEST; charset=UTF-8',
-      content: Buffer.from(icsContent, 'utf-8'),
-    }],
-    // Also attach as a file for clients that don't process the alternative part
-    attachments: [{
-      filename: 'invite.ics',
-      content:  Buffer.from(icsContent, 'utf-8'),
-      contentType: 'text/calendar; method=REQUEST; charset=UTF-8',
-    }],
-  });
 }
 
 function buildMessage(name: string, email: string, bookingUid: string, whenStr: string) {
@@ -194,6 +136,43 @@ async function sendViaEmailJS(
   }
 }
 
+async function sendCalendarInvite(params: {
+  uid: string;
+  startTime: string;
+  endTime: string;
+  name: string;
+  email: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) throw new Error('RESEND_API_KEY not configured');
+
+  const resend = new Resend(apiKey);
+  const icsContent = buildICS(params);
+  const dateStr  = fmtDate(params.startTime);
+  const startStr = fmtClock(params.startTime);
+  const endStr   = fmtClock(params.endTime);
+
+  await resend.emails.send({
+    from: 'Bejoice Booking <booking@bejoiceshipping-ksa.com>',
+    to:   [TEAM_EMAIL],
+    subject: `[Booking] Freight Consultation — ${params.name} · ${dateStr}`,
+    text: [
+      'A new consultation has been booked.',
+      '',
+      `Who:   ${params.name} (${params.email || '—'})`,
+      `When:  ${dateStr} | ${startStr} – ${endStr} (Asia/Riyadh)`,
+      '',
+      'Accept or decline using the calendar invite attached.',
+      'Manage booking: https://app.cal.com/bookings/upcoming',
+    ].join('\n'),
+    attachments: [{
+      filename:    'invite.ics',
+      content:     Buffer.from(icsContent, 'utf-8').toString('base64'),
+      content_type: 'text/calendar; method=REQUEST; charset=UTF-8',
+    }],
+  });
+}
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json() as Record<string, unknown>;
@@ -203,7 +182,7 @@ export async function POST(req: NextRequest) {
       ? (body.payload as Record<string, unknown>)
       : body;
 
-    const attendees = (calPayload.attendees as Array<{name?:string;email?:string}> | undefined);
+    const attendees    = (calPayload.attendees as Array<{name?:string;email?:string}> | undefined);
     const firstAttendee = Array.isArray(attendees) ? (attendees[0] ?? {}) : {};
 
     const name       = String(firstAttendee.name  || (calPayload.name  as string) || 'Unknown').slice(0, 200).trim();
@@ -225,10 +204,10 @@ export async function POST(req: NextRequest) {
 
     const message = buildMessage(name, email, bookingUid, whenStr);
 
-    // ── 1. Send plain notification via EmailJS (existing flow) ──────────────
+    // 1. Plain notification via EmailJS (non-fatal)
     if (serviceId && templateId && publicKey) {
       const emailParams = { serviceId, templateId, publicKey, name, email, dateStr, message };
-      await sendViaEmailJS(TEAM_EMAIL, emailParams).catch(() => {}); // non-fatal
+      await sendViaEmailJS(TEAM_EMAIL, emailParams).catch(() => {});
 
       const hasCustomerEmail = email && email.includes('@') && email !== TEAM_EMAIL;
       if (hasCustomerEmail) {
@@ -236,12 +215,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // ── 2. Send .ics calendar invite via SMTP so Outlook shows Accept/Decline ─
+    // 2. .ics calendar invite via Resend — Outlook Accept/Decline (non-fatal)
     if (startTime && endTime) {
       await sendCalendarInvite({ uid: bookingUid, startTime, endTime, name, email })
         .catch((err) => {
           console.error('[booking-notify] calendar invite failed:', err);
-          // Non-fatal — booking notification already sent above
         });
     }
 

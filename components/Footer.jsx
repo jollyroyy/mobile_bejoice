@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { useLang } from '@/context/LangContext'
 import ar from '@/i18n/ar'
 import emailjs from '@emailjs/browser'
-import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, isValidPhone } from '@/utils/emailService'
+import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, isValidEmail, isValidPhone, sanitizeName, sanitizeText, sanitizeMessage, isValidName } from '@/utils/emailService'
 
 const footerLinks = {
   Company: ['Why Bejoice', 'Certifications', 'Key Markets', 'Careers'],
@@ -572,16 +572,17 @@ function CareersModal({ onClose }) {
 
   function validate() {
     const e = {}
-    const name  = clampHelper(form.name, 100)
-    const email = clampHelper(form.email, 200)
-    const phone = clampHelper(form.phone, 30)
+    const name  = (form.name || '').trim()
+    const email = (form.email || '').trim()
+    const phone = (form.phone || '').trim()
     if (!name) e.name = 'Name is required'
-    else if (name.length < 2) e.name = 'Name too short'
-    if (!email || !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(email)) e.email = 'Valid email required'
+    else if (!isValidName(name)) e.name = 'Enter a valid name'
+    if (!email) e.email = 'Email is required'
+    else if (!isValidEmail(email)) e.email = 'Enter a valid email address'
     if (!phone) e.phone = 'Phone is required'
     else if (!isValidPhone(phone)) e.phone = 'Enter a valid phone number (e.g. +966 50 123 4567)'
     if (!form.position) e.position = 'Please select a position'
-    if (form.position === 'Other' && !clampHelper(form.otherPosition, 100)) e.otherPosition = 'Please specify the position'
+    if (form.position === 'Other' && !(form.otherPosition || '').trim()) e.otherPosition = 'Please specify the position'
     return e
   }
 
@@ -592,13 +593,12 @@ function CareersModal({ onClose }) {
     setErrors({})
     setSubmitting(true)
 
-    // Sanitize all fields before sending
-    const name     = clampHelper(form.name, 100)
-    const email    = clampHelper(form.email, 200)
-    const phone    = clampHelper(form.phone, 30)
-    const position = form.position === 'Other' ? clampHelper(form.otherPosition, 100) : clampHelper(form.position, 100)
-    const cvText   = clampHelper(form.cvText, 5000)
-    const message  = clampHelper(form.message, 2000)
+    const name     = sanitizeName(form.name)
+    const email    = form.email.trim().toLowerCase()
+    const phone    = sanitizeText(form.phone)
+    const position = form.position === 'Other' ? sanitizeText(form.otherPosition) : sanitizeText(form.position)
+    const cvText   = sanitizeMessage(form.cvText)
+    const message  = sanitizeMessage(form.message)
 
     const body = [
       '╔══════════════════════════════════════════╗',

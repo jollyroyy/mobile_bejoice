@@ -5,7 +5,7 @@ import { useLang } from '@/context/LangContext'
 import ar from '@/i18n/ar'
 import useFadeUpBatch from '@/hooks/useFadeUpBatch'
 import emailjs from '@emailjs/browser'
-import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, sanitize, isValidPhone } from '@/utils/emailService'
+import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, sanitize, sanitizeName, sanitizeText, sanitizeMessage, isValidEmail, isValidPhone, isValidName, isValidText } from '@/utils/emailService'
 
 const CONTACT_TEMPLATE_ID = EMAILJS_TEMPLATE_ID
 
@@ -219,47 +219,61 @@ export default function Contact() {
                 <form dir={isAr ? 'rtl' : 'ltr'} onSubmit={async e => {
                   e.preventDefault()
                   if (submitting) return
-                  // Phone format validation (optional field, but must be valid if filled)
-                  if (form.phone.trim() && !isValidPhone(form.phone.trim())) {
-                    setErrors({ phone: isAr ? 'أدخل رقم هاتف صحيحاً (مثال: ‎+966 50 123 4567)' : 'Enter a valid phone number (e.g. +966 50 123 4567)' })
-                    return
-                  }
+                  const errs = {}
+                  const name  = form.name.trim()
+                  const email = form.email.trim()
+                  const phone = form.phone.trim()
+                  const company = form.company.trim()
+                  const origin = form.origin.trim()
+                  const dest   = form.destination.trim()
+                  const msg    = form.message.trim()
+                  if (!name) errs.name = isAr ? 'الاسم مطلوب' : 'Full name is required'
+                  else if (!isValidName(name)) errs.name = isAr ? 'أدخل اسماً صحيحاً' : 'Enter a valid name'
+                  if (!email) errs.email = isAr ? 'البريد الإلكتروني مطلوب' : 'Email is required'
+                  else if (!isValidEmail(email)) errs.email = isAr ? 'أدخل بريداً إلكترونياً صحيحاً' : 'Enter a valid email address'
+                  if (phone && !isValidPhone(phone)) errs.phone = isAr ? 'أدخل رقم هاتف صحيحاً (مثال: +966 50 123 4567)' : 'Enter a valid phone number (e.g. +966 50 123 4567)'
+                  if (Object.keys(errs).length > 0) { setErrors(errs); return }
                   setErrors({})
                   setSubmitting(true)
                   try {
+                    const sName    = sanitizeName(name)
+                    const sEmail   = email.toLowerCase().trim()
+                    const sCompany = sanitizeText(company)
+                    const sPhone   = sanitize(phone)
+                    const sOrigin  = sanitizeText(origin)
+                    const sDest    = sanitizeText(dest)
+                    const sMsg     = sanitizeMessage(msg)
                     const body = [
                       `📋 CONTACT FORM — BEJOICE PREMIUM`,
                       ``,
                       `👤 CONTACT DETAILS`,
-                      `• Name:        ${sanitize(form.name)}`,
-                      `• Company:     ${sanitize(form.company)}`,
-                      `• Email:       ${sanitize(form.email)}`,
-                      `• Phone:       ${sanitize(form.phone)}`,
+                      `• Name:        ${sName}`,
+                      `• Company:     ${sCompany}`,
+                      `• Email:       ${sEmail}`,
+                      `• Phone:       ${sPhone}`,
                       ``,
                       `🚚 SHIPMENT DETAILS`,
-                      `• Origin:      ${sanitize(form.origin)}`,
-                      `• Destination: ${sanitize(form.destination)}`,
+                      `• Origin:      ${sOrigin}`,
+                      `• Destination: ${sDest}`,
                       `• Service:     ${form.types.length ? form.types.join(', ') : '—'}`,
                       ``,
-                      form.message ? `📝 MESSAGE\n${sanitize(form.message)}` : '',
+                      sMsg ? `📝 MESSAGE\n${sMsg}` : '',
                     ].filter(Boolean).join('\n')
 
-                    // Show success immediately — don't make user wait on email delivery
                     setSent(true)
                     setSubmitting(false)
-                    // Fire-and-forget email in background
                     emailjs.send(
                       EMAILJS_SERVICE_ID,
                       CONTACT_TEMPLATE_ID,
                       {
                         to_email:    'info@bejoiceshipping-ksa.com',
-                        reply_to:    sanitize(form.email) || 'info@bejoiceshipping-ksa.com',
-                        from_name:   sanitize(form.name) || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Contact - Main Page] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
-                        client_name: sanitize(form.name) || '—',
-                        company:     sanitize(form.company) || '—',
-                        client_email:sanitize(form.email) || '—',
-                        phone:       sanitize(form.phone) || '—',
+                        reply_to:    sEmail || 'info@bejoiceshipping-ksa.com',
+                        from_name:   sName || 'Bejoice Contact Form',
+                        subject:     `[Bejoice Contact - Main Page] ${sName} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        client_name: sName || '—',
+                        company:     sCompany || '—',
+                        client_email: sEmail || '—',
+                        phone:       sPhone || '—',
                         message:     body,
                       },
                       EMAILJS_PUBLIC_KEY,

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { useLang } from '@/context/LangContext'
 import ar from '@/i18n/ar'
 import emailjs from '@emailjs/browser'
-import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, sanitize, isValidPhone, isValidEmail } from '@/utils/emailService'
+import { EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, EMAILJS_PUBLIC_KEY, sanitize, sanitizeName, sanitizeText, sanitizeMessage, isValidEmail, isValidPhone, isValidName } from '@/utils/emailService'
 
 const CONTACT_TEMPLATE_ID = EMAILJS_TEMPLATE_ID
 const SERVICES = ['Air Freight','Sea Freight','Road Transport','Customs Clearance','Warehousing','Project Cargo']
@@ -64,7 +64,7 @@ export default function FooterQuoteModal({ onClose }) {
     const email = (form.email || '').trim()
     const phone = (form.phone || '').trim()
     if (!name) e.name = isAr ? 'الاسم مطلوب' : 'Full name is required'
-    else if (name.length < 2) e.name = isAr ? 'الاسم قصير جداً' : 'Name is too short'
+    else if (!isValidName(name)) e.name = isAr ? 'أدخل اسماً صحيحاً' : 'Enter a valid name'
     if (!email) e.email = isAr ? 'البريد الإلكتروني مطلوب' : 'Email is required'
     else if (!isValidEmail(email)) e.email = isAr ? 'أدخل بريداً إلكترونياً صحيحاً' : 'Enter a valid email address'
     if (phone && !isValidPhone(phone)) e.phone = isAr ? 'أدخل رقم هاتف صحيحاً (مثال: +966 50 123 4567)' : 'Enter a valid phone number (e.g. +966 50 123 4567)'
@@ -244,21 +244,28 @@ export default function FooterQuoteModal({ onClose }) {
                   setErrors({})
                   setSubmitting(true)
                   try {
+                    const sName    = sanitizeName(form.name)
+                    const sEmail   = form.email.trim().toLowerCase()
+                    const sCompany = sanitizeText(form.company)
+                    const sPhone   = sanitize(form.phone)
+                    const sOrigin  = sanitizeText(form.origin)
+                    const sDest    = sanitizeText(form.destination)
+                    const sMsg     = sanitizeMessage(form.message)
                     const body = [
                       `📋 CONTACT FORM — BEJOICE PREMIUM`,
                       ``,
                       `👤 CONTACT DETAILS`,
-                      `• Name:        ${sanitize(form.name)}`,
-                      `• Company:     ${sanitize(form.company)}`,
-                      `• Email:       ${sanitize(form.email)}`,
-                      `• Phone:       ${sanitize(form.phone)}`,
+                      `• Name:        ${sName}`,
+                      `• Company:     ${sCompany}`,
+                      `• Email:       ${sEmail}`,
+                      `• Phone:       ${sPhone}`,
                       ``,
                       `🚚 SHIPMENT DETAILS`,
-                      `• Origin:      ${sanitize(form.origin)}`,
-                      `• Destination: ${sanitize(form.destination)}`,
+                      `• Origin:      ${sOrigin}`,
+                      `• Destination: ${sDest}`,
                       `• Service:     ${form.types.length ? form.types.join(', ') : '—'}`,
                       ``,
-                      form.message ? `📝 MESSAGE\n${sanitize(form.message)}` : '',
+                      sMsg ? `📝 MESSAGE\n${sMsg}` : '',
                     ].filter(Boolean).join('\n')
 
                     setSent(true)
@@ -268,13 +275,13 @@ export default function FooterQuoteModal({ onClose }) {
                       CONTACT_TEMPLATE_ID,
                       {
                         to_email:    'info@bejoiceshipping-ksa.com',
-                        reply_to:    sanitize(form.email) || 'info@bejoiceshipping-ksa.com',
-                        from_name:   sanitize(form.name) || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Quote - Footer Modal] ${sanitize(form.name)} — ${form.types.join(', ') || 'General Enquiry'}`,
-                        client_name: sanitize(form.name) || '—',
-                        company:     sanitize(form.company) || '—',
-                        client_email:sanitize(form.email) || '—',
-                        phone:       sanitize(form.phone) || '—',
+                        reply_to:    sEmail || 'info@bejoiceshipping-ksa.com',
+                        from_name:   sName || 'Bejoice Contact Form',
+                        subject:     `[Bejoice Quote - Footer Modal] ${sName} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        client_name: sName || '—',
+                        company:     sCompany || '—',
+                        client_email: sEmail || '—',
+                        phone:       sPhone || '—',
                         message:     body,
                       },
                       EMAILJS_PUBLIC_KEY,

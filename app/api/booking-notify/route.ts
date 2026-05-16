@@ -168,11 +168,16 @@ export async function POST(req: NextRequest) {
     const attendees    = (calPayload.attendees as Array<{name?:string;email?:string}> | undefined);
     const firstAttendee = Array.isArray(attendees) ? (attendees[0] ?? {}) : {};
 
-    const name       = String(firstAttendee.name  || (calPayload.name  as string) || 'Unknown').slice(0, 200).trim();
-    const email      = String(firstAttendee.email || (calPayload.email as string) || '').slice(0, 320).trim();
+    const rawName    = String(firstAttendee.name  || (calPayload.name  as string) || 'Unknown').slice(0, 200).trim();
+    const rawEmail   = String(firstAttendee.email || (calPayload.email as string) || '').slice(0, 320).trim();
     const startTime  = String((calPayload.startTime as string) || '').slice(0, 50);
     const endTime    = String((calPayload.endTime   as string) || '').slice(0, 50);
     const bookingUid = String((calPayload.uid       as string) || '').slice(0, 200);
+
+    // Strip HTML / injection patterns from all user-supplied data
+    const strip = (s: string) => s.replace(/<[^>]*>/g, '').replace(/['";]*(--|select|insert|update|delete|drop|alter|create|truncate|exec|union|or\s+1=1)/gi, '');
+    const name = strip(rawName);
+    const email = strip(rawEmail).toLowerCase();
 
     const serviceId  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  || '';
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '';

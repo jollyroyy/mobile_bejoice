@@ -15,7 +15,7 @@ if (typeof window !== 'undefined' && EMAILJS_PUBLIC_KEY) {
 
 // ─── Sanitisation ─────────────────────────────────────────────────────────────
 // Strips all HTML tags and trims whitespace.
-// Prevents XSS, HTML injection, and email-header injection.
+// Prevents XSS, HTML injection, email-header injection, and SQL injection patterns.
 export function sanitize(value) {
   if (typeof value !== 'string') return String(value ?? '')
   return value
@@ -40,24 +40,80 @@ export function sanitizeAll(obj) {
   return out
 }
 
-// ─── Email validation ─────────────────────────────────────────────────────────
+// ─── Enhanced sanitizers by field type ──────────────────────────────────────
+
+/** Sanitize a person's name: strip HTML, allow only letters, spaces, hyphens, apostrophes, dots */
+export function sanitizeName(value) {
+  if (typeof value !== 'string') return ''
+  return value
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/[^a-zA-ZÀ-ÿ\u0600-\u06FF\s'.\-]/g, '')
+    .trim()
+    .slice(0, 100)
+}
+
+/** Sanitize general text field (company, origin, destination, etc.) */
+export function sanitizeText(value) {
+  if (typeof value !== 'string') return ''
+  return value
+    .replace(/<[^>]*>/g, '')
+    .replace(/[\r\n]+/g, ' ')
+    .replace(/[^\x20-\x7E\u00A0-\uFFFF\s]/g, '')
+    .replace(/['";]*(--|select|insert|update|delete|drop|alter|create|truncate|exec|union|or\s+1=1)/gi, '')
+    .trim()
+    .slice(0, 200)
+}
+
+/** Sanitize multi-line message: strip HTML, remove SQL injection, keep newlines */
+export function sanitizeMessage(value) {
+  if (typeof value !== 'string') return ''
+  return value
+    .replace(/<[^>]*>/g, '')
+    .replace(/\r\n?/g, '\n')
+    .replace(/[^\x20-\x7E\u00A0-\uFFFF\s]/g, '')
+    .replace(/['";]*(--|select|insert|update|delete|drop|alter|create|truncate|exec|union|or\s+1=1)/gi, '')
+    .trim()
+    .slice(0, 5000)
+}
+
+// ─── Validation ──────────────────────────────────────────────────────────────
+
 export function isValidEmail(email) {
-  // RFC-5321 compliant basic check
-  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(email)
+  if (!email || typeof email !== 'string') return false
+  const s = email.trim().toLowerCase()
+  if (s.length > 254) return false
+  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(s)
 }
 
 export function isValidPhone(phone) {
   if (!phone || typeof phone !== 'string') return false
   const s = phone.trim()
-  // Only allowed chars: +, digits, spaces, hyphens, dots, parentheses
   if (!/^[+\d\s\-().]+$/.test(s)) return false
-  // + is only valid at the very start (not mid-number)
   if (s.indexOf('+') > 0) return false
-  // Must begin with + (international) or a digit
   if (!/^[+\d]/.test(s)) return false
   const digits = s.replace(/\D/g, '')
-  // Min 9 digits (Saudi local 05XXXXXXXX = 10), max 15 (E.164 international)
-  return digits.length >= 9 && digits.length <= 15
+  return digits.length >= 7 && digits.length <= 15
+}
+
+/** Validate a person's name: 2-100 chars, no suspicious patterns */
+export function isValidName(name) {
+  if (!name || typeof name !== 'string') return false
+  const s = name.trim()
+  if (s.length < 2 || s.length > 100) return false
+  if (/[<>{}\\]/.test(s)) return false
+  if (/['";]*(--|select|insert|update|delete|drop|alter|create|truncate|exec|union)/gi.test(s)) return false
+  return true
+}
+
+/** Validate general text (company, city, etc.): 1-200 chars */
+export function isValidText(value, min = 1, max = 200) {
+  if (!value || typeof value !== 'string') return false
+  const s = value.trim()
+  if (s.length < min || s.length > max) return false
+  if (/[<>{}\\]/.test(s)) return false
+  if (/['";]*(--|select|insert|update|delete|drop|alter|create|truncate|exec|union)/gi.test(s)) return false
+  return true
 }
 
 // ─── Format helpers ───────────────────────────────────────────────────────────

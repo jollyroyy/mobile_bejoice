@@ -3,7 +3,7 @@ import { useState, useRef, useEffect, useMemo } from 'react';
 import Container3DViewer, { CONTAINER_SPECS, WEIGHT_TABLE, WeightDistributionGuide } from './Container3DViewer';
 import { useLang } from '@/context/LangContext';
 import arT from '@/i18n/ar';
-import { sendQuoteEmail, isValidEmail, isValidPhone } from '@/utils/emailService';
+import { sendQuoteEmail, isValidEmail, isValidPhone, isValidName, sanitizeText, sanitizeMessage } from '@/utils/emailService';
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 const INCOTERMS = ['EXW','FCA','FAS','FOB','CFR','CIF','CPT','CIP','DAP','DPU','DDP'];
@@ -528,6 +528,7 @@ function SeaForm({ onSuccess, isAr, extraServices = [] }) {
     }
     if (step === 3) {
       if (!d.name.trim()) e.name = isAr ? arT.quickQuote.errName : 'Full name is required'
+      else if (!isValidName(d.name.trim())) e.name = isAr ? 'أدخل اسماً صحيحاً' : 'Enter a valid name'
       if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required'
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address'
       if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required'
@@ -721,6 +722,7 @@ function AirForm({ onSuccess, isAr, extraServices = [] }) {
     }
     if (step === 3) {
       if (!d.name.trim())  e.name  = 'Full name is required';
+      else if (!isValidName(d.name.trim())) e.name = 'Enter a valid name';
       if (!d.email.trim()) e.email = 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
       if (!d.phone.trim()) e.phone = 'Phone / WhatsApp is required';
@@ -927,6 +929,7 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
     }
     if (step === 2) {
       if (!d.name.trim())  e.name  = isAr ? arT.quickQuote.errName : 'Full name is required';
+      else if (!isValidName(d.name.trim())) e.name = isAr ? 'أدخل اسماً صحيحاً' : 'Enter a valid name';
       if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
       if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required';
@@ -1062,6 +1065,7 @@ function CustomsForm({ onSuccess, extraServices = [], isAr }) {
     }
     if (step === 3) {
       if (!d.name.trim())  e.name  = isAr ? arT.quickQuote.errName : 'Full name is required';
+      else if (!isValidName(d.name.trim())) e.name = isAr ? 'أدخل اسماً صحيحاً' : 'Enter a valid name';
       if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
       if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required';
@@ -1210,6 +1214,7 @@ function ProjectForm({ onSuccess, extraServices = [], isAr }) {
     }
     if (step === 2) {
       if (!d.name.trim())  e.name  = isAr ? arT.quickQuote.errName : 'Full name is required';
+      else if (!isValidName(d.name.trim())) e.name = isAr ? 'أدخل اسماً صحيحاً' : 'Enter a valid name';
       if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
       if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required';

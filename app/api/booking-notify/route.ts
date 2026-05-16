@@ -74,68 +74,6 @@ function buildICS(params: {
   return lines.join('\r\n');
 }
 
-function buildMessage(name: string, email: string, bookingUid: string, whenStr: string) {
-  return [
-    'A new event has been scheduled.',
-    '',
-    '─────────────────────────────────────────',
-    '',
-    'What',
-    `Freight expert consultation between Freight Expert and ${name}`,
-    '',
-    'When',
-    whenStr,
-    '',
-    'Who',
-    'Freight Expert  ·  Organizer',
-    TEAM_EMAIL,
-    '',
-    `${name}  ·  Guest`,
-    email || '—',
-    bookingUid ? `\nBooking ID: ${bookingUid}` : '',
-    '',
-    '─────────────────────────────────────────',
-    '',
-    'Need to make a change?',
-    'Reschedule or Cancel: https://app.cal.com/bookings/upcoming',
-  ].filter(l => l !== undefined).join('\n');
-}
-
-async function sendViaEmailJS(
-  toEmail: string,
-  params: { serviceId: string; templateId: string; publicKey: string;
-            name: string; email: string; dateStr: string; message: string }
-) {
-  const payload = {
-    service_id:  params.serviceId,
-    template_id: params.templateId,
-    user_id:     params.publicKey,
-    template_params: {
-      to_email:     toEmail,
-      reply_to:     params.email || TEAM_EMAIL,
-      from_name:    'Bejoice Booking',
-      subject:      `[Bejoice Booking - Cal.com] ${params.name} — ${params.dateStr}`,
-      mode:         'Book a Call',
-      client_name:  params.name,
-      company:      '—',
-      client_email: params.email || '—',
-      phone:        '—',
-      message:      params.message,
-    },
-  };
-
-  const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(payload),
-  });
-
-  if (!r.ok) {
-    const text = await r.text().catch(() => '');
-    throw new Error(`EmailJS ${r.status}: ${text}`);
-  }
-}
-
 async function sendCalendarInvite(params: {
   uid: string;
   startTime: string;
@@ -191,31 +129,8 @@ export async function POST(req: NextRequest) {
     const endTime    = String((calPayload.endTime   as string) || '').slice(0, 50);
     const bookingUid = String((calPayload.uid       as string) || '').slice(0, 200);
 
-    const serviceId  = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID  || '';
-    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '';
-    const publicKey  = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY  || '';
-
-    const dateStr  = fmtDate(startTime);
-    const startStr = fmtClock(startTime);
-    const endStr   = fmtClock(endTime);
-    const whenStr  = (dateStr !== '—' && startStr !== '—')
-      ? `${dateStr} | ${startStr} - ${endStr} (Asia/Riyadh)`
-      : '—';
-
-    const message = buildMessage(name, email, bookingUid, whenStr);
-
-    // 1. Booking notification via EmailJS — organizer + customer
-    if (serviceId && templateId && publicKey) {
-      const emailParams = { serviceId, templateId, publicKey, name, email, dateStr, message };
-      await sendViaEmailJS(TEAM_EMAIL, emailParams).catch(() => {});
-
-      const hasCustomerEmail = email && email.includes('@') && email !== TEAM_EMAIL;
-      if (hasCustomerEmail) {
-        await sendViaEmailJS(email, emailParams).catch(() => {});
-      }
-    }
-
-    // 2. .ics calendar invite via Resend — Outlook Accept/Decline (non-fatal)
+    // .ics calendar invite via Resend — Outlook Accept/Decline (non-fatal)
+    // Cal.com native emails handle organizer + guest booking confirmations
     if (startTime && endTime) {
       await sendCalendarInvite({ uid: bookingUid, startTime, endTime, name, email })
         .catch((err) => {

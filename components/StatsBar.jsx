@@ -53,7 +53,7 @@ export default function StatsBar() {
       padding: 'clamp(40px, 6vw, 72px) clamp(1.5rem, 8vw, 8rem)',
       position: 'relative', overflow: 'hidden',
     }}>
-      <style>{`@media (max-width: 767px) { .stats-inner { flex-direction: column !important; align-items: center !important; gap: 28px !important; } .stats-inner > div { width: auto !important; } }`}</style>
+      <style>{`@media (max-width: 767px) { .stats-inner { flex-direction: column !important; align-items: center !important; gap: 28px !important; } .stats-inner > div { width: auto !important; flex-direction: column !important; align-items: center !important; } .stats-divider { display: none !important; } }`}</style>
       {/* Subtle gold glow top-center */}
       <div style={{
         position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)',
@@ -91,7 +91,7 @@ export default function StatsBar() {
             </div>
             {/* Divider between stats */}
             {i < STATS.length - 1 && (
-              <div style={{
+              <div className="stats-divider" style={{
                 width: '1px', height: '52px', flexShrink: 0,
                 background: 'linear-gradient(180deg, transparent, rgba(91,194,231,0.35), transparent)',
                 margin: '0 clamp(20px, 3vw, 48px)',

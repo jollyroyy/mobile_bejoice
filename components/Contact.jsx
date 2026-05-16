@@ -243,21 +243,42 @@ export default function Contact() {
                     const sOrigin  = sanitizeText(origin)
                     const sDest    = sanitizeText(dest)
                     const sMsg     = sanitizeMessage(msg)
+                    const arLabels = {
+                      form: 'نموذج الاتصال — بيجويس بريميوم',
+                      contact: 'بيانات الاتصال', name: 'الاسم',
+                      company: 'الشركة', email: 'البريد الإلكتروني',
+                      phone: 'الهاتف', shipment: 'تفاصيل الشحنة',
+                      origin: 'منشأ', dest: 'الوجهة',
+                      service: 'الخدمة', message: 'رسالة',
+                      genEnq: 'استفسار عام',
+                      subject: (n, t) => `[اتصال بيجويس - الصفحة الرئيسية] ${n} — ${t}`,
+                    }
+                    const enLabels = {
+                      form: 'CONTACT FORM — BEJOICE PREMIUM',
+                      contact: 'CONTACT DETAILS', name: 'Name',
+                      company: 'Company', email: 'Email',
+                      phone: 'Phone', shipment: 'SHIPMENT DETAILS',
+                      origin: 'Origin', dest: 'Destination',
+                      service: 'Service', message: 'MESSAGE',
+                      genEnq: 'General Enquiry',
+                      subject: (n, t) => `[Bejoice Contact - Main Page] ${n} — ${t}`,
+                    }
+                    const lbl = isAr ? arLabels : enLabels
                     const body = [
-                      `📋 CONTACT FORM — BEJOICE PREMIUM`,
+                      `📋 ${lbl.form}`,
                       ``,
-                      `👤 CONTACT DETAILS`,
-                      `• Name:        ${sName}`,
-                      `• Company:     ${sCompany}`,
-                      `• Email:       ${sEmail}`,
-                      `• Phone:       ${sPhone}`,
+                      `👤 ${lbl.contact}`,
+                      `• ${lbl.name}:        ${sName}`,
+                      `• ${lbl.company}:     ${sCompany}`,
+                      `• ${lbl.email}:       ${sEmail}`,
+                      `• ${lbl.phone}:       ${sPhone}`,
                       ``,
-                      `🚚 SHIPMENT DETAILS`,
-                      `• Origin:      ${sOrigin}`,
-                      `• Destination: ${sDest}`,
-                      `• Service:     ${form.types.length ? form.types.join(', ') : '—'}`,
+                      `🚚 ${lbl.shipment}`,
+                      `• ${lbl.origin}:      ${sOrigin}`,
+                      `• ${lbl.dest}: ${sDest}`,
+                      `• ${lbl.service}:     ${form.types.length ? form.types.join(', ') : '—'}`,
                       ``,
-                      sMsg ? `📝 MESSAGE\n${sMsg}` : '',
+                      sMsg ? `📝 ${lbl.message}\n${sMsg}` : '',
                     ].filter(Boolean).join('\n')
 
                     setSent(true)
@@ -268,8 +289,8 @@ export default function Contact() {
                       {
                         to_email:    'info@bejoiceshipping-ksa.com',
                         reply_to:    sEmail || 'info@bejoiceshipping-ksa.com',
-                        from_name:   sName || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Contact - Main Page] ${sName} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        from_name:   sName || (isAr ? 'نموذج اتصال بيجويس' : 'Bejoice Contact Form'),
+                        subject:     isAr ? `[اتصال بيجويس - الصفحة الرئيسية] ${sName} — ${form.types.join(', ') || 'استفسار عام'}` : `[Bejoice Contact - Main Page] ${sName} — ${form.types.join(', ') || 'General Enquiry'}`,
                         client_name: sName || '—',
                         company:     sCompany || '—',
                         client_email: sEmail || '—',

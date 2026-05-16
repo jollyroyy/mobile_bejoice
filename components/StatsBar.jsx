@@ -53,6 +53,7 @@ export default function StatsBar() {
       padding: 'clamp(40px, 6vw, 72px) clamp(1.5rem, 8vw, 8rem)',
       position: 'relative', overflow: 'hidden',
     }}>
+      <style>{`@media (max-width: 767px) { .stats-inner { flex-direction: column !important; align-items: center !important; gap: 28px !important; } .stats-inner > div { width: auto !important; } }`}</style>
       {/* Subtle gold glow top-center */}
       <div style={{
         position: 'absolute', top: '-60px', left: '50%', transform: 'translateX(-50%)',
@@ -61,7 +62,7 @@ export default function StatsBar() {
         pointerEvents: 'none',
       }} />
 
-      <div style={{
+      <div className="stats-inner" style={{
         maxWidth: '1100px', margin: '0 auto',
         display: 'flex', justifyContent: 'space-between',
         alignItems: 'center', flexWrap: 'wrap',
@@ -69,7 +70,7 @@ export default function StatsBar() {
         position: 'relative', zIndex: 1,
       }}>
         {STATS.map((s, i) => (
-          <div key={s.l} style={{ display: 'flex', alignItems: 'center', gap: '0' }}>
+          <div key={s.l} style={{ display: 'flex', alignItems: 'center', gap: '0', flex: '0 0 auto' }}>
             <div style={{ textAlign: 'center' }}>
               <div style={{
                 fontFamily: "'Bebas Neue', sans-serif",

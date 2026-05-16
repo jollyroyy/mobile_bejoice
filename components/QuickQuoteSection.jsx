@@ -547,11 +547,11 @@ function SeaForm({ onSuccess, isAr, extraServices = [] }) {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await sendQuoteEmail('sea', d, extraServices);
+      await sendQuoteEmail('sea', d, extraServices, isAr);
       onSuccess('sea');
     } catch (err) {
       console.error('Email send failed:', err);
-      onSuccess('sea'); // still show success to user
+      onSuccess('sea');
     } finally {
       setLoading(false);
     }
@@ -736,7 +736,7 @@ function AirForm({ onSuccess, isAr, extraServices = [] }) {
     if (!validateAir()) return;
     setLoading(true);
     try {
-      await sendQuoteEmail('air', d, extraServices);
+      await sendQuoteEmail('air', d, extraServices, isAr);
       onSuccess('air');
     } catch (err) {
       console.error('Email send failed:', err);
@@ -943,7 +943,7 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
     if (!validateLand()) return;
     setLoading(true);
     try {
-      await sendQuoteEmail('land', d, extraServices);
+      await sendQuoteEmail('land', d, extraServices, isAr);
       onSuccess('land');
     } catch (err) {
       console.error('Email send failed:', err);
@@ -1079,7 +1079,7 @@ function CustomsForm({ onSuccess, extraServices = [], isAr }) {
     if (!validateCustoms()) return;
     setLoading(true);
     try {
-      await sendQuoteEmail('customs', d, extraServices);
+      await sendQuoteEmail('customs', d, extraServices, isAr);
       onSuccess('customs');
     } catch (err) {
       console.error('Email send failed:', err);
@@ -1228,7 +1228,7 @@ function ProjectForm({ onSuccess, extraServices = [], isAr }) {
     if (!validateProject()) return;
     setLoading(true);
     try {
-      await sendQuoteEmail('project', d, extraServices);
+      await sendQuoteEmail('project', d, extraServices, isAr);
       onSuccess('project');
     } catch (err) {
       console.error('Email send failed:', err);

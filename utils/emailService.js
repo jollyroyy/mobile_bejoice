@@ -116,203 +116,308 @@ export function isValidText(value, min = 1, max = 200) {
   return true
 }
 
-// ─── Format helpers ───────────────────────────────────────────────────────────
-function flag(val) { return val ? '✅ Yes' : '❌ No' }
-function row(label, val) { return val ? `• ${label}: ${val}` : '' }
+// ─── Arabic/English label helpers ──────────────────────────────────────────────
+const EN = {
+  yes: 'Yes', no: 'No', bejoice: 'Bejoice Group — Private Quote Portal',
+  seaHdr: 'SEA FREIGHT QUOTE REQUEST', airHdr: 'AIR FREIGHT QUOTE REQUEST',
+  landHdr: 'ROAD / LAND FREIGHT QUOTE REQUEST',
+  customsHdr: 'CUSTOMS CLEARANCE QUOTE REQUEST',
+  projectHdr: 'PROJECT CARGO QUOTE REQUEST',
+  contact: 'CONTACT DETAILS', route: 'SHIPMENT ROUTE',
+  cargo: 'CARGO DETAILS', services: 'SERVICES',
+  clearance: 'CLEARANCE DETAILS', vaServices: 'VALUE-ADDED SERVICES',
+  special: 'SPECIAL REQUIREMENTS', projectD: 'PROJECT DETAILS',
+  dimsWeight: 'DIMENSIONS & WEIGHT', notes: 'NOTES',
+  alsoInt: 'ALSO INTERESTED IN', name: 'Name', company: 'Company',
+  email: 'Email', phone: 'Phone', origin: 'Port of Loading',
+  dest: 'Port of Discharge', readyDate: 'Cargo Ready Date',
+  service: 'Service', containers: 'Containers', commodity: 'Commodity',
+  totWeight: 'Total Weight', estValue: 'Est. Value',
+  packages: 'Packages', volume: 'Volume (CBM)', grossWeight: 'Gross Weight',
+  hazardous: 'Hazardous / DG', reefer: 'Reefer Required',
+  reeferTemp: 'Required Temp', customs: 'Customs Clearance',
+  insurance: 'Cargo Insurance', pickup: 'Origin Pickup',
+  delivery: 'Dest. Delivery', incoterms: 'Incoterms',
+  originAir: 'Origin Airport', destAir: 'Destination Airport',
+  cargoType: 'Cargo Type', pieces: 'Pieces', weight: 'Weight',
+  dimensions: 'Dimensions', lithium: 'Lithium Battery',
+  perishable: 'Perishable', svcLevel: 'Service Level',
+  svcType: 'Service Type', originCity: 'Origin City',
+  destCity: 'Destination City', truckType: 'Truck Type',
+  pallets: 'Pallets', direction: 'Direction',
+  freightMode: 'Freight Mode', port: 'Port/Airport',
+  hsCode: 'HS Code', shipmentValue: 'Shipment Value',
+  numPackages: 'No. of Packages', documents: 'Documents',
+  dutyPay: 'Duty Payment', inspection: 'Inspection',
+  storageRelease: 'Storage & Release', survey: 'Survey',
+  projectType: 'Project/Cargo Type', origin2: 'Origin',
+  destination2: 'Destination', commodityDesc: 'Commodity/Description',
+  weightMt: 'Weight', dimensionsM: 'Dimensions', numPieces: 'No. of Pieces',
+  crane: 'Crane Required', escort: 'Escort Required',
+  permits: 'Permits Assistance',
+  modeSea: 'Sea Freight', modeAir: 'Air Freight',
+  modeLand: 'Road/Land Freight', modeCustoms: 'Customs Clearance',
+  modeProject: 'Project Cargo',
+  seaQ: 'SEA FREIGHT', airQ: 'AIR FREIGHT', landQ: 'ROAD / LAND FREIGHT',
+  customsQ: 'CUSTOMS CLEARANCE', projectQ: 'PROJECT CARGO',
+  subject: (mode, name) => `[Bejoice Quote - Quick Form] ${mode} — ${name}`,
+}
+const AR = {
+  yes: 'نعم', no: 'لا', bejoice: 'مجموعة بيجويس — بوابة عروض الأسعار الخاصة',
+  seaHdr: 'طلب عرض أسعار الشحن البحري', airHdr: 'طلب عرض أسعار الشحن الجوي',
+  landHdr: 'طلب عرض أسعار الشحن البري',
+  customsHdr: 'طلب عرض أسعار التخليص الجمركي',
+  projectHdr: 'طلب عرض أسعار شحن المشاريع',
+  contact: 'بيانات الاتصال', route: 'مسار الشحنة',
+  cargo: 'تفاصيل البضاعة', services: 'الخدمات',
+  clearance: 'تفاصيل التخليص', vaServices: 'الخدمات الإضافية',
+  special: 'المتطلبات الخاصة', projectD: 'تفاصيل المشروع',
+  dimsWeight: 'الأبعاد والوزن', notes: 'ملاحظات',
+  alsoInt: 'مهتم أيضاً بـ',
+  name: 'الاسم', company: 'الشركة', email: 'البريد الإلكتروني',
+  phone: 'الهاتف', origin: 'ميناء التحميل', dest: 'ميناء التفريغ',
+  readyDate: 'تاريخ تجهيز البضاعة', service: 'الخدمة',
+  containers: 'الحاويات', commodity: 'نوع البضاعة',
+  totWeight: 'الوزن الإجمالي', estValue: 'القيمة التقديرية',
+  packages: 'عدد الطرود', volume: 'الحجم (م³)',
+  grossWeight: 'الوزن الإجمالي', hazardous: 'خطرة / بضائع خطرة',
+  reefer: 'مبردة مطلوبة', reeferTemp: 'درجة الحرارة المطلوبة',
+  customs: 'التخليص الجمركي', insurance: 'تأمين البضاعة',
+  pickup: 'شحن من المنشأ', delivery: 'توصيل إلى الوجهة',
+  incoterms: 'شروط التجارة (Incoterms)',
+  originAir: 'مطار الشحن', destAir: 'مطار الوصول',
+  cargoType: 'نوع الشحنة', pieces: 'عدد القطع',
+  weight: 'الوزن', dimensions: 'الأبعاد', lithium: 'بطارية ليثيوم',
+  perishable: 'قابل للتلف', svcLevel: 'مستوى الخدمة',
+  svcType: 'نوع الخدمة', originCity: 'مدينة الشحن',
+  destCity: 'مدينة الوصول', truckType: 'نوع الشاحنة',
+  pallets: 'المنصات (بالتات)', direction: 'الاتجاه',
+  freightMode: 'وسيلة الشحن', port: 'الميناء/المطار',
+  hsCode: 'رمز النظام المنسق', shipmentValue: 'قيمة الشحنة',
+  numPackages: 'عدد الطرود', documents: 'المستندات',
+  dutyPay: 'دفع الرسوم الجمركية', inspection: 'الفحص',
+  storageRelease: 'التخزين والإفراج', survey: 'المعاينة',
+  projectType: 'نوع المشروع/الشحنة', origin2: 'منشأ',
+  destination2: 'الوجهة', commodityDesc: 'السلعة/الوصف',
+  weightMt: 'الوزن', dimensionsM: 'الأبعاد', numPieces: 'عدد القطع',
+  crane: 'رافعة مطلوبة', escort: 'مرافقة مطلوبة',
+  permits: 'مساعدة في التصاريح',
+  modeSea: 'شحن بحري', modeAir: 'شحن جوي',
+  modeLand: 'شحن بري', modeCustoms: 'تخليص جمركي',
+  modeProject: 'شحن مشاريع',
+  seaQ: 'شحن بحري', airQ: 'شحن جوي', landQ: 'شحن بري',
+  customsQ: 'تخليص جمركي', projectQ: 'شحن مشاريع',
+  subject: (mode, name) => `[عرض سعر بيجويس] ${mode} — ${name}`,
+}
+
+function L(isAr) { return isAr ? AR : EN }
+
+function flag(isAr, val) { const l = L(isAr); return val ? `✅ ${l.yes}` : `❌ ${l.no}` }
+function row(L, label, val) { return val ? `• ${label}: ${val}` : '' }
 
 // ─── Per-mode email body builders ────────────────────────────────────────────
-function buildSeaBody(d) {
+function buildSeaBody(d, isAr) {
+  const l = L(isAr)
   const containers = d.containers?.map(c => `${c.qty}× ${c.type}`).join(', ') || '—'
+  const r = (label, val) => row(l, label, val)
   return `
 ╔══════════════════════════════════════════╗
-  SEA FREIGHT QUOTE REQUEST
-  Bejoice Group — Private Quote Portal
+  ${l.seaHdr}
+  ${l.bejoice}
 ╚══════════════════════════════════════════╝
 
-👤 CONTACT DETAILS
-${row('Name', d.name)}
-${row('Company', d.company)}
-${row('Email', d.email)}
-${row('Phone', d.phone)}
+👤 ${l.contact}
+${r(l.name, d.name)}
+${r(l.company, d.company)}
+${r(l.email, d.email)}
+${r(l.phone, d.phone)}
 
-🚢 SHIPMENT ROUTE
-${row('Service', d.service)}
-${row('Port of Loading', d.origin)}
-${row('Port of Discharge', d.destination)}
-${row('Cargo Ready Date', d.readyDate)}
+🚢 ${l.route}
+${r(l.service, d.service)}
+${r(l.origin, d.origin)}
+${r(l.dest, d.destination)}
+${r(l.readyDate, d.readyDate)}
 
-📦 CARGO DETAILS
+📦 ${l.cargo}
 ${d.service === 'FCL'
-      ? `${row('Containers', containers)}
-${row('Commodity', d.commodity)}
-${row('Total Weight', d.weight ? d.weight + ' tons' : '')}
-${row('Est. Value', d.estValue ? 'USD ' + d.estValue : '')}`
-      : `${row('Packages', d.packages)}
-${row('Volume (CBM)', d.cbm)}
-${row('Gross Weight', d.weight ? d.weight + ' kg' : '')}
-${row('Commodity', d.commodity)}
-${row('Est. Value', d.estValue ? 'USD ' + d.estValue : '')}`}
-• Hazardous / DG: ${flag(d.hazardous)}
-• Reefer Required: ${flag(d.reefer)}${d.reefer && d.reeferTemp ? `\n• Required Temp: ${d.reeferTemp}°C` : ''}
+      ? `${r(l.containers, containers)}
+${r(l.commodity, d.commodity)}
+${r(l.totWeight, d.weight ? d.weight + ' tons' : '')}
+${r(l.estValue, d.estValue ? 'USD ' + d.estValue : '')}`
+      : `${r(l.packages, d.packages)}
+${r(l.volume, d.cbm)}
+${r(l.grossWeight, d.weight ? d.weight + ' kg' : '')}
+${r(l.commodity, d.commodity)}
+${r(l.estValue, d.estValue ? 'USD ' + d.estValue : '')}`}
+• ${l.hazardous}: ${flag(isAr, d.hazardous)}
+• ${l.reefer}: ${flag(isAr, d.reefer)}${d.reefer && d.reeferTemp ? `\n• ${l.reeferTemp}: ${d.reeferTemp}°C` : ''}
 
-🛠 VALUE-ADDED SERVICES
-• Customs Clearance: ${flag(d.customs)}
-• Cargo Insurance:   ${flag(d.insurance)}
-• Origin Pickup:     ${flag(d.pickup)}
-• Dest. Delivery:    ${flag(d.delivery)}
-${row('Incoterms', d.incoterms)}
+🛠 ${l.vaServices}
+• ${l.customs}: ${flag(isAr, d.customs)}
+• ${l.insurance}:   ${flag(isAr, d.insurance)}
+• ${l.pickup}:     ${flag(isAr, d.pickup)}
+• ${l.delivery}:    ${flag(isAr, d.delivery)}
+${r(l.incoterms, d.incoterms)}
 
-${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+${d.notes ? `📝 ${l.notes}\n${d.notes}` : ''}
 `.trim()
 }
 
-function buildAirBody(d) {
+function buildAirBody(d, isAr) {
+  const l = L(isAr)
+  const r = (label, val) => row(l, label, val)
   const dims = (d.length && d.width && d.height)
     ? `${d.length} × ${d.width} × ${d.height} ${d.dimUnit}`
     : ''
   return `
 ╔══════════════════════════════════════════╗
-  AIR FREIGHT QUOTE REQUEST
-  Bejoice Group — Private Quote Portal
+  ${l.airHdr}
+  ${l.bejoice}
 ╚══════════════════════════════════════════╝
 
-👤 CONTACT DETAILS
-${row('Name', d.name)}
-${row('Company', d.company)}
-${row('Email', d.email)}
-${row('Phone', d.phone)}
+👤 ${l.contact}
+${r(l.name, d.name)}
+${r(l.company, d.company)}
+${r(l.email, d.email)}
+${r(l.phone, d.phone)}
 
-✈️ SHIPMENT ROUTE
-${row('Origin Airport', d.origin)}
-${row('Destination Airport', d.destination)}
-${row('Cargo Ready Date', d.readyDate)}
+✈️ ${l.route}
+${r(l.originAir, d.origin)}
+${r(l.destAir, d.destination)}
+${r(l.readyDate, d.readyDate)}
 
-📦 CARGO DETAILS
-${row('Cargo Type', d.cargoType)}
-${row('Pieces', d.pieces)}
-${row('Weight', d.weight ? d.weight + ' kg' : '')}
-${row('Dimensions', dims)}
-${row('Commodity', d.commodity)}
-• Hazardous / DG:    ${flag(d.hazardous)}
-• Lithium Battery:   ${flag(d.lithiumBattery)}
-• Perishable:        ${flag(d.perishable)}
+📦 ${l.cargo}
+${r(l.cargoType, d.cargoType)}
+${r(l.pieces, d.pieces)}
+${r(l.weight, d.weight ? d.weight + ' kg' : '')}
+${r(l.dimensions, dims)}
+${r(l.commodity, d.commodity)}
+• ${l.hazardous}:    ${flag(isAr, d.hazardous)}
+• ${l.lithium}:   ${flag(isAr, d.lithiumBattery)}
+• ${l.perishable}:        ${flag(isAr, d.perishable)}
 
-🛠 SERVICES
-${row('Service Level', d.service)}
-• Customs Clearance: ${flag(d.customs)}
-• Cargo Insurance:   ${flag(d.insurance)}
-• Origin Pickup:     ${flag(d.pickup)}
-• Dest. Delivery:    ${flag(d.delivery)}
+🛠 ${l.services}
+${r(l.svcLevel, d.service)}
+• ${l.customs}: ${flag(isAr, d.customs)}
+• ${l.insurance}:   ${flag(isAr, d.insurance)}
+• ${l.pickup}:     ${flag(isAr, d.pickup)}
+• ${l.delivery}:    ${flag(isAr, d.delivery)}
 
-${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+${d.notes ? `📝 ${l.notes}\n${d.notes}` : ''}
 `.trim()
 }
 
-function buildLandBody(d) {
+function buildLandBody(d, isAr) {
+  const l = L(isAr)
+  const r = (label, val) => row(l, label, val)
   return `
 ╔══════════════════════════════════════════╗
-  ROAD / LAND FREIGHT QUOTE REQUEST
-  Bejoice Group — Private Quote Portal
+  ${l.landHdr}
+  ${l.bejoice}
 ╚══════════════════════════════════════════╝
 
-👤 CONTACT DETAILS
-${row('Name', d.name)}
-${row('Company', d.company)}
-${row('Email', d.email)}
-${row('Phone', d.phone)}
+👤 ${l.contact}
+${r(l.name, d.name)}
+${r(l.company, d.company)}
+${r(l.email, d.email)}
+${r(l.phone, d.phone)}
 
-🚛 SHIPMENT ROUTE
-${row('Service Type', d.service)}
-${row('Origin City', d.origin)}
-${row('Destination City', d.destination)}
-${row('Cargo Ready Date', d.readyDate)}
+🚛 ${l.route}
+${r(l.svcType, d.service)}
+${r(l.originCity, d.origin)}
+${r(l.destCity, d.destination)}
+${r(l.readyDate, d.readyDate)}
 
-📦 CARGO DETAILS
-${row('Truck Type', d.truckType)}
-${row('Weight', d.weight ? d.weight + ' kg' : '')}
-${row('Volume (CBM)', d.cbm)}
-${row('Pallets', d.pallets)}
-${row('Commodity', d.commodity)}
-• Hazardous / DG: ${flag(d.hazardous)}
-• Reefer Required: ${flag(d.reefer)}${d.reefer && d.reeferTemp ? `\n• Required Temp: ${d.reeferTemp}°C` : ''}
+📦 ${l.cargo}
+${r(l.truckType, d.truckType)}
+${r(l.weight, d.weight ? d.weight + ' kg' : '')}
+${r(l.volume, d.cbm)}
+${r(l.pallets, d.pallets)}
+${r(l.commodity, d.commodity)}
+• ${l.hazardous}: ${flag(isAr, d.hazardous)}
+• ${l.reefer}: ${flag(isAr, d.reefer)}${d.reefer && d.reeferTemp ? `\n• ${l.reeferTemp}: ${d.reeferTemp}°C` : ''}
 
-🛠 SERVICES
-• Customs Clearance: ${flag(d.customs)}
-• Cargo Insurance:   ${flag(d.insurance)}
+🛠 ${l.services}
+• ${l.customs}: ${flag(isAr, d.customs)}
+• ${l.insurance}:   ${flag(isAr, d.insurance)}
 
-${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+${d.notes ? `📝 ${l.notes}\n${d.notes}` : ''}
 `.trim()
 }
 
-function buildCustomsBody(d) {
+function buildCustomsBody(d, isAr) {
+  const l = L(isAr)
+  const r = (label, val) => row(l, label, val)
   return `
 ╔══════════════════════════════════════════╗
-  CUSTOMS CLEARANCE QUOTE REQUEST
-  Bejoice Group — Private Quote Portal
+  ${l.customsHdr}
+  ${l.bejoice}
 ╚══════════════════════════════════════════╝
 
-👤 CONTACT DETAILS
-${row('Name', d.name)}
-${row('Company', d.company)}
-${row('Email', d.email)}
-${row('Phone', d.phone)}
+👤 ${l.contact}
+${r(l.name, d.name)}
+${r(l.company, d.company)}
+${r(l.email, d.email)}
+${r(l.phone, d.phone)}
 
-🛃 CLEARANCE DETAILS
-${row('Direction', d.direction)}
-${row('Freight Mode', d.freightMode)}
-${row('Port/Airport', d.port)}
+🛃 ${l.clearance}
+${r(l.direction, d.direction)}
+${r(l.freightMode, d.freightMode)}
+${r(l.port, d.port)}
 
-📦 CARGO DETAILS
-${row('Commodity', d.commodity)}
-${row('HS Code', d.hsCode)}
-${row('Shipment Value', d.shipmentValue ? `${d.currency} ${d.shipmentValue}` : '')}
-${row('No. of Packages', d.packages)}
-${row('Documents', d.documents)}
+📦 ${l.cargo}
+${r(l.commodity, d.commodity)}
+${r(l.hsCode, d.hsCode)}
+${r(l.shipmentValue, d.shipmentValue ? `${d.currency} ${d.shipmentValue}` : '')}
+${r(l.numPackages, d.packages)}
+${r(l.documents, d.documents)}
 
-🛠 SERVICES REQUIRED
-• Duty Payment:      ${flag(d.dutyPayment)}
-• Inspection:        ${flag(d.inspection)}
-• Storage & Release: ${flag(d.storageRelease)}
-• Survey:            ${flag(d.survey)}
+🛠 ${l.services}
+• ${l.dutyPay}:      ${flag(isAr, d.dutyPayment)}
+• ${l.inspection}:        ${flag(isAr, d.inspection)}
+• ${l.storageRelease}: ${flag(isAr, d.storageRelease)}
+• ${l.survey}:            ${flag(isAr, d.survey)}
 
-${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+${d.notes ? `📝 ${l.notes}\n${d.notes}` : ''}
 `.trim()
 }
 
-function buildProjectBody(d) {
+function buildProjectBody(d, isAr) {
+  const l = L(isAr)
+  const r = (label, val) => row(l, label, val)
   const dims = (d.length && d.width && d.height)
     ? `${d.length} × ${d.width} × ${d.height} m`
     : ''
   return `
 ╔══════════════════════════════════════════╗
-  PROJECT CARGO QUOTE REQUEST
-  Bejoice Group — Private Quote Portal
+  ${l.projectHdr}
+  ${l.bejoice}
 ╚══════════════════════════════════════════╝
 
-👤 CONTACT DETAILS
-${row('Name', d.name)}
-${row('Company', d.company)}
-${row('Email', d.email)}
-${row('Phone', d.phone)}
+👤 ${l.contact}
+${r(l.name, d.name)}
+${r(l.company, d.company)}
+${r(l.email, d.email)}
+${r(l.phone, d.phone)}
 
-🏗 PROJECT DETAILS
-${row('Project/Cargo Type', d.projectType)}
-${row('Origin', d.origin)}
-${row('Destination', d.destination)}
-${row('Cargo Ready Date', d.readyDate)}
-${row('Commodity/Description', d.commodity)}
+🏗 ${l.projectD}
+${r(l.projectType, d.projectType)}
+${r(l.origin2, d.origin)}
+${r(l.destination2, d.destination)}
+${r(l.readyDate, d.readyDate)}
+${r(l.commodityDesc, d.commodity)}
 
-📐 DIMENSIONS & WEIGHT
-${row('Weight', d.weight ? d.weight + ' MT' : '')}
-${row('Dimensions', dims)}
-${row('No. of Pieces', d.pieces)}
+📐 ${l.dimsWeight}
+${r(l.weightMt, d.weight ? d.weight + ' MT' : '')}
+${r(l.dimensionsM, dims)}
+${r(l.numPieces, d.pieces)}
 
-🛠 SPECIAL REQUIREMENTS
-• Crane Required:    ${flag(d.craneRequired)}
-• Escort Required:   ${flag(d.escort)}
-• Permits Assistance:${flag(d.permits)}
+🛠 ${l.special}
+• ${l.crane}:    ${flag(isAr, d.craneRequired)}
+• ${l.escort}:   ${flag(isAr, d.escort)}
+• ${l.permits}:${flag(isAr, d.permits)}
 
-${d.notes ? `📝 NOTES\n${d.notes}` : ''}
+${d.notes ? `📝 ${l.notes}\n${d.notes}` : ''}
 `.trim()
 }
 
@@ -324,30 +429,36 @@ const BODY_BUILDERS = {
   project: buildProjectBody,
 }
 
-const MODE_LABELS = {
-  sea: 'Sea Freight', air: 'Air Freight', land: 'Road/Land Freight',
-  customs: 'Customs Clearance', project: 'Project Cargo',
-}
+const MODE_LABELS = (isAr) => ({
+  sea: isAr ? 'شحن بحري' : 'Sea Freight',
+  air: isAr ? 'شحن جوي' : 'Air Freight',
+  land: isAr ? 'شحن بري' : 'Road/Land Freight',
+  customs: isAr ? 'تخليص جمركي' : 'Customs Clearance',
+  project: isAr ? 'شحن مشاريع' : 'Project Cargo',
+})
 
 // sendBookingNotification removed — Cal.com native RSVP handles organizer notification
 
 // ─── Main send function ───────────────────────────────────────────────────────
-export async function sendQuoteEmail(mode, rawData, extraServices = []) {
+export async function sendQuoteEmail(mode, rawData, extraServices = [], isAr = false) {
   const d = sanitizeAll(rawData)
-  let body = BODY_BUILDERS[mode]?.(d) ?? JSON.stringify(d, null, 2)
+  let body = BODY_BUILDERS[mode]?.(d, isAr) ?? JSON.stringify(d, null, 2)
+  const ml = MODE_LABELS(isAr)
+  const l = L(isAr)
 
   if (extraServices.length > 0) {
-    const labels = { sea:'Sea Freight', air:'Air Freight', land:'Road/Land Freight', customs:'Customs Clearance', project:'Project Cargo' }
-    const extras = extraServices.map(s => labels[s] || s).join(', ')
-    body += `\n\n➕ ALSO INTERESTED IN\n${extras}`
+    const extras = extraServices.map(s => ml[s] || s).join(', ')
+    body += `\n\n➕ ${l.alsoInt}\n${extras}`
   }
 
   const templateParams = {
     to_email: 'info@bejoiceshipping-ksa.com',
     reply_to: d.email || 'info@bejoiceshipping-ksa.com',
-    from_name: d.name || 'Bejoice Quote System',
-    subject: `[Bejoice Quote - Quick Form] ${MODE_LABELS[mode] || mode} — ${d.name || 'Anonymous'}`,
-    mode: MODE_LABELS[mode] || mode,
+    from_name: d.name || (isAr ? 'نظام عروض أسعار بيجويس' : 'Bejoice Quote System'),
+    subject: isAr
+      ? `[عرض سعر بيجويس - نموذج سريع] ${ml[mode] || mode} — ${d.name || 'مجهول'}`
+      : `[Bejoice Quote - Quick Form] ${ml[mode] || mode} — ${d.name || 'Anonymous'}`,
+    mode: ml[mode] || mode,
     client_name: d.name || '—',
     company: d.company || '—',
     client_email: d.email || '—',

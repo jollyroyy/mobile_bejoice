@@ -632,7 +632,7 @@ function CareersModal({ onClose }) {
           to_email: 'info@bejoiceshipping-ksa.com',
           reply_to: email,
           from_name: name,
-          subject: `[Bejoice Careers - Footer] ${position} — ${name}`,
+          subject: isAr ? `[توظيف بيجويس - التذييل] ${position} — ${name}` : `[Bejoice Careers - Footer] ${position} — ${name}`,
           mode: 'Career Application',
           client_name: name,
           company: '—',

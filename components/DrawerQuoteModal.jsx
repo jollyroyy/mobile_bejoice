@@ -216,21 +216,38 @@ export default function DrawerQuoteModal({ onClose }) {
                     const sOrigin  = sanitizeText(form.origin)
                     const sDest    = sanitizeText(form.destination)
                     const sMsg     = sanitizeMessage(form.message)
+                    const arLbl = {
+                      form: 'نموذج اتصال — بيجويس بريميوم',
+                      contact: 'بيانات الاتصال', name: 'الاسم',
+                      company: 'الشركة', email: 'البريد الإلكتروني',
+                      phone: 'الهاتف', shipment: 'تفاصيل الشحنة',
+                      origin: 'منشأ', dest: 'الوجهة',
+                      service: 'الخدمة', message: 'رسالة',
+                    }
+                    const enLbl = {
+                      form: 'CONTACT FORM — BEJOICE PREMIUM',
+                      contact: 'CONTACT DETAILS', name: 'Name',
+                      company: 'Company', email: 'Email',
+                      phone: 'Phone', shipment: 'SHIPMENT DETAILS',
+                      origin: 'Origin', dest: 'Destination',
+                      service: 'Service', message: 'MESSAGE',
+                    }
+                    const lbl = isAr ? arLbl : enLbl
                     const body = [
-                      `📋 CONTACT FORM — BEJOICE PREMIUM`,
+                      `📋 ${lbl.form}`,
                       ``,
-                      `👤 CONTACT DETAILS`,
-                      `• Name:        ${sName}`,
-                      `• Company:     ${sCompany}`,
-                      `• Email:       ${sEmail}`,
-                      `• Phone:       ${sPhone}`,
+                      `👤 ${lbl.contact}`,
+                      `• ${lbl.name}:        ${sName}`,
+                      `• ${lbl.company}:     ${sCompany}`,
+                      `• ${lbl.email}:       ${sEmail}`,
+                      `• ${lbl.phone}:       ${sPhone}`,
                       ``,
-                      `🚚 SHIPMENT DETAILS`,
-                      `• Origin:      ${sOrigin}`,
-                      `• Destination: ${sDest}`,
-                      `• Service:     ${form.types.length ? form.types.join(', ') : '—'}`,
+                      `🚚 ${lbl.shipment}`,
+                      `• ${lbl.origin}:      ${sOrigin}`,
+                      `• ${lbl.dest}: ${sDest}`,
+                      `• ${lbl.service}:     ${form.types.length ? form.types.join(', ') : '—'}`,
                       ``,
-                      sMsg ? `📝 MESSAGE\n${sMsg}` : '',
+                      sMsg ? `📝 ${lbl.message}\n${sMsg}` : '',
                     ].filter(Boolean).join('\n')
 
                     setSent(true)
@@ -241,8 +258,8 @@ export default function DrawerQuoteModal({ onClose }) {
                       {
                         to_email:    'info@bejoiceshipping-ksa.com',
                         reply_to:    sEmail || 'info@bejoiceshipping-ksa.com',
-                        from_name:   sName || 'Bejoice Contact Form',
-                        subject:     `[Bejoice Quote - Nav Drawer] ${sName} — ${form.types.join(', ') || 'General Enquiry'}`,
+                        from_name:   sName || (isAr ? 'نموذج اتصال بيجويس' : 'Bejoice Contact Form'),
+                        subject:     isAr ? `[عرض سعر بيجويس - القائمة الجانبية] ${sName} — ${form.types.join(', ') || 'استفسار عام'}` : `[Bejoice Quote - Nav Drawer] ${sName} — ${form.types.join(', ') || 'General Enquiry'}`,
                         client_name: sName || '—',
                         company:     sCompany || '—',
                         client_email: sEmail || '—',

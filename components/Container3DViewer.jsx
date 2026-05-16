@@ -235,72 +235,127 @@ function drawContainerShell(ctx, ox, oy, cw, ch, cd, rX, rY, mode) {
 }
 
 // ── Weight distribution guide ─────────────────────────────────────────────
-export function WeightDistributionGuide({ items, containerType }) {
+export function WeightDistributionGuide({ items, containerType, isAr }) {
   const totalWeight = (items||[]).reduce((s,i) => s + i.weight*i.qty, 0)
   const frontPct = 58
   const actualFront = totalWeight > 0 ? Math.round(totalWeight * (frontPct / 100)) : 0
   const actualRear  = totalWeight - actualFront
 
+  const W = isAr ? {
+    title:          'دليل توزيع الوزن في الحاوية',
+    desc:           'توزيع الوزن بشكل صحيح أمر بالغ الأهمية للنقل الآمن والامتثال التنظيمي ومنع تلف البضائع أثناء الشحن.',
+    topView:        'منظر علوي — ٥,٨٩٨ × ٢,٣٥٢ مم',
+    frontZone:      'المنطقة الأمامية',
+    rearZone:       'المنطقة الخلفية',
+    cog:            'مركز الثقل',
+    door:           'باب',
+    front:          '→ أمام',
+    length:         'الطول: ٥,٨٩٨ مم (١٩′٤″)',
+    rear:           'خلف →',
+    sideView:       'منظر جانبي — ٥,٨٩٨ × ٢,٣٩٣ مم',
+    heavy:          '● ثقيل — حمل منخفض للأمام',
+    light:          '○ خفيف — رص فوق',
+    height:         '٢,٣٩٣ مم',
+    rule:           '— قاعدة توزيع الوزن ٦٠/٤٠',
+    ruleDesc:       'لتحقيق الاستقرار الأمثل، يجب وضع حوالي ٦٠٪ من وزن البضاعة في الاتجاه الأمامي (باتجاه الباب) و٤٠٪ في الاتجاه الخلفي.',
+    optimal:        'أمثل',
+    warning:        'تحذير',
+    danger:         'خطر',
+    safeAll:        'آمن لجميع وسائل النقل',
+    monitor:        'راقب بعناية',
+    tipRisk:        'خطر الانقلاب',
+    rHeavyBottom:   'الأوزان الثقيلة في الأسفل',
+    rHeavyBottomD:  'ضع أثقل البضائع على أرضية الحاوية أولاً. هذا يخفض مركز الثقل ويمنع عدم الاستقرار.',
+    rEvenSides:     'توازن جانبي',
+    rEvenSidesD:    'وزع الوزن بالتساوي بين الجانبين الأيسر والأيمن. الوزن الجانبي غير المتوازن قد يسبب الميلان وضغط الهيكل.',
+    rSpreadLoads:   'توزيع الأحمال النقطية',
+    rSpreadLoadsD:  'الأحمال النقطية الثقيلة قد تتلف أرضيات الحاوية. استخدم حشوات أو ألواح توزيع لتوزيع الوزن المركز.',
+    rFrontRule:     'قاعدة ٦٠/٤٠ الأمامية',
+    rFrontRuleD:    '٦٠٪ من الوزن الإجمالي أمام المركز. يحافظ على استقرار مركز الثقل أثناء رفع الرافعة والنقل البري.',
+    wLimits:        'حدود وزن الحاوية',
+    tContainer:     'الحاوية',
+    tPayload:       'الحمولة القصوى',
+    tTare:          'الوزن الفارغ',
+    tGross:         'الوزن الإجمالي',
+    tFloor:         'حمل الأرضية',
+    tableRow20ft:   '20ft قياسي',
+    tableRow40ft:   '40ft قياسي',
+    tableRow40hc:   '40ft High Cube',
+    note:           'ملاحظة: تختلف حدود الوزن البري حسب البلد والطريق. العديد من المناطق تحد الوزن الإجمالي للشاحنة بـ ٢٠–٢٥ طناً.',
+    analysis:       'تحليل البضاعة الخاصة بك',
+    totalWt:        'الوزن الإجمالي للبضاعة',
+    utilisation:    'استخدام الحاوية',
+    maxPayload:     'من الحمولة القصوى',
+    frontLoad:      'الحمل الأمامي الموصى به',
+    rearLoad:       'الحمل الخلفي الموصى به',
+  } : null
+  const t = (key) => W ? W[key] : undefined
+  const tableLabel = (enLabel) => {
+    if (!isAr) return enLabel
+    const map = { '20ft Standard': W.tableRow20ft, '40ft Standard': W.tableRow40ft, '40ft High Cube': W.tableRow40hc }
+    return map[enLabel] || enLabel
+  }
+
   const getStatus = (pct) => {
-    if (pct >= 55 && pct <= 60) return { label:'OPTIMAL', color:'#10b981', bg:'rgba(16,185,129,0.08)', border:'rgba(16,185,129,0.2)' }
-    if ((pct >= 50 && pct < 55) || (pct > 60 && pct <= 65)) return { label:'WARNING', color:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)' }
-    return { label:'DANGER', color:'#ef4444', bg:'rgba(239,68,68,0.08)', border:'rgba(239,68,68,0.2)' }
+    if (pct >= 55 && pct <= 60) return { label: isAr ? W.optimal : 'OPTIMAL', color:'#10b981', bg:'rgba(16,185,129,0.08)', border:'rgba(16,185,129,0.2)' }
+    if ((pct >= 50 && pct < 55) || (pct > 60 && pct <= 65)) return { label: isAr ? W.warning : 'WARNING', color:'#f59e0b', bg:'rgba(245,158,11,0.08)', border:'rgba(245,158,11,0.2)' }
+    return { label: isAr ? W.danger : 'DANGER', color:'#ef4444', bg:'rgba(239,68,68,0.08)', border:'rgba(239,68,68,0.2)' }
   }
   const status = getStatus(frontPct)
 
   const S = {
-    hd: { fontFamily:"'Bebas Neue',sans-serif", letterSpacing:2, color:'#5BC2E7' },
-    sm: { fontFamily:"'DM Sans',sans-serif", fontSize:14, color:'rgba(255,255,255,0.42)', lineHeight:1.55 },
-    label: { fontFamily:"'DM Sans',sans-serif", fontSize:13, fontWeight:700, letterSpacing:1.2, textTransform:'uppercase', color:'rgba(255,255,255,0.3)' },
+    hd: { fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'Bebas Neue',sans-serif", letterSpacing: isAr ? 0 : 2, color:'#5BC2E7' },
+    sm: { fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:14, color:'rgba(255,255,255,0.42)', lineHeight:1.55 },
+    label: { fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, fontWeight:700, letterSpacing: isAr ? 0 : 1.2, textTransform:'uppercase', color:'rgba(255,255,255,0.3)' },
   }
 
   return (
     <div style={{ marginTop:'1.4rem', borderTop:'1px solid rgba(91,194,231,0.12)', paddingTop:'1.2rem' }}>
-      <div style={{ ...S.hd, fontSize:'1.3rem', marginBottom:'0.4rem' }}>CONTAINER WEIGHT DISTRIBUTION GUIDE</div>
+      <div style={{ ...S.hd, fontSize:'1.3rem', marginBottom:'0.4rem' }}>{isAr ? W.title : 'CONTAINER WEIGHT DISTRIBUTION GUIDE'}</div>
       <p style={{ ...S.sm, marginBottom:'1rem' }}>
-        Proper weight distribution is critical for safe transport, regulatory compliance, and preventing cargo damage during shipping.
+        {isAr ? W.desc : 'Proper weight distribution is critical for safe transport, regulatory compliance, and preventing cargo damage during shipping.'}
       </p>
 
       {/* Top View */}
       <div style={{ marginBottom:'1rem' }}>
-        <div style={{ ...S.label, marginBottom:'0.35rem' }}>Top View — 5,898 × 2,352 mm</div>
+        <div style={{ ...S.label, marginBottom:'0.35rem' }}>{isAr ? W.topView : 'Top View — 5,898 × 2,352 mm'}</div>
         <div style={{ position:'relative', width:'100%', height:68, borderRadius:6, overflow:'hidden', border:'1px solid rgba(91,194,231,0.2)' }}>
           <div style={{ position:'absolute', left:0, top:0, width:'60%', height:'100%', background:'rgba(91,194,231,0.11)', borderRight:'1.5px dashed rgba(91,194,231,0.4)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:1 }}>
             <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:24, color:'#5BC2E7', letterSpacing:1, lineHeight:1 }}>60%</span>
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.4)' }}>Front Zone</span>
-            {totalWeight > 0 && <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:12, color:'rgba(91,194,231,0.55)' }}>{actualFront.toLocaleString()} kg</span>}
+            <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.4)' }}>{isAr ? W.frontZone : 'Front Zone'}</span>
+            {totalWeight > 0 && <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:12, color:'rgba(91,194,231,0.55)' }}>{actualFront.toLocaleString()} kg</span>}
           </div>
           <div style={{ position:'absolute', right:18, top:0, width:'calc(40% - 18px)', height:'100%', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:1 }}>
             <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:24, color:'rgba(255,255,255,0.45)', letterSpacing:1, lineHeight:1 }}>40%</span>
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.28)' }}>Rear Zone</span>
-            {totalWeight > 0 && <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:12, color:'rgba(255,255,255,0.35)' }}>{actualRear.toLocaleString()} kg</span>}
+            <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.28)' }}>{isAr ? W.rearZone : 'Rear Zone'}</span>
+            {totalWeight > 0 && <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:12, color:'rgba(255,255,255,0.35)' }}>{actualRear.toLocaleString()} kg</span>}
           </div>
           <div style={{ position:'absolute', left:'57%', top:'50%', transform:'translate(-50%,-50%)', display:'flex', flexDirection:'column', alignItems:'center', gap:2, zIndex:2 }}>
             <div style={{ width:10, height:10, borderRadius:'50%', background:'#8DD8F0', boxShadow:'0 0 10px rgba(91,194,231,0.9)', border:'1.5px solid rgba(91,194,231,0.7)' }} />
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:11, color:'#8DD8F0', letterSpacing:0.5, whiteSpace:'nowrap' }}>CoG</span>
+            <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:11, color:'#8DD8F0', letterSpacing: isAr ? 0 : 0.5, whiteSpace:'nowrap' }}>{isAr ? W.cog : 'CoG'}</span>
           </div>
           <div style={{ position:'absolute', right:0, top:0, bottom:0, width:18, background:'rgba(91,194,231,0.07)', display:'flex', alignItems:'center', justifyContent:'center', borderLeft:'1px solid rgba(91,194,231,0.18)' }}>
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:11, color:'rgba(91,194,231,0.45)', letterSpacing:1, writingMode:'vertical-rl', transform:'rotate(180deg)' }}>DOOR</span>
+            <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:11, color:'rgba(91,194,231,0.45)', letterSpacing: isAr ? 0 : 1, writingMode: isAr ? undefined : 'vertical-rl', transform: isAr ? undefined : 'rotate(180deg)' }}>{isAr ? W.door : 'DOOR'}</span>
           </div>
         </div>
         <div style={{ display:'flex', justifyContent:'space-between', marginTop:3 }}>
-          <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.22)' }}>← Front</span>
-          <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.18)' }}>Length: 5,898 mm (19′4″)</span>
-          <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.22)' }}>Rear →</span>
+          <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.22)' }}>{isAr ? W.front : '← Front'}</span>
+          <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.18)' }}>{isAr ? W.length : 'Length: 5,898 mm (19′4″)'}</span>
+          <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.22)' }}>{isAr ? W.rear : 'Rear →'}</span>
         </div>
       </div>
 
       {/* Side View */}
       <div style={{ marginBottom:'1rem' }}>
-        <div style={{ ...S.label, marginBottom:'0.35rem' }}>Side View — 5,898 × 2,393 mm</div>
+        <div style={{ ...S.label, marginBottom:'0.35rem' }}>{isAr ? W.sideView : 'Side View — 5,898 × 2,393 mm'}</div>
         <div style={{ position:'relative', width:'100%', height:56, border:'1px solid rgba(91,194,231,0.18)', borderRadius:6, overflow:'hidden', background:'rgba(255,255,255,0.015)' }}>
           <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'52%', background:'rgba(91,194,231,0.09)', borderTop:'1.5px dashed rgba(91,194,231,0.32)', display:'flex', alignItems:'center', paddingLeft:8 }}>
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:12, color:'rgba(91,194,231,0.6)' }}>● HEAVY — load low &amp; forward</span>
+            <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:12, color:'rgba(91,194,231,0.6)' }}>{isAr ? W.heavy : '● HEAVY — load low &amp; forward'}</span>
           </div>
           <div style={{ position:'absolute', top:0, left:0, right:0, height:'48%', display:'flex', alignItems:'center', paddingLeft:8 }}>
-            <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:12, color:'rgba(255,255,255,0.28)' }}>○ LIGHT — stack on top</span>
+            <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:12, color:'rgba(255,255,255,0.28)' }}>{isAr ? W.light : '○ LIGHT — stack on top'}</span>
           </div>
-          <div style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', fontFamily:"'DM Sans',sans-serif", fontSize:12, color:'rgba(255,255,255,0.18)' }}>2,393 mm</div>
+          <div style={{ position:'absolute', right:6, top:'50%', transform:'translateY(-50%)', fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:12, color:'rgba(255,255,255,0.18)' }}>{isAr ? W.height : '2,393 mm'}</div>
         </div>
       </div>
 
@@ -308,21 +363,29 @@ export function WeightDistributionGuide({ items, containerType }) {
       <div style={{ background:status.bg, border:`1px solid ${status.border}`, borderRadius:8, padding:'0.8rem', marginBottom:'1rem' }}>
         <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:'0.4rem' }}>
           <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:17, color:status.color, letterSpacing:1.5 }}>{status.label}</span>
-          <span style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:status.color, opacity:.7 }}>— 60/40 WEIGHT DISTRIBUTION RULE</span>
+          <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:status.color, opacity:.7 }}>{isAr ? W.rule : '— 60/40 WEIGHT DISTRIBUTION RULE'}</span>
         </div>
         <p style={{ ...S.sm, margin:0, marginBottom:'0.5rem' }}>
-          For optimal stability, approximately <strong style={{ color:'rgba(255,255,255,0.7)' }}>60% of cargo weight</strong> should be positioned toward the front (door end) and 40% toward the rear.
+          {isAr ? (
+            <>لتحقيق الاستقرار الأمثل، يجب وضع حوالي <strong style={{ color:'rgba(255,255,255,0.7)' }}>٦٠٪ من وزن البضاعة</strong> في الاتجاه الأمامي (باتجاه الباب) و٤٠٪ في الاتجاه الخلفي.</>
+          ) : (
+            <>For optimal stability, approximately <strong style={{ color:'rgba(255,255,255,0.7)' }}>60% of cargo weight</strong> should be positioned toward the front (door end) and 40% toward the rear.</>
+          )}
         </p>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:'0.35rem' }}>
-          {[
+          {(isAr ? [
+            ['٥٥–٦٠٪ أمام',W.optimal,W.safeAll,'#10b981'],
+            ['٥٠–٥٥٪ أو ٦٠–٦٥٪',W.warning,W.monitor,'#f59e0b'],
+            ['<٥٠٪ أو >٦٥٪',W.danger,W.tipRisk,'#ef4444'],
+          ] : [
             ['55–60% front','Optimal','Safe for all modes','#10b981'],
             ['50–55% or 60–65%','Warning','Monitor closely','#f59e0b'],
             ['<50% or >65%','Danger','Risk of tipping','#ef4444'],
-          ].map(([range, lvl, note, c]) => (
+          ]).map(([range, lvl, note, c]) => (
             <div key={lvl} style={{ background:'rgba(0,0,0,0.2)', borderRadius:5, padding:'0.45rem 0.5rem', borderLeft:`2px solid ${c}` }}>
               <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:15, color:c, letterSpacing:0.8 }}>{lvl}</div>
-              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.5)', lineHeight:1.4 }}>{range}</div>
-              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.3)', lineHeight:1.4 }}>{note}</div>
+              <div style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.5)', lineHeight:1.4 }}>{range}</div>
+              <div style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.3)', lineHeight:1.4 }}>{note}</div>
             </div>
           ))}
         </div>
@@ -330,16 +393,21 @@ export function WeightDistributionGuide({ items, containerType }) {
 
       {/* 4 rules */}
       <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.4rem', marginBottom:'1rem' }}>
-        {[
+        {(isAr ? [
+          [W.rHeavyBottom,W.rHeavyBottomD,'⬇'],
+          [W.rEvenSides,W.rEvenSidesD,'↔'],
+          [W.rSpreadLoads,W.rSpreadLoadsD,'▦'],
+          [W.rFrontRule,W.rFrontRuleD,'◎'],
+        ] : [
           ['Heavy Items at Bottom','Place heaviest cargo on the container floor first. This lowers the centre of gravity and prevents top-heavy instability.','⬇'],
           ['Even Side-to-Side','Distribute weight evenly between left and right sides. Uneven lateral weight can cause tilting and chassis stress.','↔'],
           ['Spread Point Loads','Heavy point loads can damage container floors. Use dunnage or spreader boards to distribute concentrated weight.','▦'],
           ['60/40 Front Rule','60% of total weight forward of centre. Keeps CoG stable during crane lifts and road transport.','◎'],
-        ].map(([title, desc, icon]) => (
+        ]).map(([title, desc, icon]) => (
           <div key={title} style={{ background:'rgba(255,255,255,0.025)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:7, padding:'0.6rem 0.7rem' }}>
             <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:'0.3rem' }}>
               <span style={{ fontSize:17 }}>{icon}</span>
-              <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:16, color:'#5BC2E7', letterSpacing:1 }}>{title}</span>
+              <span style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'Bebas Neue',sans-serif", fontSize:16, color:'#5BC2E7', letterSpacing: isAr ? 0 : 1 }}>{title}</span>
             </div>
             <p style={{ ...S.sm, margin:0, fontSize:14 }}>{desc}</p>
           </div>
@@ -348,20 +416,20 @@ export function WeightDistributionGuide({ items, containerType }) {
 
       {/* Weight Limits Table */}
       <div>
-        <div style={{ ...S.hd, fontSize:'1.2rem', marginBottom:'0.5rem' }}>CONTAINER WEIGHT LIMITS</div>
+        <div style={{ ...S.hd, fontSize:'1.2rem', marginBottom:'0.5rem' }}>{isAr ? W.wLimits : 'CONTAINER WEIGHT LIMITS'}</div>
         <div style={{ overflowX:'auto', borderRadius:8, border:'1px solid rgba(91,194,231,0.15)' }}>
-          <table style={{ width:'100%', borderCollapse:'collapse', fontFamily:"'DM Sans',sans-serif", fontSize:14, minWidth:360 }}>
+          <table style={{ width:'100%', borderCollapse:'collapse', fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:14, minWidth:360 }}>
             <thead>
               <tr style={{ background:'rgba(91,194,231,0.08)' }}>
-                {['Container','Max Payload','Tare Weight','Max Gross','Floor Load'].map(h => (
-                  <th key={h} style={{ padding:'0.5rem 0.6rem', textAlign:'left', color:'rgba(255,255,255,0.5)', fontWeight:700, letterSpacing:0.5, borderBottom:'1px solid rgba(91,194,231,0.15)', whiteSpace:'nowrap' }}>{h}</th>
+                {(isAr ? [W.tContainer,W.tPayload,W.tTare,W.tGross,W.tFloor] : ['Container','Max Payload','Tare Weight','Max Gross','Floor Load']).map(h => (
+                  <th key={h} style={{ padding:'0.5rem 0.6rem', textAlign:'left', color:'rgba(255,255,255,0.5)', fontWeight:700, letterSpacing: isAr ? 0 : 0.5, borderBottom:'1px solid rgba(91,194,231,0.15)', whiteSpace:'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {WEIGHT_TABLE.map((row, i) => (
                 <tr key={row.label} style={{ background: i%2===0 ? 'rgba(255,255,255,0.018)' : 'transparent' }}>
-                  <td style={{ padding:'0.45rem 0.6rem', color:'rgba(255,255,255,0.7)', fontWeight:600 }}>{row.label}</td>
+                  <td style={{ padding:'0.45rem 0.6rem', color:'rgba(255,255,255,0.7)', fontWeight:600 }}>{tableLabel(row.label)}</td>
                   <td style={{ padding:'0.45rem 0.6rem', color:'#5BC2E7' }}>{row.payload} kg</td>
                   <td style={{ padding:'0.45rem 0.6rem', color:'rgba(255,255,255,0.45)' }}>{row.tare} kg</td>
                   <td style={{ padding:'0.45rem 0.6rem', color:'rgba(255,255,255,0.45)' }}>{row.gross} kg</td>
@@ -372,7 +440,7 @@ export function WeightDistributionGuide({ items, containerType }) {
           </table>
         </div>
         <p style={{ ...S.sm, marginTop:'0.5rem', fontSize:13, color:'rgba(255,255,255,0.28)' }}>
-          Note: Road weight limits vary by country and route. Many regions limit truck gross weight to 20–25 tonnes.
+          {isAr ? W.note : 'Note: Road weight limits vary by country and route. Many regions limit truck gross weight to 20–25 tonnes.'}
         </p>
 
         {/* Dynamic cargo analysis */}
@@ -384,16 +452,21 @@ export function WeightDistributionGuide({ items, containerType }) {
           const fW = Math.round(tw*0.58), rW = tw - fW
           return (
             <div style={{ marginTop:'0.8rem', background:'rgba(91,194,231,0.06)', border:'1px solid rgba(91,194,231,0.18)', borderRadius:8, padding:'0.8rem' }}>
-              <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:16, color:'#5BC2E7', letterSpacing:1.5, marginBottom:'0.5rem' }}>YOUR CARGO ANALYSIS</div>
+              <div style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'Bebas Neue',sans-serif", fontSize:16, color:'#5BC2E7', letterSpacing: isAr ? 0 : 1.5, marginBottom:'0.5rem' }}>{isAr ? W.analysis : 'YOUR CARGO ANALYSIS'}</div>
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'0.4rem' }}>
-                {[
+                {(isAr ? [
+                  [W.totalWt, `${tw.toLocaleString()} kg`],
+                  [W.utilisation, `${usePct.toFixed(1)}% ${W.maxPayload}`],
+                  [W.frontLoad, `${fW.toLocaleString()} kg (58%)`],
+                  [W.rearLoad, `${rW.toLocaleString()} kg (42%)`],
+                ] : [
                   ['Total Cargo Weight', `${tw.toLocaleString()} kg`],
                   ['Container Utilisation', `${usePct.toFixed(1)}% of max payload`],
                   ['Recommended Front Load', `${fW.toLocaleString()} kg (58%)`],
                   ['Recommended Rear Load', `${rW.toLocaleString()} kg (42%)`],
-                ].map(([k,v]) => (
+                ]).map(([k,v]) => (
                   <div key={k} style={{ background:'rgba(0,0,0,0.15)', borderRadius:5, padding:'0.4rem 0.5rem' }}>
-                    <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.35)', marginBottom:2 }}>{k}</div>
+                    <div style={{ fontFamily: isAr ? "var(--font-cairo), 'Noto Sans Arabic', sans-serif" : "'DM Sans',sans-serif", fontSize:13, color:'rgba(255,255,255,0.35)', marginBottom:2 }}>{k}</div>
                     <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:19, color:'#8DD8F0', letterSpacing:0.5 }}>{v}</div>
                   </div>
                 ))}

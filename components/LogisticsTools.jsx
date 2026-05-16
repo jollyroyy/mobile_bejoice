@@ -14,18 +14,34 @@ const CONTAINER_SPECS = {
   '40hc': { cbm: 76,  wt: 26450, label: '40ft High Cube'  },
 }
 
-const CONTAINER = (cbm, wt = 0) => {
+const CONTAINER = (cbm, wt = 0, isAr = false) => {
+  const L = isAr ? {
+    '20ft': '20ft قياسي',
+    '40ft': '40ft قياسي',
+    '40hc': '40ft High Cube',
+    pct:     'ملء',
+    lcl:     'فكر في LCL إذا كان أقل من 15 م³',
+    good:    'مناسب',
+    cheaper: '20ft قد يكون أرخص',
+    optimal: 'أمثل',
+    costEff: 'الأكثر فعالية من حيث التكلفة لكل م³',
+    multi:   'حاوية مطلوبة',
+  } : null
+  const lbl = (key) => L ? L[key] : CONTAINER_SPECS[key].label
   // Single container — include fill efficiency hint
   if (cbm <= 25  && wt <= 21700) {
     const pct = Math.round(cbm / 25 * 100)
+    if (isAr) return `${lbl('20ft')} — ${pct}% ${L.pct} (${pct < 60 ? L.lcl : L.good})`
     return pct < 60 ? `20ft Standard — ${pct}% fill (consider LCL if < 15 CBM)` : `20ft Standard — ${pct}% fill (good fit)`
   }
   if (cbm <= 67  && wt <= 26480) {
     const pct = Math.round(cbm / 67 * 100)
+    if (isAr) return `${lbl('40ft')} — ${pct}% ${L.pct} (${pct < 50 ? L.cheaper : L.optimal})`
     return `40ft Standard — ${pct}% fill${pct < 50 ? ' (20ft may be cheaper)' : ' (optimal)'}`
   }
   if (cbm <= 76  && wt <= 26450) {
     const pct = Math.round(cbm / 76 * 100)
+    if (isAr) return `${lbl('40hc')} — ${pct}% ${L.pct} (${L.costEff})`
     return `40ft High Cube — ${pct}% fill (most cost-effective per CBM)`
   }
   // Multi-container — find best type (fewest containers, largest size wins ties)
@@ -40,6 +56,7 @@ const CONTAINER = (cbm, wt = 0) => {
     const n = Math.max(nV, nW)
     if (!best || n < best.n || (n === best.n && o.cbm > best.cbm)) best = { n, label: o.label, key: o.key }
   }
+  if (isAr) return `${best.n} × ${lbl(best.key)} ${L.multi}`
   return `${best.n} × ${best.label} Containers Required`
 }
 
@@ -301,7 +318,7 @@ function LoadCalculator() {
       }
       const containerCount = CONTAINER_COUNT(totalCBM, totalKg)
       const actualLoadPct = (totalCBM / 76 * 100).toFixed(1)
-      setResults({ tab:'sea', cbm:totalCBM.toFixed(3), weight:totalKg, container:CONTAINER(totalCBM, totalKg), loadPct:Math.min(100, actualLoadPct).toFixed(1), actualLoadPct, containerCount })
+      setResults({ tab:'sea', cbm:totalCBM.toFixed(3), weight:totalKg, container:CONTAINER(totalCBM, totalKg, isAr), loadPct:Math.min(100, actualLoadPct).toFixed(1), actualLoadPct, containerCount })
     } else if (tab === 'air') {
       let totalVol = 0, totalAct = 0
       for (const r of airRows) {
@@ -736,7 +753,7 @@ function LoadCalculator() {
                     {isAr ? ar.logisticsTools.viz3dTitle : '3D CONTAINER LOAD VISUALISATION'}
                   </div>
                   <Container3DViewer items={items3d} containerType={ctype} compact={true} />
-                  <WeightDistributionGuide items={items3d} containerType={ctype} />
+                  <WeightDistributionGuide items={items3d} containerType={ctype} isAr={isAr} />
                 </div>
               )
             })()}
@@ -746,13 +763,13 @@ function LoadCalculator() {
                 style={{ flex:1, background:'rgba(255,255,255,0.06)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:'0.6rem', color:'#fff', padding:'0.7rem', cursor:'pointer', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.82rem', fontWeight:700, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.4rem', transition:'all 0.2s' }}
                 onMouseEnter={e=>e.currentTarget.style.background='rgba(255,255,255,0.12)'}
                 onMouseLeave={e=>e.currentTarget.style.background='rgba(255,255,255,0.06)'}>
-                📥 CSV
+                {isAr ? ar.logisticsTools.exportCsv : '📥 CSV'}
               </button>
               <button onClick={exportPDF}
                 style={{ flex:1, background:'linear-gradient(135deg,#a8e4f7,#5BC2E7)', border:'none', borderRadius:'0.6rem', color:'#0a1826', padding:'0.7rem', cursor:'pointer', fontFamily:"var(--font-dm-sans), sans-serif", fontSize:'0.82rem', fontWeight:800, display:'flex', alignItems:'center', justifyContent:'center', gap:'0.4rem', transition:'all 0.2s' }}
                 onMouseEnter={e=>e.currentTarget.style.opacity='0.88'}
                 onMouseLeave={e=>e.currentTarget.style.opacity='1'}>
-                📄 PDF Report
+                {isAr ? ar.logisticsTools.exportPdf : '📄 PDF Report'}
               </button>
             </div>
           </motion.div>

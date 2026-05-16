@@ -494,7 +494,7 @@ function CargoLoad3D({ containerType, compact }) {
       <Container3DViewer items={items} containerType={containerType} compact={true} />
 
       {/* ── Weight Distribution Guide ── */}
-      <WeightDistributionGuide items={items} containerType={containerType} />
+      <WeightDistributionGuide items={items} containerType={containerType} isAr={_cl3dIsAr} />
     </div>
   )
 }

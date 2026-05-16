@@ -817,9 +817,9 @@ export default function FloatingBookCTA({ onQuoteClick }) {
   return (
     <div className={`layla-fab-wrap ca-fab-mobile${isAr ? ' layla-fab-ar' : ''}`} style={{
       position: "fixed",
-      bottom: (isGlobeActive || shouldStickBottom) ? "28px" : fabBottom,
+      bottom: isAr ? "clamp(8px, 2vh, 20px)" : (isGlobeActive || shouldStickBottom) ? "28px" : fabBottom,
       right: isAr ? "auto" : "clamp(8px, 4vw, 28px)",
-      left: isAr ? "clamp(8px, 4vw, 28px)" : "auto",
+      left: isAr ? "clamp(4px, 1.5vw, 12px)" : "auto",
       zIndex: 9999,
       display: "flex", flexDirection: "column", alignItems: isAr ? "flex-start" : "flex-end", gap: 14,
       transition: "bottom 0.8s cubic-bezier(0.16, 1, 0.3, 1), right 0.8s cubic-bezier(0.16, 1, 0.3, 1), left 0.8s cubic-bezier(0.16, 1, 0.3, 1)",

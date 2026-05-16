@@ -704,6 +704,15 @@ export default function FloatingBookCTA({ onQuoteClick }) {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Keep initial greeting in sync with language — only reset if no user messages yet
+  useEffect(() => {
+    setChatMessages(prev => {
+      const hasUserMessage = prev.some(m => m.from === 'user');
+      if (hasUserMessage) return prev;
+      return [{ from: 'bot', text: isAr ? ar.layla.greeting : "Hi! I'm Layla, your Bejoice freight assistant 👋\n\nI can help with ocean & air freight rates, Saudi customs, Red Sea disruptions, project cargo, and more. What do you need today?" }];
+    });
+  }, [isAr]);
+
 
   // Listen for 3D Globe state to reposition avatar on English pages
   useEffect(() => {

@@ -530,13 +530,6 @@ function stripTags(v) {
     .trim()
 }
 function clampHelper(v, max) { return stripTags(v).slice(0, max) }
-const ALLOWED_CV_TYPES = [
-  'application/pdf',
-  'application/msword',
-  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-]
-const ALLOWED_CV_EXTS = ['.pdf', '.doc', '.docx']
-
 function CareersModal({ onClose }) {
   const backdropRef = useRef(null)
   const POSITIONS = [
@@ -555,8 +548,7 @@ function CareersModal({ onClose }) {
     'Other',
   ]
 
-  const [form, setForm] = useState({ name: '', email: '', phone: '', position: '', otherPosition: '', message: '' })
-  const [cvFile, setCvFile] = useState(null)
+  const [form, setForm] = useState({ name: '', email: '', phone: '', position: '', otherPosition: '', cvText: '', message: '' })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
@@ -605,10 +597,8 @@ function CareersModal({ onClose }) {
     const email    = clampHelper(form.email, 200)
     const phone    = clampHelper(form.phone, 30)
     const position = form.position === 'Other' ? clampHelper(form.otherPosition, 100) : clampHelper(form.position, 100)
+    const cvText   = clampHelper(form.cvText, 5000)
     const message  = clampHelper(form.message, 2000)
-    const safeName = clampHelper(cvFile?.name || '', 200).replace(/[^a-zA-Z0-9._-]/g, '_')
-
-    const cvAttachment = cvFile ? `CV attached: ${safeName} (${(cvFile.size / 1024).toFixed(0)} KB)` : 'No CV attached.'
 
     const body = [
       '╔══════════════════════════════════════════╗',
@@ -619,50 +609,28 @@ function CareersModal({ onClose }) {
       `Email:    ${email}`,
       `Phone:    ${phone}`,
       `Position: ${position}`,
-      '',
-      '── CV / RESUME ──',
-      cvAttachment,
+      cvText ? `\n── CV / RESUME ──\n${cvText}` : '\n── CV / RESUME ──\nNot provided.',
       message ? `\n── COVER NOTE ──\n${message}` : '',
     ].join('\n').trim()
 
     try {
-      const emailParams = {
-        to_email: 'info@bejoiceshipping-ksa.com',
-        reply_to: email,
-        from_name: name,
-        subject: `[Bejoice Careers - Footer] ${position} — ${name}`,
-        mode: 'Career Application',
-        client_name: name,
-        company: '—',
-        client_email: email,
-        phone,
-        message: body,
-      }
-      if (cvFile) {
-        // Use REST API with FormData when file is attached
-        const formData = new FormData()
-        formData.append('service_id', EMAILJS_SERVICE_ID)
-        formData.append('template_id', EMAILJS_TEMPLATE_ID)
-        formData.append('user_id', EMAILJS_PUBLIC_KEY)
-        formData.append('template_params', JSON.stringify(emailParams))
-        formData.append('attachments', cvFile, safeName)
-        const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-          method: 'POST',
-          body: formData,
-        })
-        if (!r.ok) {
-          const errText = await r.text().catch(() => 'unknown')
-          throw new Error(`EmailJS ${r.status}: ${errText}`)
-        }
-      } else {
-        // No file — use standard EmailJS SDK (works on all plans)
-        await emailjs.send(
-          EMAILJS_SERVICE_ID,
-          EMAILJS_TEMPLATE_ID,
-          emailParams,
-          EMAILJS_PUBLIC_KEY,
-        )
-      }
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          to_email: 'info@bejoiceshipping-ksa.com',
+          reply_to: email,
+          from_name: name,
+          subject: `[Bejoice Careers - Footer] ${position} — ${name}`,
+          mode: 'Career Application',
+          client_name: name,
+          company: '—',
+          client_email: email,
+          phone,
+          message: body,
+        },
+        EMAILJS_PUBLIC_KEY,
+      )
     } catch (err) {
       console.error('Careers email error:', err)
       alert('Failed to send application. Please try again or email us directly at info@bejoiceshipping-ksa.com')
@@ -789,7 +757,7 @@ function CareersModal({ onClose }) {
                 Thank you for your interest. We will notify you once we have an open position in this role.
               </p>
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
-                <button className="cm-sub" onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', position: '', otherPosition: '', message: '' }); setCvFile(null); setErrors({}); setFormKey(k => k + 1) }} style={{ maxWidth: 200 }}>Submit Another</button>
+                <button className="cm-sub" onClick={() => { setSubmitted(false); setForm({ name: '', email: '', phone: '', position: '', otherPosition: '', cvText: '', message: '' }); setErrors({}); setFormKey(k => k + 1) }} style={{ maxWidth: 200 }}>Submit Another</button>
                 <button className="cm-sub" onClick={onClose} style={{ maxWidth: 200 }}>Close</button>
               </div>
             </div>
@@ -873,62 +841,21 @@ function CareersModal({ onClose }) {
                   </div>
                 )}
 
-                {/* CV Upload */}
+                {/* CV Paste */}
                 <div style={fw}>
-                  <label style={lbl}>CV / Resume <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>(optional)</span></label>
-                  <label style={{
-                    display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px',
-                    background: 'rgba(255,255,255,0.03)', border: '1px dashed rgba(91,194,231,0.25)',
-                    borderRadius: 12, cursor: 'pointer', transition: 'all 0.2s',
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(91,194,231,0.5)'; e.currentTarget.style.background = 'rgba(91,194,231,0.04)' }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(91,194,231,0.25)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
-                  >
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(91,194,231,0.7)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                      <polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
-                    </svg>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 13.5, color: cvFile ? '#fff' : 'rgba(255,255,255,0.4)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {cvFile ? cvFile.name : 'Upload PDF, DOC or DOCX — max 5 MB'}
-                      </div>
-                      {cvFile && <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.55)', marginTop: 2 }}>{(cvFile.size / 1024).toFixed(0)} KB</div>}
+                  <label style={lbl}>CV / Resume <span style={{ fontWeight: 400, textTransform: 'none', letterSpacing: 0, color: 'rgba(255,255,255,0.3)', fontSize: 11 }}>(paste your CV text — optional)</span></label>
+                  <textarea className="cm-inp"
+                    value={form.cvText}
+                    onChange={e => set('cvText', e.target.value)}
+                    placeholder="Open your CV, select all (Ctrl+A), copy (Ctrl+C), then paste here (Ctrl+V)…"
+                    rows={5} maxLength={5000}
+                    style={{ resize: 'vertical', minHeight: 110 }}
+                  />
+                  {form.cvText && (
+                    <div style={{ fontFamily: "var(--font-dm-sans), sans-serif", fontSize: 11, color: 'rgba(91,194,231,0.6)', marginTop: 4 }}>
+                      {form.cvText.trim().split(/\s+/).length} words pasted
                     </div>
-                    {cvFile && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><polyline points="20 6 9 17 4 12"/></svg>}
-                    <input type="file"
-                      accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                      style={{ display: 'none' }}
-                      onChange={async e => {
-                        const f = e.target.files[0]
-                        if (!f) return
-                        // Extension + MIME type check
-                        const ext = f.name.toLowerCase().slice(f.name.lastIndexOf('.'))
-                        if (!ALLOWED_CV_TYPES.includes(f.type) && !ALLOWED_CV_EXTS.includes(ext)) {
-                          alert('Only PDF, DOC, or DOCX files are accepted.')
-                          e.target.value = ''; return
-                        }
-                        // Size check (5 MB)
-                        if (f.size > 5 * 1024 * 1024) { alert('File must be under 5 MB'); e.target.value = ''; return }
-                        // Magic byte check — verify actual file content
-                        try {
-                          const header = await f.slice(0, 8).arrayBuffer().then(b => new Uint8Array(b))
-                          const isValid = (
-                            (header[0] === 0x25 && header[1] === 0x50 && header[2] === 0x44 && header[3] === 0x46) || // PDF
-                            (header[0] === 0xD0 && header[1] === 0xCF && header[2] === 0x11 && header[3] === 0xE0) || // DOC (OLE2)
-                            (header[0] === 0x50 && header[1] === 0x4B && header[2] === 0x03 && header[3] === 0x04)    // DOCX (ZIP)
-                          )
-                          if (!isValid) {
-                            alert('File content does not match a valid PDF, DOC, or DOCX format.')
-                            e.target.value = ''; return
-                          }
-                        } catch {
-                          alert('Could not verify file. Please try again.')
-                          e.target.value = ''; return
-                        }
-                        setCvFile(f)
-                      }}
-                    />
-                  </label>
+                  )}
                 </div>
 
                 {/* Cover Note */}

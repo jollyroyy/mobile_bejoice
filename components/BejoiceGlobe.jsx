@@ -529,7 +529,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
             </motion.div>
           )}
 
-          <div style={{ textAlign:'center', marginTop:'0.8rem', fontFamily: isAr ? "var(--font-cairo,'Cairo'),sans-serif" : "'DM Sans',sans-serif", fontSize:'0.65rem', color:'rgba(91,194,231,0.4)', letterSpacing: isAr ? '0' : '0.22em', textTransform: isAr ? 'none' : 'uppercase' }}>
+          <div style={{ textAlign:'center', marginTop:'0.8rem', fontFamily: isAr ? "var(--font-cairo,'Cairo'),sans-serif" : "'DM Sans',sans-serif", fontSize: isAr ? 'clamp(0.65rem,0.9vw,0.78rem)' : '0.65rem', color:'rgba(91,194,231,0.4)', letterSpacing: isAr ? '0' : '0.22em', textTransform: isAr ? 'none' : 'uppercase' }}>
             {isAr ? 'اسحب للتدوير' : 'DRAG TO ROTATE'}
           </div>
         </motion.div>
@@ -581,10 +581,10 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
               }}
             >
               <div style={{ position:'absolute', top:'-30%', left:'-10%', width:'60%', height:'160%', background:'radial-gradient(ellipse, rgba(91,194,231,0.06) 0%, transparent 70%)', pointerEvents:'none' }} />
-              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(8px,0.9vw,10px)', letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(91,194,231,0.8)', fontWeight:700, position:'relative', zIndex:1 }}>
+              <div style={{ fontFamily:"'DM Sans',sans-serif", fontSize: isAr ? 'clamp(8px,0.9vw,12px)' : 'clamp(8px,0.9vw,10px)', letterSpacing:'0.3em', textTransform:'uppercase', color:'rgba(91,194,231,0.8)', fontWeight:700, position:'relative', zIndex:1 }}>
                 {isAr ? 'المقر الرئيسي' : 'HEAD QUARTER'}
               </div>
-              <div style={{ fontFamily:'var(--font-bebas, "Impact"), sans-serif', fontSize:'clamp(1.05rem,2vw,1.4rem)', letterSpacing:'0.08em', lineHeight:1.1, textAlign:'center', position:'relative', zIndex:1,
+              <div style={{ fontFamily:'var(--font-bebas, "Impact"), sans-serif', fontSize: isAr ? 'clamp(1.05rem,2vw,1.525rem)' : 'clamp(1.05rem,2vw,1.4rem)', letterSpacing:'0.08em', lineHeight:1.1, textAlign:'center', position:'relative', zIndex:1,
                 color:'#5BC2E7', textShadow:'0 0 24px rgba(91,194,231,0.6), 0 0 48px rgba(91,194,231,0.25)',
               }}>
                 {isAr ? ar.globe.hq : 'DUBAI, UNITED ARAB EMIRATES'}
@@ -597,7 +597,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
           <div style={{ textAlign:'center' }}>
             <span style={{
               fontFamily:'var(--font-bebas, "Impact"), sans-serif',
-              fontSize:'clamp(1.1rem,2.8vw,1.5rem)',
+              fontSize: isAr ? 'clamp(1.1rem,2.8vw,1.625rem)' : 'clamp(1.1rem,2.8vw,1.5rem)',
               letterSpacing:'0.08em',
               color:'rgba(255,255,255,0.75)',
               lineHeight:1,
@@ -613,7 +613,7 @@ export default function BejoiceGlobe({ embedded = false, fullscreen = false }) {
             style={{ display:'flex', alignItems:'center', gap:10, justifyContent:'center' }}
           >
             <div style={{ width:24, height:2, background:'linear-gradient(90deg, rgba(91,194,231,0.2), rgba(91,194,231,0.6))', flexShrink:0, borderRadius:1 }} />
-            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize:'clamp(0.7rem,1.2vw,0.88rem)',
+            <p style={{ fontFamily:"'DM Sans',sans-serif", fontSize: isAr ? 'clamp(0.7rem,1.2vw,1.005rem)' : 'clamp(0.7rem,1.2vw,0.88rem)',
               color:'rgba(91,194,231,1)', letterSpacing:'0.1em', textTransform:'uppercase',
               margin:0, fontWeight:600, lineHeight:1.5, textAlign:'center',
             }}>

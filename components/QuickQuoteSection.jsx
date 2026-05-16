@@ -895,7 +895,7 @@ function AirForm({ onSuccess, isAr, extraServices = [] }) {
         </div>
       )}
 
-      {step === 3 && <ContactStep d={d} up={up} errors={airErrors} setErrors={setAirErrors} />}
+      {step === 3 && <ContactStep d={d} up={up} errors={airErrors} setErrors={setAirErrors} isAr={isAr} />}
 
       <NavButtons step={step} totalSteps={4} onBack={() => { setStep(s => s - 1); setAirErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleAirSubmit} loading={loading} validate={validateAir} isAr={isAr} />
     </div>
@@ -918,18 +918,18 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
   const validateLand = () => {
     const e = {};
     if (step === 0) {
-      if (!d.origin)      e.origin      = 'Origin city is required';
-      if (!d.destination) e.destination = 'Destination city is required';
-      if (!d.readyDate)   e.readyDate   = 'Cargo ready date is required';
+      if (!d.origin)      e.origin      = isAr ? arT.quickQuote.errOrigin : 'Origin city is required';
+      if (!d.destination) e.destination = isAr ? arT.quickQuote.errDestination : 'Destination city is required';
+      if (!d.readyDate)   e.readyDate   = isAr ? arT.quickQuote.errReadyDate : 'Cargo ready date is required';
     }
     if (step === 1) {
-      if (!d.commodity)   e.commodity   = 'Commodity description is required';
+      if (!d.commodity)   e.commodity   = isAr ? arT.quickQuote.errCommodity : 'Commodity description is required';
     }
     if (step === 2) {
-      if (!d.name.trim())  e.name  = 'Full name is required';
-      if (!d.email.trim()) e.email = 'Email address is required';
+      if (!d.name.trim())  e.name  = isAr ? arT.quickQuote.errName : 'Full name is required';
+      if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
-      if (!d.phone.trim()) e.phone = 'Phone / WhatsApp is required';
+      if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required';
       else if (!isValidPhone(d.phone.trim())) e.phone = 'Please enter a valid phone number';
     }
     setLandErrors(e);
@@ -955,7 +955,9 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
     'Riyadh','Jeddah','Dammam','Mecca','Medina','Khobar','Tabuk','Abha','Jubail','Yanbu',
     'Dubai (UAE)','Abu Dhabi (UAE)','Kuwait City','Amman (Jordan)','Aqaba (Jordan)','Bahrain',
   ];
-  const steps = ['Route', 'Cargo', 'Contact'];
+  const steps = isAr
+    ? [arT.quickQuote.stepRoute, arT.quickQuote.stepCargo, arT.quickQuote.stepContact]
+    : ['Route', 'Cargo', 'Contact'];
 
   return (
     <div>
@@ -964,31 +966,31 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
       {step === 0 && (
         <div className="qq-step">
           <div className="qq-grid-2">
-            <Field label="Service Type">
+            <Field label={isAr ? arT.quickQuote.serviceType : 'Service Type'}>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 {['FTL','LTL'].map(s => (
                   <button key={s} onClick={() => up('service', s)} className={`qq-type-btn${d.service === s ? ' active' : ''}`}>
-                    {s === 'FTL' ? '🚛 FTL' : '📦 LTL'}<br />
-                    <span>{s === 'FTL' ? 'Full Truck' : 'Part Truck'}</span>
+                    {s === 'FTL' ? '🚛 ' : '📦 '}{isAr ? (s === 'FTL' ? arT.quickQuote.ftl : arT.quickQuote.ltl) : s}<br />
+                    <span>{s === 'FTL' ? (isAr ? arT.quickQuote.ftlSub : 'Full Truck') : (isAr ? arT.quickQuote.ltlSub : 'Part Truck')}</span>
                   </button>
                 ))}
               </div>
             </Field>
-            <Field label="Cargo Ready Date *" error={landErrors.readyDate}>
+            <Field label={isAr ? arT.quickQuote.cargoReadyDate : 'Cargo Ready Date *'} error={landErrors.readyDate}>
               <Input type="date" value={d.readyDate} onChange={e => { up('readyDate', e.target.value); setLandErrors(p => ({...p, readyDate: ''})) }} min={getTodayStr()} max={getMaxDateStr()} error={landErrors.readyDate} />
             </Field>
           </div>
           <div className="qq-grid-2" style={{ marginTop: '1rem' }}>
-            <Field label="Origin City *" error={landErrors.origin}>
-              <Input value={d.origin} onChange={e => { up('origin', e.target.value); setLandErrors(p => ({...p, origin: ''})) }} placeholder="e.g. Riyadh" error={landErrors.origin} />
+            <Field label={isAr ? arT.quickQuote.originCity : 'Origin City *'} error={landErrors.origin}>
+              <Input value={d.origin} onChange={e => { up('origin', e.target.value); setLandErrors(p => ({...p, origin: ''})) }} placeholder={isAr ? arT.quickQuote.selectCity : 'e.g. Riyadh'} error={landErrors.origin} />
             </Field>
-            <Field label="Destination City *" error={landErrors.destination}>
-              <Input value={d.destination} onChange={e => { up('destination', e.target.value); setLandErrors(p => ({...p, destination: ''})) }} placeholder="e.g. Dammam" error={landErrors.destination} />
+            <Field label={isAr ? arT.quickQuote.destinationCity : 'Destination City *'} error={landErrors.destination}>
+              <Input value={d.destination} onChange={e => { up('destination', e.target.value); setLandErrors(p => ({...p, destination: ''})) }} placeholder={isAr ? arT.quickQuote.selectCity : 'e.g. Dammam'} error={landErrors.destination} />
             </Field>
           </div>
           {d.service === 'FTL' && (
             <div style={{ marginTop: '1rem' }}>
-              <Field label="Truck / Equipment Type">
+              <Field label={isAr ? arT.quickQuote.truckType : 'Truck / Equipment Type'}>
                 <Select value={d.truckType} onChange={e => up('truckType', e.target.value)} options={TRUCK_TYPES} />
               </Field>
             </div>
@@ -999,29 +1001,29 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
       {step === 1 && (
         <div className="qq-step">
           <div className="qq-grid-3">
-            <Field label="Gross Weight (tons)">
+            <Field label={isAr ? arT.quickQuote.grossWeightTons : 'Gross Weight (tons)'}>
               <Input type="number" min="0" step="0.1" placeholder="0.00" value={d.weight} onChange={e => up('weight', e.target.value)} />
             </Field>
-            <Field label="Volume (CBM)">
+            <Field label={isAr ? arT.quickQuote.volumeCBM : 'Volume (CBM)'}>
               <Input type="number" min="0" step="0.1" placeholder="0.00" value={d.cbm} onChange={e => up('cbm', e.target.value)} />
             </Field>
-            <Field label="No. of Pallets">
+            <Field label={isAr ? arT.quickQuote.noOfPallets : 'No. of Pallets'}>
               <Input type="number" min="0" placeholder="0" value={d.pallets} onChange={e => up('pallets', e.target.value)} />
             </Field>
           </div>
           <div style={{ marginTop: '1rem' }}>
-            <Field label="Commodity Description *" error={landErrors.commodity}>
-              <Input placeholder="e.g. Construction Materials" value={d.commodity} onChange={e => { up('commodity', e.target.value); setLandErrors(p => ({...p, commodity: ''})) }} error={landErrors.commodity} />
+            <Field label={isAr ? arT.quickQuote.commodityDesc : 'Commodity Description *'} error={landErrors.commodity}>
+              <Input placeholder={isAr ? arT.quickQuote.commodityLandPlaceholder : 'e.g. Construction Materials'} value={d.commodity} onChange={e => { up('commodity', e.target.value); setLandErrors(p => ({...p, commodity: ''})) }} error={landErrors.commodity} />
             </Field>
           </div>
           <div style={{ marginTop: '1rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-            <CheckToggle label="Hazardous / ADR Cargo" checked={d.hazardous} onChange={v => up('hazardous', v)} />
-            <CheckToggle label="Refrigerated (Reefer)" checked={d.reefer} onChange={v => up('reefer', v)} />
-            <CheckToggle label="Cargo Insurance" checked={d.insurance} onChange={v => up('insurance', v)} />
+            <CheckToggle label={isAr ? arT.quickQuote.hazardousADR : 'Hazardous / ADR Cargo'} checked={d.hazardous} onChange={v => up('hazardous', v)} />
+            <CheckToggle label={isAr ? arT.quickQuote.refrigeratedReefer : 'Refrigerated (Reefer)'} checked={d.reefer} onChange={v => up('reefer', v)} />
+            <CheckToggle label={isAr ? arT.quickQuote.cargoInsurance : 'Cargo Insurance'} checked={d.insurance} onChange={v => up('insurance', v)} />
           </div>
           {d.reefer && (
             <div style={{ marginTop: '0.75rem', maxWidth: '12rem' }}>
-              <Field label="Required Temp (°C)">
+              <Field label={isAr ? arT.quickQuote.reeferTempLabel : 'Required Temp (°C)'}>
                 <Input placeholder="-18" value={d.reeferTemp} onChange={e => up('reeferTemp', e.target.value)} />
               </Field>
             </div>
@@ -1029,15 +1031,15 @@ function LandForm({ onSuccess, isAr, extraServices = [] }) {
         </div>
       )}
 
-      {step === 2 && <ContactStep d={d} up={up} errors={landErrors} setErrors={setLandErrors} />}
+      {step === 2 && <ContactStep d={d} up={up} errors={landErrors} setErrors={setLandErrors} isAr={isAr} />}
 
-      <NavButtons step={step} totalSteps={3} onBack={() => { setStep(s => s - 1); setLandErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleLandSubmit} loading={loading} validate={validateLand} />
+      <NavButtons step={step} totalSteps={3} onBack={() => { setStep(s => s - 1); setLandErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleLandSubmit} loading={loading} validate={validateLand} isAr={isAr} />
     </div>
   );
 }
 
 // ─── CUSTOMS CLEARANCE FORM ───────────────────────────────────────────────────
-function CustomsForm({ onSuccess, extraServices = [] }) {
+function CustomsForm({ onSuccess, extraServices = [], isAr }) {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [d, setD] = useState({
@@ -1053,16 +1055,16 @@ function CustomsForm({ onSuccess, extraServices = [] }) {
   const validateCustoms = () => {
     const e = {};
     if (step === 0) {
-      if (!d.port) e.port = 'Port / airport is required';
+      if (!d.port) e.port = isAr ? arT.quickQuote.errOrigin : 'Port / airport is required';
     }
     if (step === 1) {
-      if (!d.commodity) e.commodity = 'Commodity description is required';
+      if (!d.commodity) e.commodity = isAr ? arT.quickQuote.errCommodity : 'Commodity description is required';
     }
     if (step === 3) {
-      if (!d.name.trim())  e.name  = 'Full name is required';
-      if (!d.email.trim()) e.email = 'Email address is required';
+      if (!d.name.trim())  e.name  = isAr ? arT.quickQuote.errName : 'Full name is required';
+      if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
-      if (!d.phone.trim()) e.phone = 'Phone / WhatsApp is required';
+      if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required';
       else if (!isValidPhone(d.phone.trim())) e.phone = 'Please enter a valid phone number';
     }
     setCustErrors(e);
@@ -1088,7 +1090,9 @@ function CustomsForm({ onSuccess, extraServices = [] }) {
     'Jeddah Airport (JED)','Riyadh Airport (RUH)','Dammam Airport (DMM)',
     'Riyadh Dry Port','Jeddah Dry Port',
   ];
-  const steps = ['Shipment', 'Cargo', 'Services', 'Contact'];
+  const steps = isAr
+    ? [arT.quickQuote.stepShipment, arT.quickQuote.stepCargo, arT.quickQuote.stepServices, arT.quickQuote.stepContact]
+    : ['Shipment', 'Cargo', 'Services', 'Contact'];
 
   return (
     <div>
@@ -1097,29 +1101,29 @@ function CustomsForm({ onSuccess, extraServices = [] }) {
       {step === 0 && (
         <div className="qq-step">
           <div className="qq-grid-2">
-            <Field label="Direction">
+            <Field label={isAr ? arT.quickQuote.direction : 'Direction'}>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 {['Import','Export'].map(s => (
                   <button key={s} onClick={() => up('direction', s)} className={`qq-type-btn${d.direction === s ? ' active' : ''}`}>
-                    {s === 'Import' ? '📥 Import' : '📤 Export'}<br />
-                    <span>{s === 'Import' ? 'Inbound to KSA' : 'Outbound from KSA'}</span>
+                    {s === 'Import' ? (isAr ? arT.quickQuote.importDir : '📥 Import') : (isAr ? arT.quickQuote.exportDir : '📤 Export')}<br />
+                    <span>{s === 'Import' ? (isAr ? arT.quickQuote.importSub : 'Inbound to KSA') : (isAr ? arT.quickQuote.exportSub : 'Outbound from KSA')}</span>
                   </button>
                 ))}
               </div>
             </Field>
-            <Field label="Freight Mode">
+            <Field label={isAr ? arT.quickQuote.freightMode : 'Freight Mode'}>
               <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                 {['Sea','Air','Land'].map(m => (
                   <button key={m} onClick={() => up('freightMode', m)} className={`qq-type-btn compact${d.freightMode === m ? ' active' : ''}`}>
-                    {m === 'Sea' ? '🚢' : m === 'Air' ? '✈️' : '🚛'} {m}
+                    {m === 'Sea' ? '🚢' : m === 'Air' ? '✈️' : '🚛'} {isAr ? (m === 'Sea' ? 'بحري' : m === 'Air' ? 'جوي' : 'بري') : m}
                   </button>
                 ))}
               </div>
             </Field>
           </div>
           <div style={{ marginTop: '1rem' }}>
-            <Field label="Port / Airport / Border Crossing *" error={custErrors.port}>
-              <Input placeholder="e.g. Jeddah Islamic Port, King Khalid Airport…" value={d.port} onChange={e => { up('port', e.target.value); setCustErrors(p => ({...p, port: ''})) }} error={custErrors.port} />
+            <Field label={isAr ? arT.quickQuote.portAirportBorder : 'Port / Airport / Border Crossing *'} error={custErrors.port}>
+              <Input placeholder={isAr ? arT.quickQuote.selectEntryExit : 'e.g. Jeddah Islamic Port, King Khalid Airport…'} value={d.port} onChange={e => { up('port', e.target.value); setCustErrors(p => ({...p, port: ''})) }} error={custErrors.port} />
             </Field>
           </div>
         </div>
@@ -1128,26 +1132,26 @@ function CustomsForm({ onSuccess, extraServices = [] }) {
       {step === 1 && (
         <div className="qq-step">
           <div className="qq-grid-2">
-            <Field label="Commodity Description *" error={custErrors.commodity}>
-              <Input placeholder="e.g. Industrial Machinery" value={d.commodity} onChange={e => { up('commodity', e.target.value); setCustErrors(p => ({...p, commodity: ''})) }} error={custErrors.commodity} />
+            <Field label={isAr ? arT.quickQuote.commodityDescCustoms : 'Commodity Description *'} error={custErrors.commodity}>
+              <Input placeholder={isAr ? arT.quickQuote.commodityCustomsPlaceholder : 'e.g. Industrial Machinery'} value={d.commodity} onChange={e => { up('commodity', e.target.value); setCustErrors(p => ({...p, commodity: ''})) }} error={custErrors.commodity} />
             </Field>
-            <Field label="HS Code (optional)">
-              <Input placeholder="e.g. 8479.89" value={d.hsCode} onChange={e => up('hsCode', e.target.value)} />
+            <Field label={isAr ? arT.quickQuote.hsCode : 'HS Code (optional)'}>
+              <Input placeholder={isAr ? arT.quickQuote.hsCodePlaceholder : 'e.g. 8479.89'} value={d.hsCode} onChange={e => up('hsCode', e.target.value)} />
             </Field>
           </div>
           <div className="qq-grid-3" style={{ marginTop: '1rem' }}>
-            <Field label="Shipment Value">
+            <Field label={isAr ? arT.quickQuote.shipmentValue : 'Shipment Value'}>
               <Input type="number" min="0" placeholder="0" value={d.shipmentValue} onChange={e => up('shipmentValue', e.target.value)} />
             </Field>
-            <Field label="Currency">
+            <Field label={isAr ? arT.quickQuote.currency : 'Currency'}>
               <Select value={d.currency} onChange={e => up('currency', e.target.value)} options={CURRENCIES} />
             </Field>
-            <Field label="No. of Documents / BLs">
+            <Field label={isAr ? arT.quickQuote.noOfDocsBLs : 'No. of Documents / BLs'}>
               <Input type="number" min="1" placeholder="1" value={d.documents} onChange={e => up('documents', e.target.value)} />
             </Field>
           </div>
           <div style={{ marginTop: '1rem' }}>
-            <Field label="No. of Packages / Units">
+            <Field label={isAr ? arT.quickQuote.noOfPackagesUnits : 'No. of Packages / Units'}>
               <Input type="number" min="0" placeholder="0" value={d.packages} onChange={e => up('packages', e.target.value)} />
             </Field>
           </div>
@@ -1158,10 +1162,10 @@ function CustomsForm({ onSuccess, extraServices = [] }) {
         <div className="qq-step">
           <div className="qq-services-grid">
             {[
-              ['dutyPayment', '💳', 'Duty & Tax Payment',    'Customs duty + VAT disbursement on your behalf'],
-              ['inspection',  '🔍', 'Physical Inspection',   'Coordination of customs & SASO inspection'],
-              ['storageRelease','🏭','Port Storage & Release','Port follow-up, demurrage avoidance, container release'],
-              ['survey',      '📋', 'Pre-Shipment Survey',   'SASO/SFDA compliance pre-loading survey'],
+              ['dutyPayment',    '💳', isAr ? arT.quickQuote.dutyTaxPayment     : 'Duty & Tax Payment',    isAr ? arT.quickQuote.dutyTaxDesc           : 'Customs duty + VAT disbursement on your behalf'],
+              ['inspection',     '🔍', isAr ? arT.quickQuote.physicalInspection  : 'Physical Inspection',   isAr ? arT.quickQuote.physicalInspectionDesc : 'Coordination of customs & SASO inspection'],
+              ['storageRelease', '🏭', isAr ? arT.quickQuote.portStorageRelease  : 'Port Storage & Release',isAr ? arT.quickQuote.portStorageDesc        : 'Port follow-up, demurrage avoidance, container release'],
+              ['survey',         '📋', isAr ? arT.quickQuote.preShipmentSurvey   : 'Pre-Shipment Survey',   isAr ? arT.quickQuote.preShipmentDesc        : 'SASO/SFDA compliance pre-loading survey'],
             ].map(([k, icon, title, desc]) => (
               <div key={k} onClick={() => up(k, !d[k])} className={`qq-service-card${d[k] ? ' active' : ''}`}>
                 <div style={{ fontSize: '1.4rem', marginBottom: '0.4rem' }}>{icon}</div>
@@ -1174,15 +1178,15 @@ function CustomsForm({ onSuccess, extraServices = [] }) {
         </div>
       )}
 
-      {step === 3 && <ContactStep d={d} up={up} errors={custErrors} setErrors={setCustErrors} />}
+      {step === 3 && <ContactStep d={d} up={up} errors={custErrors} setErrors={setCustErrors} isAr={isAr} />}
 
-      <NavButtons step={step} totalSteps={4} onBack={() => { setStep(s => s - 1); setCustErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleCustomsSubmit} loading={loading} validate={validateCustoms} />
+      <NavButtons step={step} totalSteps={4} onBack={() => { setStep(s => s - 1); setCustErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleCustomsSubmit} loading={loading} validate={validateCustoms} isAr={isAr} />
     </div>
   );
 }
 
 // ─── PROJECT CARGO FORM ───────────────────────────────────────────────────────
-function ProjectForm({ onSuccess, extraServices = [] }) {
+function ProjectForm({ onSuccess, extraServices = [], isAr }) {
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [d, setD] = useState({
@@ -1197,18 +1201,18 @@ function ProjectForm({ onSuccess, extraServices = [] }) {
   const validateProject = () => {
     const e = {};
     if (step === 0) {
-      if (!d.origin)      e.origin      = 'Origin is required';
-      if (!d.destination) e.destination = 'Destination is required';
-      if (!d.commodity)   e.commodity   = 'Project description is required';
+      if (!d.origin)      e.origin      = isAr ? arT.quickQuote.errOrigin : 'Origin is required';
+      if (!d.destination) e.destination = isAr ? arT.quickQuote.errDestination : 'Destination is required';
+      if (!d.commodity)   e.commodity   = isAr ? arT.quickQuote.errCommodity : 'Project description is required';
     }
     if (step === 1) {
       if (!d.weight) e.weight = 'Weight is required';
     }
     if (step === 2) {
-      if (!d.name.trim())  e.name  = 'Full name is required';
-      if (!d.email.trim()) e.email = 'Email address is required';
+      if (!d.name.trim())  e.name  = isAr ? arT.quickQuote.errName : 'Full name is required';
+      if (!d.email.trim()) e.email = isAr ? arT.quickQuote.errEmail : 'Email address is required';
       else if (!isValidEmail(d.email.trim())) e.email = 'Please enter a valid email address';
-      if (!d.phone.trim()) e.phone = 'Phone / WhatsApp is required';
+      if (!d.phone.trim()) e.phone = isAr ? arT.quickQuote.errPhone : 'Phone / WhatsApp is required';
       else if (!isValidPhone(d.phone.trim())) e.phone = 'Please enter a valid phone number';
     }
     setProjErrors(e);
@@ -1230,7 +1234,9 @@ function ProjectForm({ onSuccess, extraServices = [] }) {
   };
 
   const PROJECT_TYPES = ['Heavy Lift','Out-of-Gauge (OOG)','Breakbulk','Project Machinery','Wind Energy Components','Oil & Gas Equipment','Mining Equipment'];
-  const steps = ['Details', 'Dimensions', 'Contact'];
+  const steps = isAr
+    ? [arT.quickQuote.stepDetails, arT.quickQuote.stepDimensions, arT.quickQuote.stepContact]
+    : ['Details', 'Dimensions', 'Contact'];
 
   return (
     <div>
@@ -1239,24 +1245,24 @@ function ProjectForm({ onSuccess, extraServices = [] }) {
       {step === 0 && (
         <div className="qq-step">
           <div className="qq-grid-2">
-            <Field label="Project / Cargo Type">
+            <Field label={isAr ? arT.quickQuote.projectCargoType : 'Project / Cargo Type'}>
               <Select value={d.projectType} onChange={e => up('projectType', e.target.value)} options={PROJECT_TYPES} />
             </Field>
-            <Field label="Cargo Ready Date">
+            <Field label={isAr ? arT.quickQuote.cargoReadyDate : 'Cargo Ready Date'}>
               <Input type="date" value={d.readyDate} onChange={e => up('readyDate', e.target.value)} min={getTodayStr()} max={getMaxDateStr()} />
             </Field>
           </div>
           <div className="qq-grid-2" style={{ marginTop: '1rem' }}>
-            <Field label="Origin (Port / City) *" error={projErrors.origin}>
-              <Input placeholder="e.g. Shanghai, China" value={d.origin} onChange={e => { up('origin', e.target.value); setProjErrors(p => ({...p, origin: ''})) }} error={projErrors.origin} />
+            <Field label={isAr ? arT.quickQuote.originPortCity : 'Origin (Port / City) *'} error={projErrors.origin}>
+              <Input placeholder={isAr ? arT.quickQuote.originProjectPlaceholder : 'e.g. Shanghai, China'} value={d.origin} onChange={e => { up('origin', e.target.value); setProjErrors(p => ({...p, origin: ''})) }} error={projErrors.origin} />
             </Field>
-            <Field label="Destination (Port / City) *" error={projErrors.destination}>
-              <Input placeholder="e.g. Jubail Industrial City" value={d.destination} onChange={e => { up('destination', e.target.value); setProjErrors(p => ({...p, destination: ''})) }} error={projErrors.destination} />
+            <Field label={isAr ? arT.quickQuote.destinationPortCity : 'Destination (Port / City) *'} error={projErrors.destination}>
+              <Input placeholder={isAr ? arT.quickQuote.destinationProjectPlaceholder : 'e.g. Jubail Industrial City'} value={d.destination} onChange={e => { up('destination', e.target.value); setProjErrors(p => ({...p, destination: ''})) }} error={projErrors.destination} />
             </Field>
           </div>
           <div style={{ marginTop: '1rem' }}>
-            <Field label="Commodity / Project Description *" error={projErrors.commodity}>
-              <Textarea placeholder="Describe the cargo, project name, and any special requirements…" value={d.commodity} onChange={e => { up('commodity', e.target.value); setProjErrors(p => ({...p, commodity: ''})) }} error={projErrors.commodity} />
+            <Field label={isAr ? arT.quickQuote.commodityProjectDesc : 'Commodity / Project Description *'} error={projErrors.commodity}>
+              <Textarea placeholder={isAr ? arT.quickQuote.commodityProjectPlaceholder : 'Describe the cargo, project name, and any special requirements…'} value={d.commodity} onChange={e => { up('commodity', e.target.value); setProjErrors(p => ({...p, commodity: ''})) }} error={projErrors.commodity} />
             </Field>
           </div>
         </div>
@@ -1265,15 +1271,15 @@ function ProjectForm({ onSuccess, extraServices = [] }) {
       {step === 1 && (
         <div className="qq-step">
           <div className="qq-grid-2">
-            <Field label="No. of Pieces">
+            <Field label={isAr ? arT.quickQuote.noOfPiecesProject : 'No. of Pieces'}>
               <Input type="number" min="1" placeholder="1" value={d.pieces} onChange={e => up('pieces', e.target.value)} />
             </Field>
-            <Field label="Total Weight (MT) *" error={projErrors.weight}>
+            <Field label={isAr ? arT.quickQuote.totalWeightMT : 'Total Weight (MT) *'} error={projErrors.weight}>
               <Input type="number" min="0" step="0.1" placeholder="0.00" value={d.weight} onChange={e => { up('weight', e.target.value); setProjErrors(p => ({...p, weight: ''})) }} error={projErrors.weight} />
             </Field>
           </div>
           <div style={{ marginTop: '1rem' }}>
-            <label style={{ ...labelCls, marginBottom: '0.65rem' }}>Dimensions — Longest Single Piece (metres)</label>
+            <label style={{ ...labelCls, marginBottom: '0.65rem' }}>{isAr ? arT.quickQuote.dimensionsLongestPiece : 'Dimensions — Longest Single Piece (metres)'}</label>
             <div className="qq-grid-3" style={{ gap: '0.5rem' }}>
               {[['Length (m)','length'],['Width (m)','width'],['Height (m)','height']].map(([lbl, key]) => (
                 <div key={key}>
@@ -1284,47 +1290,47 @@ function ProjectForm({ onSuccess, extraServices = [] }) {
             </div>
           </div>
           <div style={{ marginTop: '1.2rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-            <CheckToggle label="Crane / Heavy Lift Equipment Required" checked={d.craneRequired} onChange={v => up('craneRequired', v)} />
-            <CheckToggle label="Police Escort Required" checked={d.escort} onChange={v => up('escort', v)} />
-            <CheckToggle label="Special Permits & Route Survey" checked={d.permits} onChange={v => up('permits', v)} />
+            <CheckToggle label={isAr ? arT.quickQuote.craneRequired : 'Crane / Heavy Lift Equipment Required'} checked={d.craneRequired} onChange={v => up('craneRequired', v)} />
+            <CheckToggle label={isAr ? arT.quickQuote.policeEscort : 'Police Escort Required'} checked={d.escort} onChange={v => up('escort', v)} />
+            <CheckToggle label={isAr ? arT.quickQuote.specialPermits : 'Special Permits & Route Survey'} checked={d.permits} onChange={v => up('permits', v)} />
           </div>
         </div>
       )}
 
-      {step === 2 && <ContactStep d={d} up={up} errors={projErrors} setErrors={setProjErrors} />}
+      {step === 2 && <ContactStep d={d} up={up} errors={projErrors} setErrors={setProjErrors} isAr={isAr} />}
 
-      <NavButtons step={step} totalSteps={3} onBack={() => { setStep(s => s - 1); setProjErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleProjectSubmit} loading={loading} validate={validateProject} />
+      <NavButtons step={step} totalSteps={3} onBack={() => { setStep(s => s - 1); setProjErrors({}); }} onNext={() => setStep(s => s + 1)} onSubmit={handleProjectSubmit} loading={loading} validate={validateProject} isAr={isAr} />
     </div>
   );
 }
 
 // ─── SHARED CONTACT STEP ─────────────────────────────────────────────────────
-function ContactStep({ d, up, errors = {}, setErrors = () => {} }) {
+function ContactStep({ d, up, errors = {}, setErrors = () => {}, isAr }) {
   return (
     <div className="qq-step">
       <div className="qq-grid-2">
-        <Field label="Full Name *" error={errors.name}>
-          <Input placeholder="Your name" value={d.name} onChange={e => { up('name', e.target.value); setErrors(p => ({...p, name: ''})) }} error={errors.name} />
+        <Field label={isAr ? arT.quickQuote.fullName : 'Full Name *'} error={errors.name}>
+          <Input placeholder={isAr ? arT.quickQuote.fullNamePlaceholder : 'Your name'} value={d.name} onChange={e => { up('name', e.target.value); setErrors(p => ({...p, name: ''})) }} error={errors.name} />
         </Field>
-        <Field label="Company Name">
-          <Input placeholder="Your company" value={d.company} onChange={e => up('company', e.target.value)} />
+        <Field label={isAr ? arT.quickQuote.companyName : 'Company Name'}>
+          <Input placeholder={isAr ? arT.quickQuote.companyPlaceholder : 'Your company'} value={d.company} onChange={e => up('company', e.target.value)} />
         </Field>
       </div>
       <div className="qq-grid-2" style={{ marginTop: '1rem' }}>
-        <Field label="Email Address *" error={errors.email}>
-          <Input type="email" placeholder="you@company.com" value={d.email} onChange={e => { up('email', e.target.value); setErrors(p => ({...p, email: ''})) }} error={errors.email} />
+        <Field label={isAr ? arT.quickQuote.emailAddress : 'Email Address *'} error={errors.email}>
+          <Input type="email" placeholder={isAr ? arT.quickQuote.emailPlaceholder : 'you@company.com'} value={d.email} onChange={e => { up('email', e.target.value); setErrors(p => ({...p, email: ''})) }} error={errors.email} />
         </Field>
-        <Field label="Phone / WhatsApp *" error={errors.phone}>
-          <Input type="tel" placeholder="+966 5X XXX XXXX" value={d.phone} onChange={e => { up('phone', e.target.value); setErrors(p => ({...p, phone: ''})) }} error={errors.phone} />
+        <Field label={isAr ? arT.quickQuote.phoneWhatsApp : 'Phone / WhatsApp *'} error={errors.phone}>
+          <Input type="tel" placeholder={isAr ? arT.quickQuote.phonePlaceholder : '+966 5X XXX XXXX'} value={d.phone} onChange={e => { up('phone', e.target.value); setErrors(p => ({...p, phone: ''})) }} error={errors.phone} />
         </Field>
       </div>
       <div style={{ marginTop: '1rem' }}>
-        <Field label="Additional Notes">
-          <Textarea placeholder="Special instructions, preferred carriers, delivery timeline…" value={d.notes} onChange={e => up('notes', e.target.value)} />
+        <Field label={isAr ? arT.quickQuote.additionalNotes : 'Additional Notes'}>
+          <Textarea placeholder={isAr ? arT.quickQuote.notesPlaceholder : 'Special instructions, preferred carriers, delivery timeline…'} value={d.notes} onChange={e => up('notes', e.target.value)} />
         </Field>
       </div>
       <p style={{ marginTop: '1rem', fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.76rem', color: 'rgba(255,255,255,0.38)', lineHeight: 1.7 }}>
-        Your details are used solely to prepare your quote. We respond within 4 business hours.
+        {isAr ? arT.quickQuote.privacyNote : 'Your details are used solely to prepare your quote. We respond within 4 business hours.'}
       </p>
     </div>
   );
@@ -1338,7 +1344,14 @@ const SUCCESS_LABELS = {
   customs: 'Customs Clearance',
   project: 'Project Cargo',
 };
-function SuccessState({ type, onReset }) {
+const SUCCESS_LABELS_AR = {
+  sea: arT.quickQuote.successSea,
+  air: arT.quickQuote.successAir,
+  land: arT.quickQuote.successLand,
+  customs: arT.quickQuote.successCustoms,
+  project: arT.quickQuote.successProject,
+};
+function SuccessState({ type, onReset, isAr }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '3rem 1rem', textAlign: 'center', gap: '1.25rem' }}>
       <div style={{
@@ -1349,14 +1362,16 @@ function SuccessState({ type, onReset }) {
         fontSize: '1.6rem',
       }}>✓</div>
       <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', letterSpacing: '0.06em', color: '#fff' }}>
-        Quote Requested
+        {isAr ? arT.quickQuote.quoteRequested : 'Quote Requested'}
       </h3>
       <p style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '0.9rem', color: 'rgba(255,255,255,0.6)', lineHeight: 1.75, maxWidth: '22rem' }}>
-        Your <strong style={{ color: 'rgba(91,194,231,0.85)' }}>{SUCCESS_LABELS[type]}</strong> quote request has been received.
-        Our team will respond within <strong style={{ color: 'rgba(91,194,231,0.85)' }}>4 business hours</strong>.
+        {isAr
+          ? <>{arT.quickQuote.successBody1} <strong style={{color:'rgba(91,194,231,0.85)'}}>{SUCCESS_LABELS_AR[type]}</strong> {arT.quickQuote.successBody2} <strong style={{color:'rgba(91,194,231,0.85)'}}>{arT.quickQuote.successBody3}</strong>.</>
+          : <>Your <strong style={{ color: 'rgba(91,194,231,0.85)' }}>{SUCCESS_LABELS[type]}</strong> quote request has been received. Our team will respond within <strong style={{ color: 'rgba(91,194,231,0.85)' }}>4 business hours</strong>.</>
+        }
       </p>
       <button onClick={onReset} className="qq-submit-btn" style={{ marginTop: '0.5rem' }}>
-        Submit Another Quote
+        {isAr ? arT.quickQuote.submitAnother : 'Submit Another Quote'}
       </button>
     </div>
   );
@@ -1450,9 +1465,9 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
           }}>
             <span style={{ fontSize: 22 }}>✅</span>
             <div>
-              <div style={{ fontWeight: 700, fontSize: 15 }}>Quote Request Submitted!</div>
+              <div style={{ fontWeight: 700, fontSize: 15 }}>{isAr ? arT.quickQuote.quoteRequested : 'Quote Request Submitted!'}</div>
               <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)', marginTop: 2 }}>
-                We'll respond within 4 business hours.
+                {isAr ? `${arT.quickQuote.successBody2} ${arT.quickQuote.successBody3}.` : "We'll respond within 4 business hours."}
               </div>
             </div>
             <button onClick={() => setShowToast(false)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', fontSize: 18, padding: '0 0 0 8px' }}>✕</button>
@@ -1463,11 +1478,18 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
         {!successType && (
           <div style={{ marginBottom: '1rem', padding: '0.75rem 1rem', background: 'rgba(91,194,231,0.06)', borderRadius: 10, border: '1px solid rgba(91,194,231,0.15)' }}>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'rgba(91,194,231,0.8)', fontWeight: 700, marginBottom: 8 }}>
-              Also need assistance with:
+              {isAr ? 'هل تحتاج مساعدة في:' : 'Also need assistance with:'}
             </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
               {TABS.filter(t => t.id !== activeTab).map(t => {
                 const sel = extraServices.includes(t.id);
+                const tabLabel = {
+                  sea:     isAr ? arT.quickQuote.tabSea     : t.label,
+                  air:     isAr ? arT.quickQuote.tabAir     : t.label,
+                  land:    isAr ? arT.quickQuote.tabLand    : t.label,
+                  customs: isAr ? arT.quickQuote.tabCustoms : t.label,
+                  project: isAr ? arT.quickQuote.tabProject : t.label,
+                }[t.id] || t.label;
                 return (
                   <button key={t.id} onClick={() => toggleExtra(t.id)} style={{
                     display: 'flex', alignItems: 'center', gap: 6, padding: '5px 12px',
@@ -1478,7 +1500,7 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
                     cursor: 'pointer', transition: 'all 0.2s',
                   }}>
                     <span style={{ fontSize: 14 }}>{sel ? '✓' : t.icon}</span>
-                    {t.label}
+                    {tabLabel}
                   </button>
                 );
               })}
@@ -1494,9 +1516,9 @@ export default function QuickQuoteSection({ sectionRef, lang: langProp, inModal 
             <>
               {activeTab === 'sea'     && <SeaForm     onSuccess={handleSuccess} isAr={isAr} extraServices={extraServices} />}
               {activeTab === 'air'     && <AirForm     onSuccess={handleSuccess} isAr={isAr} extraServices={extraServices} />}
-              {activeTab === 'land'    && <LandForm    onSuccess={handleSuccess} extraServices={extraServices} />}
-              {activeTab === 'customs' && <CustomsForm onSuccess={handleSuccess} extraServices={extraServices} />}
-              {activeTab === 'project' && <ProjectForm onSuccess={handleSuccess} extraServices={extraServices} />}
+              {activeTab === 'land'    && <LandForm    onSuccess={handleSuccess} isAr={isAr} extraServices={extraServices} />}
+              {activeTab === 'customs' && <CustomsForm onSuccess={handleSuccess} isAr={isAr} extraServices={extraServices} />}
+              {activeTab === 'project' && <ProjectForm onSuccess={handleSuccess} isAr={isAr} extraServices={extraServices} />}
             </>
           )}
         </div>

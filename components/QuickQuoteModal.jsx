@@ -136,10 +136,8 @@ export default function QuickQuoteModal({ onClose }) {
           background: 'rgba(2,3,10,0.92)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          display: 'flex', alignItems: 'flex-start', justifyContent: 'center',
-          padding: 'max(16px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left))',
-          overflowY: 'auto',
-          WebkitOverflowScrolling: 'touch',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          padding: 'max(12px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left))',
         }}
       >
         {/* Panel */}
@@ -152,6 +150,9 @@ export default function QuickQuoteModal({ onClose }) {
           style={{
             position: 'relative',
             width: '100%', maxWidth: 960,
+            maxHeight: 'calc(100vh - 24px)',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
             boxSizing: 'border-box',
             background: '#183650',
             backgroundImage: 'linear-gradient(145deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.015) 50%, rgba(91,194,231,0.018) 100%)',
@@ -165,7 +166,6 @@ export default function QuickQuoteModal({ onClose }) {
               '0 0 60px rgba(91,194,231,0.10)',
               '0 0 120px rgba(91,194,231,0.05)',
             ].join(', '),
-            overflow: 'hidden',
             zIndex: 1,
           }}
         >
@@ -183,79 +183,28 @@ export default function QuickQuoteModal({ onClose }) {
           <div className="qqm-panel-heading" style={{
             position: 'relative', zIndex: 1,
             textAlign: 'center',
-            padding: '2.6rem 2.5rem 1rem',
+            padding: '1.2rem 2.5rem 0.5rem',
           }}>
-
-            {/* Live badge */}
-            <div className="qqm-badge" style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              background: 'rgba(91,194,231,0.07)',
-              border: '1px solid rgba(91,194,231,0.25)',
-              borderRadius: 40,
-              padding: '6px 16px',
-              marginBottom: 20,
-              animation: 'qqm-badge-pulse 2.2s ease-in-out infinite',
-            }}>
-              <span style={{
-                width: 7, height: 7, borderRadius: '50%',
-                background: '#5BC2E7',
-                display: 'inline-block',
-                boxShadow: '0 0 8px rgba(91,194,231,0.9)',
-                animation: 'qqm-dot-pulse 1.8s ease-in-out infinite',
-                flexShrink: 0,
-              }} />
-              <span style={{
-                fontFamily: 'var(--font-dm-sans), sans-serif',
-                fontSize: 10.5, letterSpacing: isAr ? 0 : '0.32em',
-                textTransform: isAr ? 'none' : 'uppercase',
-                color: 'rgba(91,194,231,0.9)', fontWeight: 700,
-              }}>
-                {isAr ? ar.quickQuote.badgeLabel : 'Instant Pricing Engine'}
-              </span>
-            </div>
-
             {/* Main heading */}
-            <div style={{ marginBottom: 10 }}>
-              <h2 className="qqm-heading-h2" style={{
-                fontFamily: isAr ? 'var(--font-cairo), sans-serif' : 'var(--font-bebas), sans-serif',
-                fontSize: 'clamp(2.2rem,6vw,4rem)',
-                letterSpacing: isAr ? 0 : '0.1em',
-                lineHeight: 1,
-                margin: 0,
-                color: '#ffffff',
-                textShadow: '0 2px 40px rgba(0,0,0,0.8)',
-                textTransform: isAr ? 'none' : undefined,
-                direction: isAr ? 'rtl' : 'ltr',
-              }}>
-                {isAr ? ar.quickQuote.headingWhite : 'GET YOUR'}{' '}
-                <span style={{
-                  color: '#5BC2E7',
-                  textShadow: '0 0 30px rgba(91,194,231,0.5), 0 2px 40px rgba(0,0,0,0.8)',
-                }}>
-                  {isAr ? ar.quickQuote.headingBlue : 'QUICK QUOTE'}
-                </span>
-              </h2>
-            </div>
-
-            {/* Subtitle */}
-            <p className="qqm-subtitle" style={{
-              fontFamily: 'var(--font-dm-sans), sans-serif',
-              fontSize: 17,
-              color: 'rgba(255,255,255,0.88)',
-              margin: '0 auto 20px',
-              maxWidth: 560,
-              lineHeight: 1.7,
-              letterSpacing: '0.01em',
-              fontWeight: 500,
+            <h2 className="qqm-heading-h2" style={{
+              fontFamily: isAr ? 'var(--font-cairo), sans-serif' : 'var(--font-bebas), sans-serif',
+              fontSize: 'clamp(1.6rem,4vw,2.6rem)',
+              letterSpacing: isAr ? 0 : '0.1em',
+              lineHeight: 1,
+              margin: 0,
+              color: '#ffffff',
+              textShadow: '0 2px 40px rgba(0,0,0,0.8)',
+              textTransform: isAr ? 'none' : undefined,
+              direction: isAr ? 'rtl' : 'ltr',
             }}>
-              {isAr ? ar.quickQuote.subtitle : 'Get a tailored freight price in minutes — Sea, Air, Road, Customs or Project Cargo. No calls, no waiting. Just results.'}
-            </p>
-
-            {/* Divider */}
-            <div className="qqm-divider" style={{
-              width: 80, height: 1, margin: '18px auto 0',
-              background: 'linear-gradient(90deg, transparent, rgba(91,194,231,0.5), transparent)',
-            }} />
+              {isAr ? ar.quickQuote.headingWhite : 'GET YOUR'}{' '}
+              <span style={{
+                color: '#5BC2E7',
+                textShadow: '0 0 30px rgba(91,194,231,0.5), 0 2px 40px rgba(0,0,0,0.8)',
+              }}>
+                {isAr ? ar.quickQuote.headingBlue : 'QUICK QUOTE'}
+              </span>
+            </h2>
           </div>
 
           {/* Form */}

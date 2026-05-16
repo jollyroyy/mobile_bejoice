@@ -748,9 +748,11 @@ body {
     max-width: 100% !important;
   }
   .hero-stats-wrap {
-    flex: 0 0 auto !important;
-    width: 100% !important;
-    justify-content: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    width: auto !important;
+    align-self: center !important;
   }
 
   /* Chapter overlays: center text, clear nav, reset negative offsets */
@@ -831,7 +833,7 @@ body {
 }
 /* Mobile phones (≤767px): stat/card sizing — must come after 870px block to win cascade */
 @media (max-width: 767px) {
-  .hero-stat-cell   { padding: 6px 5px !important; }
+  .hero-stat-cell   { flex: 1 1 0% !important; min-width: 0 !important; padding: 8px 2px !important; border-right: none !important; justify-content: center !important; }
   .hero-stat-number { font-size: 0.75rem !important; }
   .hero-stat-label  { font-size: 7px !important; letter-spacing: 0.05em !important; }
   .hero-card-title  { font-size: 0.85rem !important; }
@@ -1604,7 +1606,7 @@ section {
   /* Compact hero bottom bar on very small screens */
   .hero-bottom-bar { padding: 0 0.25rem !important; gap: 4px !important; flex-direction: column !important; align-items: stretch !important; }
   .hero-track-wrap { flex: 0 0 auto !important; width: 100% !important; max-width: 100% !important; }
-  .hero-stats-wrap { flex: 0 0 auto !important; width: 100% !important; }
+  .hero-stats-wrap { display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important; width: auto !important; align-self: center !important; }
   .hero-card-btn { white-space: normal !important; word-break: keep-all !important; }
 
   /* Globe section: prevent overflow */

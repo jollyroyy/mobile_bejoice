@@ -264,7 +264,7 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
     ctx.imageSmoothingQuality = 'high';
     if ('filter' in ctx) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (ctx as any).filter = 'contrast(1.08) saturate(1.12) brightness(1.35)';
+      (ctx as any).filter = idx < BIC_COUNT ? 'contrast(1.08) saturate(1.12) brightness(1.35)' : 'contrast(1.08) saturate(1.12) brightness(1.02)';
     }
     ctx.drawImage(img, x, y, w, h);
     ctx.restore();

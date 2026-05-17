@@ -644,16 +644,12 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
 }
 
 // Position the FAB above the hero stat bar on screens ≤1440px wide.
-// Uses clamp(180px, 25vh, 340px) so it scales proportionally:
-//   - floor 180px  → always clears the stat bar top (~150px max)
-//   - 25vh anchor  → scales gently with viewport height
-//   - ceiling 340px → prevents the FAB drifting too high on tall screens
+// Desktop (>767px, English): anchor to bottom-right corner (32px).
+// Mobile (≤767px): 28px, same as scrolled state.
 function calcFabBottom() {
-  if (typeof window === 'undefined') return '166px';
-  if (window.innerWidth > 1440) return '166px';
+  if (typeof window === 'undefined') return '32px';
   if (window.innerWidth <= 767) return '28px';
-  const px = Math.min(Math.max(Math.round(window.innerHeight * 0.25), 180), 340);
-  return `${px}px`;
+  return '32px';
 }
 
 export default function FloatingBookCTA({ onQuoteClick }) {

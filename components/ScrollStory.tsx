@@ -38,10 +38,13 @@ const FRAMES8_START = PORT_START + PORT_COUNT;           // 534
 const TECH_START = FRAMES8_START + FRAMES8_COUNT;        // 655
 
 const FRAME_URLS: string[] = [
-  // bic zoomout (0–144)
-  ...Array.from({ length: BIC_COUNT }, (_, i) => `/bic/${pad(i + 1)}.webp`),
+  // bic zoomout (0–144) — 72 unique images stretched over 145 slots
+  ...Array.from({ length: BIC_COUNT }, (_, i) => {
+    const imgIdx = Math.min(Math.floor((i / BIC_COUNT) * 72) + 1, 72);
+    return `/bic/frame_${pad(imgIdx)}.webp`;
+  }),
   // globe bridge (145–210) — repeats last bic frame; no intermediate image should flash
-  ...Array.from({ length: GLOBE_COUNT }, () => `/bic/0145.webp`),
+  ...Array.from({ length: GLOBE_COUNT }, () => `/bic/frame_0072.webp`),
   // bejoice (211–439) — 73 images spread over 229 slots
   ...Array.from({ length: BEJOICE_COUNT }, (_, i) => {
     const imgIdx = Math.min(Math.floor((i / BEJOICE_COUNT) * 73) + 1, 73);

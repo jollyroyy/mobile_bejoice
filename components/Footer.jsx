@@ -1037,7 +1037,7 @@ export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick
                 src="/bejoice-logo-group.png"
                 alt="Bejoice"
                 loading="lazy" decoding="async"
-                style={{ height: 'clamp(80px, 15vw, 160px)', width: 'auto', objectFit: 'contain', display: 'block', opacity: 0.92 }}
+                style={{ height: 'clamp(120px, 22.5vw, 240px)', width: 'auto', objectFit: 'contain', display: 'block', opacity: 0.92, marginTop: '-10px' }}
               />
             </div>
           </div>
@@ -1082,9 +1082,9 @@ export default function Footer({ onWhyClick, onQuoteClick, onCertificationsClick
                           {label}
                         </button>
                       ) : item === 'Careers' ? (
-                        <button onClick={() => setCareersOpen(true)} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
+                        <a href="https://app.whitecarrot.io/careers/bejoice" target="_blank" rel="noopener noreferrer" style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>
                           {isAr ? (ar.footer.links?.['Careers'] || 'Careers') : 'Careers'}
-                        </button>
+                        </a>
 
                       ) : item === 'Certifications' ? (
                         <button onClick={onCertificationsClick} style={linkStyle} onMouseEnter={hoverOn} onMouseLeave={hoverOff}>

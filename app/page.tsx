@@ -6,8 +6,9 @@ import { useEffect, useState, useRef, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { SparklesCore } from '@/components/ui/sparkles';
 import { LangProvider } from '@/context/LangContext';
+import { usePrefetchSections } from '@/hooks/usePrefetchSections';
 
-// ── Core always-visible UI — ssr:false so GSAP/Lenis never run on server ──
+// ── Core always-visible UI — only Canvas/Three.js/GSAP components need ssr:false ──
 const Nav              = dynamic(() => import('@/components/Nav'),              { ssr: false });
 const ScrollStory      = dynamic(() => import('@/components/ScrollStory'),      { ssr: false });
 const ScrollProgress   = dynamic(() => import('@/components/ScrollProgress'),   { ssr: false });
@@ -42,6 +43,9 @@ export default function Page() {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [toolsKey, setToolsKey] = useState(0);
   const [certificationsOpen, setCertificationsOpen] = useState(false);
+
+  // Proactively warm all lazy chunks on first interaction or after 2s
+  usePrefetchSections();
 
   const chapterOffsets = useRef<number[]>([0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const whyModalRef      = useRef<HTMLDivElement>(null);

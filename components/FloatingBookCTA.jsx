@@ -584,13 +584,12 @@ if (typeof document !== "undefined" && !document.getElementById(STYLE_ID)) {
     /* ── Mobile overrides ── */
     @media (max-width: 480px) {
       .ca-panel-mobile {
-        width: calc(100% - 16px) !important;
-        right: 8px !important;
-        left: 8px !important;
-        border-radius: 20px !important;
+        max-height: calc(100dvh - 40px) !important;
       }
       .ca-msgs-mobile {
-        height: min(320px, 42svh) !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        height: auto !important;
       }
       .ca-bubble-mobile {
         max-width: 200px !important;
@@ -822,15 +821,16 @@ export default function FloatingBookCTA({ onQuoteClick }) {
     }}>
 
       {/* ══════════════════════════════════════
-          CHAT PANEL
+          CHAT PANEL — fits within viewport height
       ══════════════════════════════════════ */}
       {open && (
         <div className="ca-panel-mobile" style={{
           width: "min(380px, calc(100% - 16px))",
+          maxHeight: "min(calc(100dvh - 40px), 680px)",
           background: "linear-gradient(170deg, #0b1120 0%, #091524 100%)",
           border: "1px solid rgba(91,194,231,0.3)",
           borderRadius: 24,
-          overflow: "visible",
+          overflow: "hidden",
           boxShadow: "0 32px 80px rgba(0,0,0,0.8), 0 0 0 1px rgba(91,194,231,0.12), 0 0 60px rgba(91,194,231,0.08)",
           animation: isAr ? "none" : "ca-panel-in 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards",
           display: "flex", flexDirection: "column",
@@ -889,10 +889,9 @@ export default function FloatingBookCTA({ onQuoteClick }) {
 
           {/* ── Messages ── */}
           <div className="ca-msgs ca-msgs-mobile" style={{
-            height: "min(360px, 45svh)", overflowY: "scroll",
+            flex: 1, minHeight: 0, overflowY: "auto",
             padding: "16px 16px 10px",
             display: "flex", flexDirection: "column", gap: 12,
-            flex: "none",
           }}
             onWheel={e => e.stopPropagation()}
             onTouchStart={e => e.stopPropagation()}

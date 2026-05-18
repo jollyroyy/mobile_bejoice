@@ -864,21 +864,20 @@ body.explore-open .layla-fab-wrap {
     right: clamp(8px, 4vw, 20px) !important;
     align-items: flex-end !important;
   }
-  /* Constrain chat panel height so it never bleeds behind the fixed nav */
+  /* Chat panel constrained to viewport height */
   .ca-panel-mobile {
-    max-height: calc(100svh - 120px) !important;
-    max-height: calc(100vh - 120px) !important; /* fallback */
+    max-height: calc(100dvh - 40px) !important;
+    max-height: calc(100vh - 40px) !important;
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
-    padding-bottom: env(safe-area-inset-bottom, 0px) !important;
   }
-  /* Let messages area flex-grow to fill remaining space inside the panel */
+  /* Messages area flex-grows to fill remaining space */
   .ca-msgs-mobile {
     flex: 1 1 auto !important;
+    min-height: 0 !important;
     height: auto !important;
-    min-height: 48px !important;
-    overflow-y: scroll !important;
+    overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
   }
   /* Move Start Shipment button left by 160px on mobile */

@@ -23,7 +23,7 @@ const ASSETS_CACHE   = `bejoice-assets-${CACHE_VERSION}`
 const PRECACHE_URLS = [
   '/',
   '/index.html',
-  '/bejoice-logo-group.png',
+  '/bejoice-logo-group.webp',
   '/ai-assistant-female.png',
   '/hero-frame0.webp',
   '/favicon.svg',

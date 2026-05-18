@@ -86,6 +86,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://cal.com" />
         <link rel="preconnect" href="https://app.cal.com" />
+        <link rel="preload" href="/bic/frame_0001.webp" as="image" fetchpriority="high" />
         <link rel="preconnect" href="https://flagcdn.com" />
       </head>
       <body>

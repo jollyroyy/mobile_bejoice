@@ -48,8 +48,7 @@ const FRAME_URLS: string[] = [
   // bejoice (211–439) — 73 images spread over 229 slots
   ...Array.from({ length: BEJOICE_COUNT }, (_, i) => {
     const imgIdx = Math.min(Math.floor((i / BEJOICE_COUNT) * 73) + 1, 73);
-    return `/bejoice1/frame_${pad(imgIdx)}.png`;
-    // return `/bejoice/frame_${pad(imgIdx)}.webp`;
+    return `/bejoice1/frame_${pad(imgIdx)}.webp`;
   }),
   // port (440–533)
   ...Array.from({ length: PORT_COUNT }, (_, i) => `/port/${pad(i + 1)}.webp`),
@@ -368,13 +367,6 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
             onProgress(Math.round(loaded / BIC_COUNT * 100));
           }
 
-          // Paint frame 0 the instant it lands — canvas never stays black
-          if (idx === 0) {
-            lastIdxRef.current = -1;
-            paintFrame(0);
-            applyProgress(FRAME_FADE);
-          }
-
           if (kickRenderRef.current) kickRenderRef.current();
 
           if (idx === BIC_COUNT - 1) onLoaded();
@@ -387,8 +379,21 @@ export default function ScrollStory({ onProgress, onLoaded, chapterOffsets, onQu
       }
     };
 
-    // Phase 1 (immediate): bic — drives loader bar
-    loadRange(0, BIC_COUNT - 1);
+    // Phase 0: Load frame 0 with high priority so canvas paints instantly
+    const firstImg = new Image();
+    firstImg.fetchPriority = 'high';
+    firstImg.onload = () => {
+      framesRef.current[0] = firstImg;
+      if (lastIdxRef.current === -1) {
+        lastIdxRef.current = -1;
+        paintFrame(0);
+        applyProgress(FRAME_FADE);
+      }
+    };
+    firstImg.onerror = () => { framesRef.current[0] = null; };
+    firstImg.src = FRAME_URLS[0];
+    // Phase 1 (immediate): remaining bic — drives loader bar
+    loadRange(1, BIC_COUNT - 1);
     // Phase 2 (200ms): globe bridge + bejoice
     const t1 = setTimeout(() => loadRange(BIC_COUNT, BEJOICE_START + BEJOICE_COUNT - 1), 200);
     // Phase 3 (600ms): port

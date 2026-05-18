@@ -156,7 +156,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
             aria-label={isAr ? 'الصفحة الرئيسية بيجويس' : 'Bejoice Home'}
             style={{ position: 'relative', cursor: 'pointer', display: 'inline-block', flexShrink: 0 }}>
             <Image
-              src="/bejoice-logo-group.png"
+              src="/bejoice-logo-group.webp"
               alt="Bejoice"
               width={2048}
               height={2048}
@@ -327,7 +327,7 @@ export default function Nav({ onQuoteClick, onWhyClick, onServicesClick, onTools
         {/* Header row */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '1.2rem 1.4rem', borderBottom: '1px solid rgba(255,255,255,0.05)', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0px' }}>
-            <img src="/bejoice-logo-group.png" alt="Bejoice" style={{ height: 'clamp(60px, 18vw, 102px)', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 1px 6px rgba(0,0,0,0.8))' }} />
+            <img src="/bejoice-logo-group.webp" alt="Bejoice" style={{ height: 'clamp(60px, 18vw, 102px)', width: 'auto', objectFit: 'contain', filter: 'drop-shadow(0 1px 6px rgba(0,0,0,0.8))' }} />
             <div style={{ borderLeft: '1.5px solid rgba(91,194,231,0.35)', paddingLeft: '9px', marginLeft: '6px' }}>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '16px', letterSpacing: '0.18em', color: '#ffffff', textTransform: 'uppercase', fontWeight: 700, lineHeight: 1 }}>Bejoice</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: '13px', letterSpacing: '0.14em', color: '#ffffff', textTransform: 'uppercase', fontWeight: 600, lineHeight: 1, marginTop: '3px' }}>Group</div>

@@ -15,7 +15,7 @@
  * JS/CSS chunks self-version via content hash — no manual bump needed for those.
  */
 
-const CACHE_VERSION  = 'v5'
+const CACHE_VERSION  = 'v6'
 const SHELL_CACHE    = `bejoice-shell-${CACHE_VERSION}`
 const ASSETS_CACHE   = `bejoice-assets-${CACHE_VERSION}`
 
@@ -24,7 +24,7 @@ const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/bejoice-logo-group.webp',
-  '/ai-assistant-female.png',
+  '/ai-assistant-female.webp',
   '/hero-frame0.webp',
   '/favicon.svg',
 ]

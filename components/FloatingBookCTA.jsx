@@ -1214,7 +1214,7 @@ function Avatar({ size }) {
       }}>
         <picture>
           <img
-            src="/ai-assistant-female.png"
+            src="/ai-assistant-female.webp"
             alt="Layla — Bejoice AI"
             width="200" height="200"
             loading="lazy" decoding="async"

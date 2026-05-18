@@ -837,7 +837,8 @@ body {
   .hero-stat-number { font-size: 0.75rem !important; }
   .hero-stat-label  { font-size: 7px !important; letter-spacing: 0.05em !important; }
   .hero-card-title  { font-size: 0.85rem !important; }
-  .hero-card-btn    { padding: 6px 10px !important; font-size: 0.62rem !important; letter-spacing: 0.08em !important; white-space: normal !important; word-break: keep-all !important; }
+  .hero-card-btn    { padding: 4px 8px !important; font-size: 0.5rem !important; letter-spacing: 0.08em !important; white-space: normal !important; word-break: keep-all !important; }
+  .hero-chapter-first .hero-glass-card-first { margin-top: 40px !important; }
 }
 
 /* ── Floating chatbot (Layla): move to bottom-LEFT on mobile so it doesn't block right-side content ── */
